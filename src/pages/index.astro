@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 	<main>
 		<h1><span class="text-gradient">Próximamente podrás hacer tus compras!</span></h1>
 		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a href="">WhatsApp.<a/></p>
+			<p class="emoji">⚠️</p>
 	</main>
 </Layout>
 
@@ -14,6 +15,7 @@ import Layout from '../layouts/Layout.astro';
 		margin: auto;
 		padding: 1rem;
 		width: 800px;
+		height: calc(100% - 106px);
 		max-width: calc(100% - 2rem);
 		color: #231F20;
 		font-size: 20px;
@@ -29,6 +31,14 @@ import Layout from '../layouts/Layout.astro';
 		line-height: 1;
 		text-align: center;
 		margin-bottom: .5em;
+		transition: ease-in-out .2s;
+		cursor: pointer;
+	}
+	h1:hover {
+		transform: scale(1.1);
+	}
+	a {
+		font-weight: bold;
 	}
 	p {
 		text-align: center;
@@ -48,5 +58,12 @@ import Layout from '../layouts/Layout.astro';
 		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
 		padding: 1.5rem;
 		border-radius: 8px;
+	}
+	.emoji {
+		font-size: 4rem;
+		transition: ease-in-out .2s;
+	}
+	.emoji:hover {
+		transform: rotate(180deg);
 	}
 </style>
