@@ -6,7 +6,7 @@ import Layout from '../layouts/Layout.astro';
 	<main>
 		<h1><span class="text-gradient">Próximamente podrás hacer tus compras!</span></h1>
 		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a target="_blank" href="https://api.whatsapp.com/send?phone=541126039243&text=Hola!%20Me%20interesa%20saber%20más!">WhatsApp.<a/></p>
-			<p class="emoji">⚠️</p>
+		<p class="emoji">⚠️</p>
 	</main>
 </Layout>
 
@@ -26,7 +26,7 @@ import Layout from '../layouts/Layout.astro';
 		flex-direction: column;
 	}
 	h1 {
-		font-size: 4rem;
+		font-size: 2rem;
 		font-weight: 700;
 		line-height: 1;
 		text-align: center;
@@ -47,7 +47,7 @@ import Layout from '../layouts/Layout.astro';
 	}
 	p {
 		text-align: center;
-		font-size: medium;
+		font-size: small;
 		margin: 0;
 	}
 	.text-gradient {
@@ -65,10 +65,22 @@ import Layout from '../layouts/Layout.astro';
 		border-radius: 8px;
 	}
 	.emoji {
-		font-size: 4rem;
+		font-size: 2rem;
 		transition: ease-in-out .2s;
 	}
 	.emoji:hover {
 		transform: rotate(180deg);
+	}
+
+	@media (min-width: 768px) {
+		h1 {
+			font-size: 4rem;
+		}
+		p {
+			font-size: medium;
+		}
+		.emoji {
+			font-size: 4rem;
+		}
 	}
 </style>
