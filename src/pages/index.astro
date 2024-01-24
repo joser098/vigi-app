@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Bienvenido a VIGI">
 	<main>
 		<h1><span class="text-gradient">Próximamente podrás hacer tus compras!</span></h1>
-		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a href="">WhatsApp.<a/></p>
+		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a target="_blank" href="https://api.whatsapp.com/send?phone=541126039243&text=Hola!%20Me%20interesa%20saber%20más!">WhatsApp.<a/></p>
 			<p class="emoji">⚠️</p>
 	</main>
 </Layout>
@@ -38,7 +38,12 @@ import Layout from '../layouts/Layout.astro';
 		transform: scale(1.1);
 	}
 	a {
+		color: var(--accent);
 		font-weight: bold;
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
 	}
 	p {
 		text-align: center;
