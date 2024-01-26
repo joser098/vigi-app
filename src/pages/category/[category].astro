@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/layout.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { category: "interior" } },
+    { params: { category: "exterior" } },
+    { params: { category: "bateria" } },
+    { params: { category: "dvr" } },
+    { params: { category: "analogas" } },
+    { params: { category: "porteros" } },
+    { params: { category: "alarmas" } },
+    { params: { category: "memorias" } },
+  ];
+}
+
+const { category } = Astro.params;
+---
+
+<Layout title=`${category.toLocaleUpperCase()} | VIGI`>
+  <h1>Here is {category}!</h1>
+</Layout>
