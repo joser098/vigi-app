@@ -1,86 +1,25 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import CategoryCard from "../components/CategoryCard.astro";
 ---
 
 <Layout title="Bienvenido a VIGI">
-	<main>
-		<h1><span class="text-gradient">Próximamente podrás hacer tus compras!</span></h1>
-		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a target="_blank" href="https://api.whatsapp.com/send?phone=541126039243&text=Hola!%20Me%20interesa%20saber%20más!">WhatsApp.<a/></p>
-		<p class="emoji">⚠️</p>
-	</main>
+  <main class="p-4 sm:p-8">
+    <div class="my-5 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h1 class="text-primary font-bold my-10 text-xl sm:text-4xl 2xl:text-5xl">
+        Tienda online. <span class="text-black font-normal">Compra seguro tus articulos de seguridad.</span>
+      </h1>
+    </div>
+
+    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:my-16">
+      <CategoryCard image_path="/public/categories/interior.png" title="Interior"/>
+      <CategoryCard image_path="/public/categories/exterior.png" title="Exterior"/>
+      <CategoryCard image_path="/public/categories/bateria.png" title="Bateria"/>
+      <CategoryCard image_path="/public/categories/DVR.png" title="DVR"/>
+      <CategoryCard image_path="/public/categories/analogas.png" title="Analogas"/>
+      <CategoryCard image_path="/public/categories/porteros.png" title="Porteros"/>
+      <CategoryCard image_path="/public/categories/alarmas.png" title="Alarmas"/>
+      <CategoryCard image_path="/public/categories/almacenamiento.png" title="Memorias"/>
+    </section>
+  </main>
 </Layout>
-
-<style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		height: calc(100% - 106px);
-		max-width: calc(100% - 2rem);
-		color: #231F20;
-		font-size: 20px;
-		line-height: 1.6;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
-	h1 {
-		font-size: 2rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: .5em;
-		transition: ease-in-out .2s;
-		cursor: pointer;
-	}
-	h1:hover {
-		transform: scale(1.1);
-	}
-	a {
-		color: var(--accent);
-		font-weight: bold;
-		text-decoration: none;
-	}
-	a:hover {
-		text-decoration: underline;
-	}
-	p {
-		text-align: center;
-		font-size: small;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.emoji {
-		font-size: 2rem;
-		transition: ease-in-out .2s;
-	}
-	.emoji:hover {
-		transform: rotate(180deg);
-	}
-
-	@media (min-width: 768px) {
-		h1 {
-			font-size: 4rem;
-		}
-		p {
-			font-size: medium;
-		}
-		.emoji {
-			font-size: 4rem;
-		}
-	}
-</style>
