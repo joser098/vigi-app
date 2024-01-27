@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import fetchData from "../../services/fetchData";
+import type { Product } from "../../services/types";
+
+export async function getStaticPaths() {
+  const products = await fetchData("getAllProducts");
+
+  return products.map((product: Product) => ({
+    params: {
+      model: product.model,
+    },
+  }));
+}
+
+const { model } = Astro.params;
+---
+
+<Layout title=`${model}`>
+  <h1>{model}</h1>
+</Layout>
