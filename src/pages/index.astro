@@ -1,25 +1,73 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryCard from "../components/CategoryCard.astro";
+import fetchData from "../services/fetchData";
+import { type Product } from "../services/types";
+import ProductCard from "../components/ProductCard.astro";
+
+const promotions = await fetchData("getProducts?promotion=true");
 ---
 
 <Layout title="Bienvenido a VIGI">
-  <main class="p-4 sm:p-8">
+  <main class="p-4 sm:p-8 max-w-[1180px] m-auto">
     <div class="my-5 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
       <h1 class="text-primary font-bold my-10 text-xl sm:text-4xl 2xl:text-5xl">
-        Tienda online. <span class="text-black font-normal">Compra seguro tus articulos de seguridad.</span>
+        Tienda online. <span class="text-black font-normal"
+          >Compra seguro tus articulos de seguridad.</span
+        >
       </h1>
     </div>
 
-    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:my-16">
-      <CategoryCard image_path="/public/categories/interior.png" title="Interior"/>
-      <CategoryCard image_path="/public/categories/exterior.png" title="Exterior"/>
-      <CategoryCard image_path="/public/categories/bateria.png" title="Bateria"/>
-      <CategoryCard image_path="/public/categories/DVR.png" title="DVR"/>
-      <CategoryCard image_path="/public/categories/analogas.png" title="Analogas"/>
-      <CategoryCard image_path="/public/categories/porteros.png" title="Porteros"/>
-      <CategoryCard image_path="/public/categories/alarmas.png" title="Alarmas"/>
-      <CategoryCard image_path="/public/categories/almacenamiento.png" title="Memorias"/>
+    <section
+      class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-16 sm:mb-10"
+    >
+      <CategoryCard
+        image_path="/public/categories/interior.png"
+        title="Interior"
+      />
+      <CategoryCard
+        image_path="/public/categories/exterior.png"
+        title="Exterior"
+      />
+      <CategoryCard
+        image_path="/public/categories/bateria.png"
+        title="Bateria"
+      />
+      <CategoryCard image_path="/public/categories/DVR.png" title="DVR" />
+      <CategoryCard
+        image_path="/public/categories/analogas.png"
+        title="Analogas"
+      />
+      <CategoryCard
+        image_path="/public/categories/porteros.png"
+        title="Porteros"
+      />
+      <CategoryCard
+        image_path="/public/categories/alarmas.png"
+        title="Alarmas"
+      />
+      <CategoryCard
+        image_path="/public/categories/almacenamiento.png"
+        title="Memorias"
+      />
+    </section>
+
+    <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h1
+        class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
+      >
+        Ofertas. <span class="text-black font-normal">
+          El mejor precio por el mejor producto.</span
+        >
+      </h1>
+    </div>
+
+    <section class="flex gap-5 overflow-x-scroll mb-16 py-4">
+      {
+        promotions.map((product: Product) => (
+          <ProductCard product={product}/>
+        ))
+      }
     </section>
   </main>
 </Layout>
