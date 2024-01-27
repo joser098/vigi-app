@@ -7,15 +7,12 @@ interface Props {
 const { image_path, title } = Astro.props;
 ---
 
-<a class="w-full p-2 transition-shadow hover:shadow-lg rounded flex flex-col justify-center items-center" href=`/category/${title.toLocaleLowerCase()}`>
-    <img class="max-w-28 rounded transition-transform" src={image_path} alt={title} />
+<a class="w-full p-2 rounded flex flex-col justify-center items-center" href=`/category/${title.toLocaleLowerCase()}`>
+    <img class="max-w-28 rounded" src={image_path} alt={title} />
     <h6 class="my-3">{title}</h6>
 </a>
 
 <style>
-  a:hover > img {
-    transform: scale(1.1);
-  }
   a:hover > h6 {
     text-decoration: underline;
     color: rgb(var(--accent));
