@@ -1,5 +1,8 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
+import fetchData from "../../services/fetchData";
+import ProductsList from "@components/ProductsList.astro";
+import type { Product } from "src/services/types";
 
 export function getStaticPaths() {
   return [
@@ -14,9 +17,25 @@ export function getStaticPaths() {
   ];
 }
 
-const { category } = Astro.params;
+let { category } = Astro.params;
+let productsList: Product[] = [];
+
+if(category === "interior" || category === "exterior" || category === "bateria" || category === "analogas") {
+  const response = await fetchData(`getProducts?category=camaras`);
+  productsList = response?.filter((product: Product) => product.tags.includes(category));
+} else productsList = await fetchData(`getProducts?category=${category}`);
+
 ---
 
 <Layout title=`${category.toLocaleUpperCase()} | VIGI`>
-  <h1>Here is {category}!</h1>
+  <h3 class=" font-bold text-center text-primary my-3">{category.toLocaleUpperCase()}</h3>
+  {
+    productsList.length === 0 ? (
+      <div class="flex justify-center items-center h-96">
+        <h3 class="text-cente">No hay productos en esta categoría</h3>
+      </div>
+    ) : (
+      <ProductsList productsList={productsList}/>
+    )
+  }
 </Layout>
