@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import fetchData from "../../services/fetchData";
 import type { Product } from "../../services/types";
+import { quantity } from "../../services/const"
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -14,8 +15,62 @@ export async function getStaticPaths() {
 }
 
 const { model } = Astro.params;
+const product: Product = await fetchData(`getProduct?model=${model}`);
 ---
 
-<Layout title=`${model}`>
-  <h1>{model}</h1>
+<Layout title=`${model} | VIGI`>
+  <main class="p-4 sm:p-8 max-w-[1180px] m-auto">
+    <header>
+      <h3 class="text-primary font-bold text-2xl">{product.provider}</h3>
+    </header>
+    <section class="flex flex-col w-full"> 
+      <!-- GALERIA -->
+      <article class="w-full flex justify-center sm:mb-16">
+        <img src={product.thumbnail} alt={product.model} />
+      </article>
+      <article class="w-full grid grid-cols-1 sm:grid-cols-3 gap-5 my-3">
+        <!-- DESCRIPCION -->
+        <div>
+          {product.has_promotion && (
+          <span class="text-green-600 mb-1">Oferta</span>
+            )}
+          <h6 class="text-3xl sm:text-4xl">{product.price.toLocaleString("es-AR", {style: "currency", currency:"ARS", minimumFractionDigits: 0})}</h6>
+          <h4 class="text-4xl font-bold mb-2 sm:text-5xl">{product.model}</h4>
+        </div>
+      <!-- CANTIDAD Y ENVIO -->
+      <div>
+        <select class="w-full p-3 border-primary border-2 rounded-md hover:bg-violet-100 transition-all cursor-pointer" name="unidades">
+          {
+            quantity.map((q) => (
+              <option value={q.value}>{q.descripcion}</option>
+              ))
+            }
+        </select>
+        <span class="block text-xs mt-1">*Mas de 5 unidades tienen precios especiales</span>
+        <span class="block mt-3">Envíos a todo el país</span>
+        <a  class="text-primary text-xs hover:underline" href="#">Otras formas de entrega</a>
+      </div>
+      <!-- BOTONES -->
+      <div class="grid gap-3">
+        <button class="block w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity">Comprar</button>
+        <button class="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-3 rounded-md hover:opacity-75 transition-opacity">Agregar al carrito</button>
+      </div>
+      </article>
+    </section>
+    <section>
+      {
+        //CARACTERISTICAS
+      }
+    </section>
+    <section>
+      {
+        //DESCRIPCION
+      }
+    </section>
+    <section>
+      {
+        //Otros productos
+      }
+    </section>
+  </main>
 </Layout>
