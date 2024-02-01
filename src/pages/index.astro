@@ -4,6 +4,7 @@ import CategoryCard from "../components/CategoryCard.astro";
 import fetchData from "../services/fetchData";
 import { type Product } from "../services/types";
 import ProductCard from "../components/ProductCard.astro";
+import InfoCard from "@/components/InfoCard.astro";
 
 const promotions = await fetchData("getProducts?promotion=true");
 ---
@@ -13,7 +14,7 @@ const promotions = await fetchData("getProducts?promotion=true");
     <div class="my-5 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
       <h1 class="text-primary font-bold my-10 text-xl sm:text-4xl 2xl:text-5xl">
         Tienda online. <span class="text-black font-normal"
-          >Compra seguro tus articulos de seguridad.</span
+          >Compra seguro tus artículos de seguridad.</span
         >
       </h1>
     </div>
@@ -31,12 +32,12 @@ const promotions = await fetchData("getProducts?promotion=true");
       />
       <CategoryCard
         image_path="/categories/bateria.png"
-        title="Bateria"
+        title="Batería"
       />
       <CategoryCard image_path="/categories/DVR.png" title="DVR" />
       <CategoryCard
         image_path="/categories/analogas.png"
-        title="Analogas"
+        title="Análogas"
       />
       <CategoryCard
         image_path="/categories/porteros.png"
@@ -48,18 +49,18 @@ const promotions = await fetchData("getProducts?promotion=true");
       />
       <CategoryCard
         image_path="/categories/almacenamiento.png"
-        title="Memorias"
+        title="Almacenamiento"
       />
     </section>
 
     <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
-      <h1
+      <h2
         class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
       >
-        Ofertas. <span class="text-black font-normal">
+        Destacados. <span class="text-black font-normal">
           El mejor precio por el mejor producto.</span
         >
-      </h1>
+      </h2>
     </div>
 
     <section class="flex gap-5 overflow-x-scroll mb-16 py-4">
@@ -69,5 +70,41 @@ const promotions = await fetchData("getProducts?promotion=true");
         ))
       }
     </section>
+    
+    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 my-24">
+      <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
+      <InfoCard icon="card" title="Todos los medios de pago" description="Descuentos en efectivo" />
+      <InfoCard icon="mail" title="Seguimiento de tu compra" description="Elige cualquier medio" />
+    </section>
   </main>
+
+  <div class="banner flex flex-col justify-center items-start">
+    <div class="w-full flex justify-between p-4 sm:p-8 max-w-[1180px] m-auto">
+      <h5 class="text-white text-2xl">Hoy, tu seguridad al alcance de tus manos.</h5>
+      <img class="max-h-12" src="vigi_white.svg" alt="vigi_logo">
+    </div>
+  </div>
+
+  <section class="p-4 sm:p-8 max-w-[1180px] m-auto">
+    <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px] ">
+      <h2
+        class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
+      >
+       Preguntas frecuentes. <span class="text-black font-normal">
+        Si necesitas ayuda adicional, puedes ponerte en contacto con soporte.</span
+        >
+      </h2>
+    </div>
+  </section>
 </Layout>
+
+
+<style>
+  .banner {
+    background-image: url('/banner1.webp');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    width: 100%;
+  }
+</style>
