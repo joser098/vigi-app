@@ -8,9 +8,9 @@ export function getStaticPaths() {
   return [
     { params: { category: "interior" } },
     { params: { category: "exterior" } },
-    { params: { category: "bateria" } },
+    { params: { category: "batería" } },
     { params: { category: "dvr" } },
-    { params: { category: "analogas" } },
+    { params: { category: "análogas" } },
     { params: { category: "porteros" } },
     { params: { category: "alarmas" } },
     { params: { category: "almacenamiento" } },
@@ -20,7 +20,7 @@ export function getStaticPaths() {
 let { category } = Astro.params;
 let productsList: Product[] = [];
 
-if(category === "interior" || category === "exterior" || category === "bateria" || category === "analogas") {
+if(category === "interior" || category === "exterior" || category === "batería" || category === "análogas") {
   const response = await fetchData(`getProducts?category=camaras`);
   productsList = response?.filter((product: Product) => product.tags.includes(category));
 } else productsList = await fetchData(`getProducts?category=${category}`);
