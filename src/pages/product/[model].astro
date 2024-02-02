@@ -16,7 +16,6 @@ export async function getStaticPaths() {
 
 const { model } = Astro.params;
 const product: Product = await fetchData(`getProduct?model=${model}`);
-console.log(model);
 ---
 
 <Layout title=`${model} | VIGI`>
