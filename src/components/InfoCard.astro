@@ -13,7 +13,7 @@ const { icon, title, description } = Astro.props;
 ---
 
 <article class="w-full flex flex-col justify-center items-center gap-3 border-2 rounded px-3 py-10 hover:opacity-70 transition-opacity cursor-pointer">
-    {icon == "truck" && <Truck />}
+    {icon == "truck" && <Truck height="48" width="48"/>}
     {icon == "mail" && <Mail />}
     {icon == "card" && <CreditCard />}
   <h3 class="text-primary font-bold text-center">{title}</h3>
