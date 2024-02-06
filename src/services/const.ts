@@ -30,3 +30,42 @@ export const quantity = [
         descripcion: '5 Unidades'
     }
 ];
+
+
+export const faq = [
+    {
+        id: 1,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 2,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 3,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 4,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 5,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 6,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    },
+    {
+        id: 7,
+        question: '¿Qué es Lorem Ipsum?',
+        answer: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+    }
+]
