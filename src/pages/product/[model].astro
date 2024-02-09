@@ -2,9 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 import fetchData from "../../services/fetchData";
 import type { Product } from "../../services/types";
-import { quantity } from "../../services/const"
 import Truck from "@/components/Icons/Truck.astro";
 import BuyButton from "@/components/BuyButton";
+import AddCartButton from "@/components/AddCartButton";
+import QuantitySelect from "@/components/QuantitySelect";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { model } = Astro.params;
-const product: Product = await fetchData(`getProduct?model=${model}`);
+const product = await fetchData(`getProduct?model=${model}`) as Product;
 ---
 
 <Layout title=`${model} | VIGI`>
@@ -41,13 +42,7 @@ const product: Product = await fetchData(`getProduct?model=${model}`);
         </div>
       <!-- CANTIDAD Y ENVIO -->
       <div>
-        <select class="w-full p-3 border-primary border-2 rounded-md hover:bg-violet-100 transition-all cursor-pointer" name="unidades">
-          {
-            quantity.map((q) => (
-              <option value={q.value}>{q.descripcion}</option>
-              ))
-            }
-        </select>
+        <QuantitySelect client:visible id={product._id}/>
         <span class="block text-xs mt-1">*Mas de 5 unidades tienen precios especiales</span>
         <div class="mt-3 flex items-center gap-2">
           <Truck height="18" width="18"/>
@@ -58,7 +53,7 @@ const product: Product = await fetchData(`getProduct?model=${model}`);
       <!-- BOTONES -->
       <div class="grid gap-3">
         <BuyButton client:visible/>
-        <button class="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-3 rounded-md hover:opacity-75 transition-opacity">Agregar al carrito</button>
+        <AddCartButton client:visible product={product}/>
       </div>
       </article>
     </section>
