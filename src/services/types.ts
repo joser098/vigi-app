@@ -79,6 +79,7 @@ export interface ItemsQuantity {
 
 export interface CartItem {
   id: string;
+  picture_url: string;
   title: string;
   quantity: number;
   unit_price: number;

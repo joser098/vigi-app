@@ -1,0 +1,62 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCartData } from "../services/fetchData";
+import { CartItem } from "../services/types";
+import QuantitySelect from "../components/QuantitySelect";
+import DeleteItemButton from "../components/DeleteItemButton";
+
+const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
+---
+
+<Layout title={`Cart (${cart.current_products_added.length})`}>
+  <main class="p-4 sm:p-8 max-w-[1180px] m-auto">
+    <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h2
+        class="text-primary font-bold my-1 text-base sm:text-2xl 2xl:text-3xl"
+      >
+        Carrito.<span class="text-black font-normal"> Ya casi es tuyo!</span>
+      </h2>
+    </div>
+
+    <section class="w-full">
+      <article class="w-full">
+        <h3
+          class="text-primary font-bold my-1 text-base sm:text-2xl 2xl:text-3xl"
+        >
+          Productos
+        </h3>
+        <div class="w-full flex flex-col gap-4">
+          {
+            cart.current_products_added.map((product: CartItem) => (
+              <div class="w-full flex justify-between p-2 rounded border-2">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                  <img
+                    src={product.picture_url}
+                    alt={product.title}
+                    class="w-20 h-20 sm:w-32 sm:h-32"
+                  />
+                  <div class="flex flex-col gap-2">
+                    <h4 class="text-primary font-bold text-base sm:text-2xl 2xl:text-3xl">
+                      {product.title}
+                    </h4>
+                    <p
+                      class="text-black
+                    text-base sm:text-lg 2xl:text-xl"
+                    >
+                      {product.unit_price}
+                    </p>
+                  </div>
+                </div>
+                <div class="flex flex-col justify-evenly px-3">
+                    <span class="bg-violet-200 p-2 rounded">Cantidad <strong>{`${product.quantity}`}</strong></span>
+                   { /* <QuantitySelect id={product.id}/> Hardcode id */}
+                   <DeleteItemButton client:visible id="65c6dd175597d7d8dfea0375" product_id={product.id}/>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </article>
+    </section>
+  </main>
+</Layout>
