@@ -32,3 +32,32 @@ export const saveCartData = async (cart: CartModel) => {
   }
 };
 
+export const getCartData = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/cart/${id}`);
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteItem = async (id: string, product_id: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/cart/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ product_id }),
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
