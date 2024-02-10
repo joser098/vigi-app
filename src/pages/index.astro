@@ -1,13 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryCard from "../components/CategoryCard.astro";
-import fetchData from "../services/fetchData";
+import { fetchData } from "../services/fetchData";
 import { type Product } from "../services/types";
 import ProductCard from "../components/ProductCard.astro";
 import InfoCard from "@/components/InfoCard.astro";
 import Faq from "@/components/Faq";
 
-const promotions = await fetchData("getProducts?promotion=true");
+const promotions = await fetchData("getAllProducts");
 ---
 
 <Layout title="Bienvenido a VIGI">
