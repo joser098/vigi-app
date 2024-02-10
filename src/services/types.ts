@@ -71,3 +71,26 @@ interface Dimensions {
 //   anti_vandal: boolean; 
 //   others: string;
 // }
+
+export interface ItemsQuantity {
+  id: string;
+  quantity: number;
+}
+
+export interface CartItem {
+  id: string;
+  title: string;
+  quantity: number;
+  unit_price: number;
+}
+
+export interface Cart {
+  [key: string]: CartItem;
+}
+
+export interface CartModel {
+  cart_id: string;
+  products: CartItem[];
+  products_total: number;
+  amount_to_pay: number;
+}
