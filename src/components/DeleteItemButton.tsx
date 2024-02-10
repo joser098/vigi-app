@@ -1,8 +1,8 @@
-import { deleteItem } from "@/services/fetchData";
+import { removeItemCart } from "@/store/cartStore";
 
 const DeleteItemButton = ({ id, product_id }: { id: string, product_id: string }) => {
     const onDeleteClick = async () => {
-        const res = await deleteItem(id, product_id);
+        const res = await removeItemCart(id, product_id);
         if(res.success){
             window.location.reload(); // change this to a state update
         }

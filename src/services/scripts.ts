@@ -26,3 +26,13 @@ export const calulateTotals = (products: CartItem[]) => {
         amount_to_pay
     }
 };
+
+export const formatStoreItems = (items: CartItem[]) => {
+    let itemsObj: Cart = {};
+
+    for(let i of items){
+        itemsObj[i.id] = i;
+    }
+
+    return itemsObj;
+};
