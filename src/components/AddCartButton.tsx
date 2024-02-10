@@ -11,6 +11,7 @@ const AddCartButton = ({ product }: { product: Product }) => {
     const quantity = getQuantity(product._id);
     const item = {
       id: product._id,
+      picture_url: product.thumbnail,
       title: product.model,
       quantity,
       unit_price: product.price,
