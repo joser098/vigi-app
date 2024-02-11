@@ -1,11 +1,11 @@
 const BASE_URL = import.meta.env.PUBLIC_API_URL;
-import { type CartModel} from "@/services/types";
+import { type CartModel } from "@/services/types";
 
 export const fetchData = async (query: string) => {
   try {
     const queryFormated = query.replace("+", "%2B");
     const response = await fetch(`${BASE_URL}/api/search/${queryFormated}`);
-    
+
     const res = await response.json();
 
     return res.data;
@@ -56,6 +56,23 @@ export const deleteItem = async (id: string, product_id: string) => {
 
     const res = await response.json();
 
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createPaymentOrder = async (cart: CartModel) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/payment/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cart),
+    });
+
+    const res = await response.json();
     return res;
   } catch (error) {
     return error;
