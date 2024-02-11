@@ -9,10 +9,10 @@ const BuyButton = ({ product }:{ product: Product }) => {
 
   const onBuyClick = async () => {
     const quantity = getQuantity(product._id);
-    console.log(quantity);
 
-    const cartModel: CartModel = {
-      customer_id: "65c6dd175597d7d8dfea0375", // Hardcoded customer id
+    const cartModel = {
+      customer_id: "65c6dd165597d7d8dfea0374", // Hardcoded customer id
+      cart_id: "65c6dd175597d7d8dfea0375", // Hardcoded cart id
       items: [
         {
           id: product._id,

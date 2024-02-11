@@ -41,7 +41,7 @@ export function addToCart(item: CartItem) {
 
   const cartModel = {
     cart_id: "65c6dd175597d7d8dfea0375", // Hardcoded cart id
-    products: itemsFormated,
+    items: itemsFormated,
     ...totals,
   };
 
@@ -49,7 +49,7 @@ export function addToCart(item: CartItem) {
   return res;
 }
 
-export const removeItemCart = (id: string, product_id: string) => {
+export const removeItemCart = (cart_id: string, product_id: string) => {
 
   const itemsFormated = formatItems(Cart.get());
   const filteredItems = itemsFormated.filter((item) => item.id !== product_id);
@@ -57,7 +57,7 @@ export const removeItemCart = (id: string, product_id: string) => {
 
   const cartModel = {
     cart_id: "65c6dd175597d7d8dfea0375", // Hardcoded cart id
-    products: filteredItems,
+    items: filteredItems,
     ...totals,
   };
 
