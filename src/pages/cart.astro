@@ -5,11 +5,12 @@ import { type CartItem } from "../services/types";
 import QuantitySelect from "../components/QuantitySelect";
 import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/DeleteItemButton";
+import PayCartButton from "../components/PayCartButton";
 
 const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
 ---
 
-<Layout title={`Cart (${cart.current_products_added.length})`}>
+<Layout title={`Cart (${cart.products_total}) | VIGI`}>
   <main class="p-4 sm:p-8 max-w-[1180px] m-auto">
     <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
       <h2
@@ -24,7 +25,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
         <h3 class="text-primary font-bold my-1 text-base">Productos</h3>
         <div class="flex flex-col gap-4">
           {
-           cart.current_products_added.length > 0 ? cart.current_products_added.map((product: CartItem) => (
+           cart.items.length > 0 ? cart.items.map((product: CartItem) => (
               <div class="flex justify-between p-2 rounded border-2">
                 <div class="flex flex-col sm:flex-row items-center gap-4">
                   <img
@@ -40,7 +41,11 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
                       class="text-black
                     text-base sm:text-lg 2xl:text-xl"
                     >
-                      {product.unit_price}
+                      {product.unit_price.toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                        minimumFractionDigits: 0,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -51,7 +56,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
                   {/* <QuantitySelect id={product.id}/> Hardcode id */}
                   <DeleteItemButton
                     client:visible
-                    cart_id="65c6dd175597d7d8dfea0375"
+                    cart_id={cart._id}
                     product_id={product.id}
                   />
                 </div>
@@ -76,7 +81,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
               <th class="text-center text-xs">Subtotal</th>
             </tr>
               {
-                cart.current_products_added.map((product: CartItem) => {
+                cart.items.map((product: CartItem) => {
                   return (
                     <tr>
                       <td class="text-center">{product.title}</td>
@@ -96,9 +101,9 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
                 })
               }
               <tr>
-                <td class="text-center font-bold">Total</td>
+                <td class="text-center font-bold">Total:</td>
                 <td></td>
-                <td></td>
+                <td class="text-center font-bold">{cart.products_total}</td>
                 <td class="text-center font-bold">{cart.amount_to_pay.toLocaleString("es-AR",{
                   style: "currency",
                   currency: "ARS",
@@ -107,6 +112,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
               </tr>
           </table>
         </div>
+        <PayCartButton client:visible cart={cart}/>
       </article>
     </section>
   </main>

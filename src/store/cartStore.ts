@@ -4,7 +4,7 @@ import { formatItems, calulateTotals, formatStoreItems } from "@/services/script
 import { getCartData, saveCartData } from "@/services/fetchData";
 
 const initialItems = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
-const initialItemsFormated = formatStoreItems(initialItems.current_products_added);
+const initialItemsFormated = formatStoreItems(initialItems.items);
 
 //STATE TO STORE THE QUANTITY OF ITEMS BEFORE ADDING TO CART
 export const ItemsQuantityStore = map<Record<string, ItemsQuantity>>({});
@@ -40,7 +40,8 @@ export function addToCart(item: CartItem) {
   const totals = calulateTotals(itemsFormated);
 
   const cartModel = {
-    cart_id: "65c6dd175597d7d8dfea0375", // Hardcoded cart id
+    _id: "65c6dd175597d7d8dfea0375",
+    customer_id: "65c6dd165597d7d8dfea0374", // Hardcoded cart id
     items: itemsFormated,
     ...totals,
   };
@@ -56,10 +57,12 @@ export const removeItemCart = (cart_id: string, product_id: string) => {
   const totals = calulateTotals(filteredItems);
 
   const cartModel = {
-    cart_id: "65c6dd175597d7d8dfea0375", // Hardcoded cart id
+    _id: cart_id, // Hardcoded cart id
+    customer_id: "65c6dd165597d7d8dfea0374", // Hardcoded customer id
     items: filteredItems,
     ...totals,
   };
+
 
   const res = saveCartData(cartModel);
   return res;

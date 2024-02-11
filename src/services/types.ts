@@ -90,7 +90,8 @@ export interface Cart {
 }
 
 export interface CartModel {
-  cart_id: string;
+  _id: string;
+  customer_id: string;
   items: CartItem[];
   products_total: number;
   amount_to_pay: number;
