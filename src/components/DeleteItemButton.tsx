@@ -9,7 +9,7 @@ const DeleteItemButton = ({ cart_id, product_id }: { cart_id: string, product_id
     };
 
     return (
-        <button onClick={onDeleteClick} className="bg-gray-200 p-3 rounded hover:opacity-75 transition-opacity w-full">Eliminar</button>
+        <button onClick={onDeleteClick} className="bg-gray-200 p-3 rounded w-full hover:bg-red-300 hover:text-white transition-colors">Eliminar</button>
     )
 };
 
