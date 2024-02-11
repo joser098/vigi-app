@@ -19,7 +19,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
       </h2>
     </div>
 
-    <section class="flex gap-5 justify-between">
+    <section class="flex flex-col sm:flex-row gap-5 justify-between">
       <article class="w-full">
         <h3 class="text-primary font-bold my-1 text-base">Productos</h3>
         <div class="flex flex-col gap-4">
@@ -51,7 +51,7 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
                   {/* <QuantitySelect id={product.id}/> Hardcode id */}
                   <DeleteItemButton
                     client:visible
-                    id="65c6dd175597d7d8dfea0375"
+                    cart_id="65c6dd175597d7d8dfea0375"
                     product_id={product.id}
                   />
                 </div>
@@ -65,15 +65,15 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
           }
         </div>
       </article>
-      <article class="w-3/4">
+      <article class="w-full sm:w-3/4">
         <h3 class="text-primary font-bold my-1 text-base">Resumen</h3>
         <div class="flex">
-          <table class="bg-gray-200 rounded-lg">
+          <table class="bg-gray-200 rounded-lg w-full">
             <tr>
-              <th class="text-center">Producto</th>
-              <th class="text-center">Precio por unidad</th>
-              <th class="text-center">Unidades</th>
-              <th class="text-center">Subtotal</th>
+              <th class="text-center text-xs">Producto</th>
+              <th class="text-center text-xs">Precio por unidad</th>
+              <th class="text-center text-xs">Unidades</th>
+              <th class="text-center text-xs">Subtotal</th>
             </tr>
               {
                 cart.current_products_added.map((product: CartItem) => {

@@ -28,6 +28,8 @@ export const calulateTotals = (products: CartItem[]) => {
 };
 
 export const formatStoreItems = (items: CartItem[]) => {
+    if (!Array.isArray(items)) return {};
+    
     let itemsObj: Cart = {};
 
     for(let i of items){
