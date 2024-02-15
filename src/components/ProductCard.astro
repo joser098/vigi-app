@@ -1,5 +1,6 @@
 ---
 import { type Product } from "../services/types";
+import Badges from "./Badges.astro";
 
 interface Props {
   product: Product;
@@ -23,6 +24,7 @@ const { product } = Astro.props;
             minimumFractionDigits: 0,
           })}
         </p>
+        <Badges product={product}/>
       </div>
     </article>
   </a>
