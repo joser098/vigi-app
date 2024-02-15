@@ -94,12 +94,12 @@ export const footerData = [
             {
                 id: 1,
                 title: 'Política de Envíos',
-                url: '/envios'
+                url: '/legales/envios'
             },
             {
                 id: 2,
                 title: 'Política de Devoluciones',
-                url: '/devoluciones'
+                url: '/legales/devoluciones'
             }
         ]
     },
@@ -147,12 +147,12 @@ export const footerData = [
             {
                 id: 3,
                 title: 'Términos y Condiciones',
-                url: '/terminos'
+                url: '/legales/terminos'
             },
             {
                 id: 4,
                 title: 'Política de Privacidad',
-                url: '/privacidad'
+                url: '/legales/privacidad'
             },
         ]   
     },
