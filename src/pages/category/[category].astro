@@ -31,11 +31,11 @@ switch(category) {
   case "batería":
     productsList = allProducts.filter((product: Product) => product.details.power_type == "Bateria");
     break;
+  case "análogas":
+    productsList = allProducts.filter((product: Product) => product.details.anlogue == true);
+    break;
   case "dvr":
     productsList = allProducts.filter((product: Product) => product.category == "DVR");
-    break;
-  case "análogas":
-    productsList = allProducts.filter((product: Product) => product.category == "Análoga");
     break;
   case "porteros":
     productsList = allProducts.filter((product: Product) => product.category == "Porteros");
