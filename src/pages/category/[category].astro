@@ -23,16 +23,16 @@ let productsList: Product[] = [];
 
 switch(category) {
   case "interior":
-    productsList = allProducts.filter((product: Product) => product.details.location == "Interior");
+    productsList = allProducts.filter((product: Product) => product.details?.location == "Interior");
     break
   case "exterior":
-      productsList = allProducts.filter((product: Product) => product.details.location == "Exterior");
+      productsList = allProducts.filter((product: Product) => product.details?.location == "Exterior");
     break;
   case "batería":
-    productsList = allProducts.filter((product: Product) => product.details.power_type == "Bateria");
+    productsList = allProducts.filter((product: Product) => product.details?.power_type.includes("Bateria"));
     break;
   case "análogas":
-    productsList = allProducts.filter((product: Product) => product.details.anlogue == true);
+    productsList = allProducts.filter((product: Product) => product.details?.anlogue == true);
     break;
   case "dvr":
     productsList = allProducts.filter((product: Product) => product.category == "DVR");

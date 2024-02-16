@@ -1,4 +1,4 @@
-// type ProductDetails = AlarmsDetails | CameraDetails;
+type ProductDetails = CameraDetails | DvrDetails;
 
 export interface Product {
   _id: string;
@@ -9,6 +9,7 @@ export interface Product {
   category: string;
   price: number;
   details: CameraDetails;
+  dvr_details: DvrDetails;
   has_promotion: boolean;
   others: string;
   tags: string[];
@@ -58,6 +59,26 @@ interface Dimensions {
     weight: string;
 }
 
+export interface DvrDetails {
+  resolution: string,
+  resolution_type: string,
+  channels: string,
+  audio: boolean,
+  output_connectors: string[],
+  input_connectors: string[],
+  supported_operating_systems: string[],
+   type: string,
+  connection_types: string[],
+  recording_modes: string,
+  motion_sensor: boolean,
+  min_temperature: string,
+  max_temperature: string,
+  max_fps: string,
+  control_types: string,
+  usb_port: boolean,
+  dimensions: Dimensions
+}
+
 // export interface AlarmsDetails {
 //   type: string;
 //   power_type: string;
@@ -71,6 +92,8 @@ interface Dimensions {
 //   anti_vandal: boolean; 
 //   others: string;
 // }
+
+
 
 export interface ItemsQuantity {
   id: string;
