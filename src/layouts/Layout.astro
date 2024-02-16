@@ -2,6 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BackButton from "@/components/BackButton";
 import '@fontsource/poppins';
 
 interface Props {
@@ -9,13 +10,14 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const { url } = Astro
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="e-commerce​​ para ventas de productos de seguridad (camaras, alarmas) en Argentina" />
+		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg" href="/vigi_white.svg" />
 		<meta name="keywords" content="seguridad, camaras, alarmas, vigilancia, argentina, vision"/>
@@ -26,6 +28,7 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<Header />
+		{url.pathname !== '/' && <BackButton client:visible/>}
 		<slot />
 		<Footer />
 	</body>
