@@ -224,6 +224,112 @@ const { product } = Astro.props;
       </article>
     )
   }
+  {
+    product.category == "DVR" && (
+    <article class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div class="grid gap-3">
+        <div>
+          <table>
+              <h4>General</h4>
+              <tr>
+                <td>Marca</td>
+                <td>{product.provider}</td>
+              </tr>
+              <tr>
+                <td>Modelo</td>
+                <td>{product.model}</td>
+              </tr>
+              <tr>
+                <td>Tipo de DVR</td>
+                <td>{product.dvr_details.type}</td>
+              </tr>
+            </table>
+        </div>
+        <div>
+          <h4>Dimensiones</h4>
+          <table>
+            <tr>
+              <td>Alto</td>
+              <td>{product.dvr_details.dimensions.height}</td>
+            </tr>
+            <tr>
+              <td>Ancho</td>
+              <td>{product.dvr_details.dimensions.width}</td>
+            </tr>
+            <tr>
+              <td>Profundidad</td>
+              <td>{product.dvr_details.dimensions.depth}</td>
+            </tr>
+            <tr>
+              <td>Peso</td>
+              <td>{product.dvr_details.dimensions.weight}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      {/* Columna derecha */}
+      <div>
+        <div>
+          <table>
+            <h4>Especificaciones</h4>
+            <tr>
+              <td>Cantidad de canales</td>
+              <td>{product.dvr_details.channels}</td>
+            </tr>
+            <tr>
+              <td>Resolución maxima de video</td>
+              <td>{product.dvr_details.resolution_type}</td>
+            </tr>
+            <tr>
+              <td>Tipo de resolución</td>
+              <td>{product.dvr_details.resolution}</td>
+            </tr>
+            <tr>
+              <td>Conectores de salida</td>
+              <td>{product.dvr_details.output_connectors.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Conectores de entrada</td>
+              <td>{product.dvr_details.input_connectors}</td>
+            </tr>
+            <tr>
+              <td>Capacidad de almacenamiento</td>
+              <td>{product.dvr_details.storage_capacity}</td>
+            </tr>
+            <tr>
+              <td>Tipo de almacenamiento</td>
+              <td>{product.dvr_details.storage_type.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Tipo de control</td>
+              <td>{product.dvr_details.control_types}</td>
+            </tr>
+            <tr>
+              <td>Sistema operativo compatibles</td>
+              <td>{product.dvr_details.supported_operating_systems.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Con vídeo en vivo</td>
+              <td>{product.dvr_details.live_stream ? "Sí" : "No"}</td>
+            </tr>
+            <tr>
+              <td>Con sensor de movimiento</td>
+              <td>{product.dvr_details.motion_sensor ? "Sí" : "No"}</td>
+            </tr>
+            <tr>
+              <td>Formatos de compresión de video</td>
+              <td>{product.dvr_details.video_compression}</td>
+            </tr>
+            <tr>
+              <td>Modos de grabación</td>
+              <td>{product.dvr_details.recording_modes}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </article>
+    )
+  }
 
 <style>
     h4 {
