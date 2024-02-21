@@ -123,3 +123,158 @@ export interface CartModel {
   products_total: number;
   amount_to_pay: number;
 }
+
+// PAYMENT TYPES
+export interface Payment {
+    _id: string
+    id: number
+    additional_info: AdditionalInfo
+    authorization_code: string
+    card: Card
+    charges_detail: any
+    cuotas: number
+    date_approved: string
+    date_created: string
+    date_last_updated: string
+    description: string
+    fee_details: FeeDetail[]
+    marketplace_details: MarketplaceDetails
+    money_details: MoneyDetails
+    operation_type: string
+    order: Order
+    payer: Payer2
+    payment_method: PaymentMethod
+    point_of_interaction: PointOfInteraction
+    refunds: any[]
+    status: string
+    status_detail: string
+    transaction_details: TransactionDetails
+    updatedAt: string
+}
+
+export interface AdditionalInfo {
+  authentication_code: any
+  available_balance: any
+  ip_address: string
+  items: Item[]
+  nsu_processadora: any
+  payer: Payer
+}
+
+export interface Item {
+  name: string
+  quantity: string
+  unit_price: string
+}
+
+export interface Payer {
+  first_name: string
+}
+
+export interface Card {
+  cardholder: Cardholder
+  date_created: string
+  date_last_updated: string
+  expiration_month: number
+  expiration_year: number
+  first_six_digits: string
+  id: any
+  last_four_digits: string
+}
+
+export interface Cardholder {
+  identification: Identification
+  name: string
+}
+
+export interface Identification {
+  number: string
+  type: string
+}
+
+export interface FeeDetail {
+  amount: number
+  fee_payer: string
+  type: string
+}
+
+export interface MarketplaceDetails {
+  marketplace_owner: any
+  merchant_account_id: any
+}
+
+export interface MoneyDetails {
+  money_release_date: string
+  money_release_status: string
+  money_release_schema: any
+}
+
+export interface Order {
+  id: string
+  type: string
+}
+
+export interface Payer2 {
+  identification: Identification2
+  entity_type: any
+  phone: Phone
+  last_name: any
+  id: string
+  type: any
+  first_name: any
+  email: string
+}
+
+export interface Identification2 {
+  number: string
+  type: string
+}
+
+export interface Phone {
+  number: any
+  extension: any
+  area_code: any
+}
+
+export interface PaymentMethod {
+  data: Data
+  id: string
+  issuer_id: string
+  type: string
+}
+
+export interface Data {
+  routing_data: RoutingData
+}
+
+export interface RoutingData {
+  merchant_account_id: string
+}
+
+export interface PointOfInteraction {
+  business_info: BusinessInfo
+  transaction_data: TransactionData
+  type: string
+}
+
+export interface BusinessInfo {
+  branch: any
+  sub_unit: string
+  unit: string
+}
+
+export interface TransactionData {
+  e2e_id: any
+}
+
+export interface TransactionDetails {
+  acquirer_reference: any
+  external_resource_url: any
+  financial_institution: any
+  installment_amount: number
+  net_received_amount: number
+  overpaid_amount: number
+  payable_deferral_period: any
+  payment_method_reference_id: any
+  total_paid_amount: number
+}

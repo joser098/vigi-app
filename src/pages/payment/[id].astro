@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PayApproved from "../../components/PayApproved.astro";
+import { getPayment } from "../../services/fetchData";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+let payment;
+
+if (id) {
+  //TODO: Verificar que el pago sea del usuario logeado
+  payment = await getPayment(id);
+  if (payment == null || payment.status != "approved") {
+    return Astro.redirect("/profile");
+  }
+}
+---
+
+<Layout title="Tu compra | VIGI">
+  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+    <PayApproved payment={payment} />
+  </main>
+</Layout>

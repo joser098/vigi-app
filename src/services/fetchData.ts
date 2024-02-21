@@ -78,3 +78,15 @@ export const createPaymentOrder = async (cart: CartModel) => {
     return error;
   }
 };
+
+export const getPayment = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/payment/${id}`);
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
