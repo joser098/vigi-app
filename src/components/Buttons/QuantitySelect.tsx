@@ -1,5 +1,5 @@
 import { useEffect, type ChangeEvent, useState } from "react";
-import { quantity } from "../services/const";
+import { quantity } from "../../services/const";
 import { updateQuantity, getQuantity } from "@/store/cartStore";
 
 const QuantitySelect = ({ id }: { id: string }) => {

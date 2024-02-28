@@ -1,8 +1,8 @@
 import type { CartItem, Product } from "@/services/types";
 import { addToCart, getQuantity } from "@/store/cartStore";
-import Toast from "./Toast";
+import Toast from "../Toast";
 import { useState } from "react";
-import Loader from "./Icons/Loader";
+import Loader from "../Icons/Loader";
 
 const AddCartButton = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(false);

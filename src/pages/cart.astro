@@ -2,9 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import { getCartData } from "../services/fetchData";
 import { type CartItem } from "../services/types";
-import QuantitySelect from "../components/QuantitySelect";
+import QuantitySelect from "../components/Buttons/QuantitySelect";
 import Sad from "../components/Icons/Sad.astro";
-import DeleteItemButton from "../components/DeleteItemButton";
+import DeleteItemButton from "../components/Buttons/DeleteItemButton";
 import PayCartButton from "../components/PayCartButton";
 
 const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id

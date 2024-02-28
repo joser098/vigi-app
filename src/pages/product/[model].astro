@@ -3,9 +3,9 @@ import Layout from "../../layouts/Layout.astro";
 import { fetchData } from "../../services/fetchData";
 import type { Product } from "../../services/types";
 import Truck from "@/components/Icons/Truck.astro";
-import BuyButton from "@/components/BuyButton";
-import AddCartButton from "@/components/AddCartButton";
-import QuantitySelect from "@/components/QuantitySelect";
+import BuyButton from "@/components/Buttons/BuyButton";
+import AddCartButton from "@/components/Buttons/AddCartButton";
+import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
 
 export async function getStaticPaths() {
