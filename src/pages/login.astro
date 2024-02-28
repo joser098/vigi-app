@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import LoginForm from "@/components/Forms/LoginForm";
 ---
 
 <Layout title="Iniciar sesión | VIGI">
@@ -15,36 +16,12 @@ import Layout from "@/layouts/Layout.astro";
     </div>
   </section>
   <section
-    class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2"
+    class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2 gap-32 sm:gap-0"
   >
-    <article class=" sm:border-r-[2px] ">
-      <form class="flex flex-col justify-center gap-5 items-center">
-        <h5 class="text-gray-600 text-xl">Ingresar a mi cuenta</h5>
-        <fieldset class="w-full flex flex-col items-center gap-6">
-          <div class="flex flex-col gap-1 w-full max">
-            <label for="email" id="email">Correo</label>
-            <input
-              class="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="email"
-              type="email"
-              placeholder="correo@email.com"
-            />
-          </div>
-          <div class="flex flex-col gap-1 w-full max">
-            <label for="password">Contraseña</label>
-            <input
-              class="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="password"
-              type="password"
-              placeholder="*******"
-            />
-          </div>
-          <button class="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3 max">Iniciar sesión</button>
-          <a href="#" class="text-primary hover:underline">¿Olvidaste tu contraseña?</a>
-        </fieldset>
-      </form>
+    <article class="sm:border-r-[2px]">
+      <LoginForm client:visible/>
     </article>
-    <article>
+    <article class="shadow-lg p-5 rounded-lg sm:shadow-none">
       <div class="flex flex-col justify-center items-center gap-2">
         <h6 class="text-xl font-semibold">Invitado</h6>
         <span>Proceder y crear usuario luego.</span>
@@ -55,7 +32,7 @@ import Layout from "@/layouts/Layout.astro";
 </Layout>
 
 <style>
-  input, .max {
+  .max {
     max-width: 350px;
   }
 </style>

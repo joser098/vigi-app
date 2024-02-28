@@ -90,3 +90,22 @@ export const getPayment = async (id: string) => {
     return error;
   }
 };
+
+export const login = async (data: any) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const res = await response.json();
+
+    console.log(res)
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
