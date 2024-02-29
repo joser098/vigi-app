@@ -97,6 +97,14 @@ const promotions = await fetchData("getAllProducts");
     </div>
     <Faq client:visible />
   </section>
+  <script>
+    import { check } from "@/store/cartStore";
+
+    const token = window.localStorage.getItem("check");
+    if(token != null){
+      check.set(token)
+    }
+  </script>
 </Layout>
 
 
