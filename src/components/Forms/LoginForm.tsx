@@ -23,7 +23,6 @@ const LoginForm = () => {
     setIsLoading(true);
     const response = await login(data);
     if (response.success) {
-      window.localStorage.setItem("_id", response.data._id);
       window.localStorage.setItem("check", response.data.token);
       window.location.href = "/profile";
     }
