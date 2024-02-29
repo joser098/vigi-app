@@ -14,11 +14,12 @@ export const fetchData = async (query: string) => {
   }
 };
 
-export const saveCartData = async (cart: CartModel) => {
+export const saveCartData = async (cart: CartModel, token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/cart/add`, {
       method: "PUT",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(cart),

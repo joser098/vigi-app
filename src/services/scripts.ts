@@ -78,3 +78,13 @@ export const formatUserRegister = (data: RegisterIForm) => {
 
   return dataFormated;
 };
+
+export const getToken = (): string => {
+  const token = window.localStorage.getItem("check");
+
+  if(token != null){
+    return token
+  }
+
+  return 'null'
+};
