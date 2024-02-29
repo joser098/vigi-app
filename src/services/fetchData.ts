@@ -103,7 +103,24 @@ export const login = async (data: any) => {
 
     const res = await response.json();
 
-    console.log(res)
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const registerCustomer = async (data: any) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const res = await response.json();
+
     return res;
   } catch (error) {
     return error;

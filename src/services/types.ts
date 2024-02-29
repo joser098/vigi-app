@@ -124,6 +124,24 @@ export interface CartModel {
   amount_to_pay: number;
 }
 
+export interface RegisterIForm {
+  name: string;
+  last_name: string;
+  cod: number;
+  phone: number;
+  province: string;
+  location: string;
+  address: string;
+  address_number: string;
+  department: string;
+  zip_code: string;
+  username: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  conditions: boolean;
+}
+
 // PAYMENT TYPES
 export interface Payment {
     _id: string

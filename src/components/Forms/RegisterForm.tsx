@@ -1,35 +1,37 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { registerCustomer } from "@/services/fetchData";
+import { formatUserRegister } from "@/services/scripts";
+import { type RegisterIForm } from "@/services/types";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
 
-interface IFormInput {
-  name: string;
-  last_name: string;
-  cod: number;
-  phone: number;
-  province: string;
-  location: string;
-  address: string;
-  address_number: string;
-  department: string;
-  zip_code: string;
-  username: string;
-  email: string;
-  password: string;
-  confirm_password: string;
-  conditions: boolean;
-}
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
+
   const {
     register,
     handleSubmit,
+    getValues,
+    reset,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<RegisterIForm>();
 
-  const onSubmitRegister: SubmitHandler<IFormInput> = async (data: any) => {
-    console.log(data);
+  const onSubmitRegister: SubmitHandler<RegisterIForm> = async (data: any) => {
+    setIsLoading(true);
+    const formatData = formatUserRegister(data);
+    const response = await registerCustomer(formatData);
+    if(response.success){
+      setShowToast(false);
+      reset();
+    }
+    if(!response.success){
+      setShowToast(true);
+      setMessage(response.message);
+    }
+    setIsLoading(false);
   };
   return (
     <form
@@ -283,7 +285,7 @@ const RegisterForm = () => {
                   message: "Este campo es requerido",
                 },
                 pattern: {
-                  value: /^\S+@\S+$/i,
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   message: "Correo no válido",
                 },
               })}
@@ -329,6 +331,11 @@ const RegisterForm = () => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                validate: (value) => {
+                  if (value !== getValues("password")) {
+                    return "Las contraseñas no coinciden";
+                  }
+                }
               })}
             />
             {errors.confirm_password && (
@@ -368,8 +375,14 @@ const RegisterForm = () => {
             </span>
           )}
           <button className="w-full bg-primary border-2 border-primary text-white h-1o p-2 rounded-md hover:opacity-70 transition-opacity max">
-            Registrar
+            {isLoading ? <span className="flex justify-center"><Loader /></span> : "Registrar"}
           </button>
+          {showToast && (
+          <span className=" bg-red-200 py-1 px-4 rounded-md text-red-600 text-center">
+            {message}
+          </span>
+        )}
+        <a href="/login" className="text-primary hover:underline block text-center">Ya tengo cuenta</a>
         </div>
       </fieldset>
     </form>
