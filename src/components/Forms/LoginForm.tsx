@@ -1,4 +1,4 @@
-import { useForm, type SubmitHandler, set } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { login } from "@/services/fetchData";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
@@ -46,7 +46,7 @@ const LoginForm = () => {
       <fieldset className="w-full flex flex-col items-center gap-6">
         <div className="flex flex-col gap-1 w-full max-w-96">
           <label htmlFor="email" id="email">
-            Correo<span className="text-xs">*</span>
+            Correo<span className="text-xs text-red-500">*</span>
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
@@ -73,7 +73,7 @@ const LoginForm = () => {
         </div>
         <div className="flex flex-col gap-1 w-full max-w-96">
           <label htmlFor="password">
-            Contraseña<span className="text-xs">*</span>
+            Contraseña<span className="text-xs text-red-500">*</span>
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
