@@ -108,9 +108,14 @@ const LoginForm = () => {
             Correo o contraseña son invalidos
           </span>
         )}
-        <a href="#" className="text-primary hover:underline">
-          ¿Olvidaste tu contraseña?
-        </a>
+        <div className="flex flex-col justify-center items-center">
+          <a href="#" className="text-primary hover:underline block">
+            ¿Olvidaste tu contraseña?
+          </a>
+          <a href="/register" className="text-primary hover:underline">
+            Registrarme
+          </a>
+        </div>
       </fieldset>
     </form>
   );
