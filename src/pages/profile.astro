@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="">
+    <section>
+        <span></span>
+    </section>
+
+    <script>
+        const session = window.localStorage.getItem("_id");
+        if(!session){
+            window.location.href = '/login'
+        }
+    </script>
+</Layout>
