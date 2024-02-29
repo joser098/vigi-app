@@ -11,10 +11,13 @@ interface IFormInput {
   location: string;
   address: string;
   address_number: string;
+  department: string;
   zip_code: string;
+  username: string;
   email: string;
   password: string;
   confirm_password: string;
+  conditions: boolean;
 }
 
 const RegisterForm = () => {
@@ -42,7 +45,6 @@ const RegisterForm = () => {
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-            name="name"
             type="text"
             placeholder="Juan"
             {...register("name", {
@@ -62,7 +64,6 @@ const RegisterForm = () => {
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-            name="last_name"
             type="text"
             placeholder="Perez"
             {...register("last_name", {
@@ -85,7 +86,6 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="cod"
               type="number"
               placeholder="11"
               {...register("cod", {
@@ -105,7 +105,6 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="phone"
               type="number"
               placeholder="12344321"
               {...register("phone", {
@@ -128,7 +127,6 @@ const RegisterForm = () => {
           </label>
           <select
             className="w-full p-2 border-[.5px] border-black rounded-md"
-            name="province"
             {...register("province", {
               required: {
                 value: true,
@@ -151,7 +149,6 @@ const RegisterForm = () => {
           </label>
           <select
             className="w-full p-2 border-[.5px] border-black rounded-md"
-            name="location"
             {...register("location", {
               required: {
                 value: true,
@@ -174,7 +171,6 @@ const RegisterForm = () => {
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-            name="address"
             type="text"
             placeholder="San Martin"
             {...register("address", {
@@ -197,7 +193,6 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="address_number"
               type="number"
               placeholder="1324"
               {...register("address_number", {
@@ -217,7 +212,6 @@ const RegisterForm = () => {
             <label htmlFor="department">Departamento</label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="department"
               type="text"
               placeholder="8C"
               {...register("department")}
@@ -234,7 +228,6 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="zip_code"
               type="text"
               placeholder="C1723"
               {...register("zip_code", {
@@ -261,7 +254,6 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              name="username"
               type="text"
               placeholder="usuario123"
               {...register("username", {
@@ -350,7 +342,6 @@ const RegisterForm = () => {
           <div className="flex justify-center items-center gap-3 text-center">
             <input
               type="checkbox"
-              name="conditions"
               {...register("conditions", {
                 required: {
                   value: true,
