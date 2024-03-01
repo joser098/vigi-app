@@ -7,9 +7,17 @@ import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/Buttons/DeleteItemButton";
 import PayCartButton from "../components/PayCartButton";
 
-const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
----
+export const prerender = false;
 
+const token = Astro.cookies.get("check")
+
+let cart;
+if(token == undefined){
+  cart = {items: [], products_total: 0, amount_to_pay: 0};
+} else {
+  cart = await getCartData(token.value);
+}
+---
 <Layout title={`Cart (${cart.products_total}) | VIGI`}>
   <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
     <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
@@ -56,7 +64,6 @@ const cart = await getCartData("65c6dd175597d7d8dfea0375"); // Hardcoded cart id
                   {/* <QuantitySelect id={product.id}/> Hardcode id */}
                   <DeleteItemButton
                     client:visible
-                    cart_id={cart._id}
                     product_id={product.id}
                   />
                 </div>

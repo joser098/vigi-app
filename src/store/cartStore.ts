@@ -3,7 +3,7 @@ import { type CartItem, type ItemsQuantity } from "@/services/types";
 import { formatItems, calulateTotals, formatStoreItems, getToken } from "@/services/scripts";
 import { getCartData, saveCartData } from "@/services/fetchData";
 
-const initialItems = await getCartData("65e0af2e69879929082b6f93"); // Hardcoded cart id
+const initialItems = await getCartData();
 const initialItemsFormated = formatStoreItems(initialItems.items);
 
 //SET USER ID FROM LOCALSTORAGE
@@ -42,7 +42,7 @@ export function addToCart(item: CartItem) {
   const itemsFormated = formatItems(Cart.get());
   const totals = calulateTotals(itemsFormated);
 
-  const cartModel = {// Hardcoded cart id
+  const cartModel = {
     items: itemsFormated,
     ...totals,
   };
@@ -57,7 +57,7 @@ export const removeItemCart = (product_id: string) => {
   const filteredItems = itemsFormated.filter((item) => item.id !== product_id);
   const totals = calulateTotals(filteredItems);
 
-  const cartModel = { // Hardcoded customer id
+  const cartModel = {
     items: filteredItems,
     ...totals,
   };

@@ -1,5 +1,6 @@
 const BASE_URL = import.meta.env.PUBLIC_API_URL;
 import { type CartModel } from "@/services/types";
+import { getToken } from "./scripts";
 
 export const fetchData = async (query: string) => {
   try {
@@ -33,9 +34,21 @@ export const saveCartData = async (cart: CartModel, token: string) => {
   }
 };
 
-export const getCartData = async (id: string) => {
+export const getCartData = async (token_: string = 'null') => {
   try {
-    const response = await fetch(`${BASE_URL}/api/cart/${id}`);
+    let token;
+
+    if(token_ != null && token_ != 'null'){
+      token = token_;
+    } else {
+      token = getToken();
+    }
+
+    const response = await fetch(`${BASE_URL}/api/cart`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
 
     const res = await response.json();
 

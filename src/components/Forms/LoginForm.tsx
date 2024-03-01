@@ -24,6 +24,7 @@ const LoginForm = () => {
     const response = await login(data);
     if (response.success) {
       window.localStorage.setItem("check", response.data.token);
+      document.cookie = `check=${response.data.token}`;
       window.location.href = "/profile";
     }
     if (!response.success) {
