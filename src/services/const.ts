@@ -25,9 +25,9 @@ export const quantity = [
         descripcion: '5 Unidades'
     },
     {
-        id: 5,
-        value: 5,
-        descripcion: '5 Unidades'
+        id: 6,
+        value: "+5",
+        descripcion: 'Más de 5 Unidades'
     }
 ];
 
