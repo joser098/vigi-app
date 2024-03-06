@@ -3,6 +3,7 @@ import { addToCart, getQuantity } from "@/store/cartStore";
 import Toast from "../Toast";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
+import { addCartAsInvited, getToken } from "@/services/scripts";
 
 const AddCartButton = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +20,26 @@ const AddCartButton = ({ product }: { product: Product }) => {
       quantity,
       unit_price: product.price,
     };
-    const res = await addToCart(item);
-    if(res.success){
+
+    const token = getToken();
+    //ADD TO CART AS INVITED IF USER IS NOT LOGGED IN
+    if (token == "null") {
+      addCartAsInvited(item, product.price);
+      
       setIsLoading(false);
-      setitem(item)
+      setitem(item);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+      return;
+    }
+
+    //ADD TO CART AS LOGGED IN USER
+    const res = await addToCart(item);
+    if (res.success) {
+      setIsLoading(false);
+      setitem(item);
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -36,9 +53,22 @@ const AddCartButton = ({ product }: { product: Product }) => {
         onClick={onAddCartClick}
         className="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-3 rounded-md hover:opacity-75 transition-opacity"
       >
-        {isLoading ? <span className="flex justify-center"><Loader/></span> : "Agregar al carrito" }
+        {isLoading ? (
+          <span className="flex justify-center">
+            <Loader />
+          </span>
+        ) : (
+          "Agregar al carrito"
+        )}
       </button>
-      {showToast && <Toast title="Producto Agregado!" message={`Se ha agregado ${item.quantity} ${item.quantity == 1 ? "unidad" : "unidades"} de ${item.title} al carrito`} />}
+      {showToast && (
+        <Toast
+          title="Producto Agregado!"
+          message={`Se ha agregado ${item.quantity} ${
+            item.quantity == 1 ? "unidad" : "unidades"
+          } de ${item.title} al carrito`}
+        />
+      )}
     </>
   );
 };
