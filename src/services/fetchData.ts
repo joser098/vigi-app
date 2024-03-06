@@ -76,12 +76,13 @@ export const deleteItem = async (id: string, product_id: string) => {
   }
 };
 
-export const createPaymentOrder = async (cart: CartModel) => {
+export const createPaymentOrder = async (cart: CartModel, token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/payment/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(cart),
     });

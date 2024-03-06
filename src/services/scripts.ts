@@ -88,3 +88,39 @@ export const getToken = (): string => {
 
   return 'null'
 };
+
+
+export const addCartAsInvited = (item: any, price:number) => {
+  const cart = window.localStorage.getItem("IC_LOCAL");
+  
+  const invitedCart = {
+    _id: null,
+    customer_id: null,
+    items: [item],
+    products_total: price,
+    amount_to_pay: price,
+  };
+  
+  if (cart == null) {
+    window.localStorage.setItem("IC_LOCAL", JSON.stringify(invitedCart));
+  } else {
+    const cartObj = JSON.parse(cart);
+    const itemFound = cartObj.items.findIndex((i:any) => i.id == item.id);
+    console.log(itemFound)
+
+    if(itemFound > -1){
+      cartObj.items[itemFound].quantity = item.quantity;
+    } else {
+      cartObj.items.push(item);
+    }
+
+    const totals = calulateTotals(cartObj.items);
+
+    const model = {
+      ...cartObj,
+      ...totals,
+    }
+
+    window.localStorage.setItem("IC_LOCAL", JSON.stringify(model));
+  }
+};

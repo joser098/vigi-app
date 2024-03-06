@@ -1,4 +1,5 @@
 import { createPaymentOrder } from "@/services/fetchData";
+import { getToken } from "@/services/scripts";
 import type { CartModel } from "@/services/types";
 import { useEffect, useState } from "react";
 
@@ -8,14 +9,13 @@ const PayCartButton = ({ cart }: {cart: CartModel}) => {
   const onPayCartClick = async () => {
     if(cart.items.length > 0){
       const cartModel = {
-        _id: cart._id,
-        customer_id: cart.customer_id,
         items: cart.items,
         products_total:cart.products_total,
         amount_to_pay: cart.products_total,
       }
   
-      const res = await createPaymentOrder(cartModel);
+      const token = getToken()
+      const res = await createPaymentOrder(cartModel, token);
       if(res.success){
         window.location.href = res.data.init_point;
       }
