@@ -1,16 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import LogOutButton from "../components/Buttons/LogOutButton";
+
+export const prerender = false;
+const session = Astro.cookies.get("check");
+
+if (session == undefined) {
+  return Astro.redirect("/login");
+}
 ---
 
-<Layout title="">
-  <section>
-    <span></span>
+<Layout title="Perfil | VIGI">
+  <section class="p-4 sm:p-8 max-w-[1180px] m-auto">
+    <LogOutButton client:visible />
   </section>
-
-  <script>
-    const session = window.localStorage.getItem("check");
-    if (!session) {
-      window.location.href = "/login";
-    }
-  </script>
 </Layout>
