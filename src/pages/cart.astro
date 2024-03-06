@@ -13,7 +13,8 @@ const token = Astro.cookies.get("check")
 
 let cart;
 if(token == undefined){
-  cart = {items: [], products_total: 0, amount_to_pay: 0};
+  return Astro.redirect('/login')
+  // cart = {items: [], products_total: 0, amount_to_pay: 0};
 } else {
   cart = await getCartData(token.value);
 }

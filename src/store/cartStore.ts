@@ -3,8 +3,8 @@ import { type CartItem, type ItemsQuantity } from "@/services/types";
 import { formatItems, calulateTotals, formatStoreItems, getToken } from "@/services/scripts";
 import { getCartData, saveCartData } from "@/services/fetchData";
 
-const initialItems = await getCartData();
-const initialItemsFormated = formatStoreItems(initialItems.items);
+// const initialItems = await getCartData();
+// const initialItemsFormated = formatStoreItems(initialItems.items);
 
 //SET USER ID FROM LOCALSTORAGE
 export const check = atom("null");
@@ -28,7 +28,7 @@ export function getQuantity(id: string) {
 }
 
 // STATE TO STORE THE ITEMS IN THE CART
-export const Cart = map<Record<string, CartItem>>(initialItemsFormated);
+export const Cart = map<Record<string, CartItem>>({});
 
 export function addToCart(item: CartItem) {
   const existingItem = Cart.get()[item.id];

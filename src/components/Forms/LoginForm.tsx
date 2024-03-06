@@ -23,9 +23,12 @@ const LoginForm = () => {
     setIsLoading(true);
     const response = await login(data);
     if (response.success) {
+      const expires = new Date();
+      expires.setFullYear(expires.getFullYear() + 1);
+
       window.localStorage.setItem("check", response.data.token);
-      document.cookie = `check=${response.data.token}`;
-      window.location.href = "/profile";
+      document.cookie = `check=${response.data.token}; expires=${expires.toUTCString()}; path=/`;
+      window.location.href = "/";
     }
     if (!response.success) {
       setShowToast(true);

@@ -100,9 +100,10 @@ const promotions = await fetchData("getAllProducts");
   <script>
     import { check } from "@/store/cartStore";
 
-    const token = window.localStorage.getItem("check");
+    const token = document.cookie.split('=');
+
     if(token != null){
-      check.set(token)
+      check.set(token[1])
     }
   </script>
 </Layout>
