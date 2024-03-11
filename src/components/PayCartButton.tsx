@@ -30,7 +30,7 @@ const PayCartButton = ({ cart }: {cart: CartModel}) => {
 
   return (
     <button onClick={onPayCartClick} disabled={isEnable} className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3">
-      Pagar
+      Finalizar compra
     </button>
   );
 };

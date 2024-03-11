@@ -1,4 +1,5 @@
 import { removeItemCart } from "@/store/cartStore";
+import Delete from "../Icons/Delete";
 
 const DeleteItemButton = ({ product_id }: { product_id: string }) => {
     const onDeleteClick = async () => {
@@ -9,7 +10,9 @@ const DeleteItemButton = ({ product_id }: { product_id: string }) => {
     };
 
     return (
-        <button onClick={onDeleteClick} className="bg-gray-200 p-3 rounded w-full hover:bg-red-300 hover:text-white transition-colors">Eliminar</button>
+        <button onClick={onDeleteClick}>
+            <Delete/>
+        </button>
     )
 };
 
