@@ -9,16 +9,17 @@ import PayCartButton from "../components/PayCartButton";
 
 export const prerender = false;
 
-const token = Astro.cookies.get("check")
+const token = Astro.cookies.get("check");
 
 let cart;
-if(token == undefined){
-  return Astro.redirect('/login')
+if (token == undefined) {
+  return Astro.redirect("/login");
   // cart = {items: [], products_total: 0, amount_to_pay: 0};
 } else {
   cart = await getCartData(token.value);
 }
 ---
+
 <Layout title={`Cart (${cart.products_total}) | VIGI`}>
   <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
     <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
@@ -29,48 +30,67 @@ if(token == undefined){
       </h2>
     </div>
 
-    <section class="flex flex-col sm:flex-row gap-5 justify-between">
+    <section class="flex flex-col sm:flex-row gap-12 justify-between">
       <article class="w-full">
-        <h3 class="text-primary font-bold my-1 text-base">Productos</h3>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 border rounded-md px-2 pt-2">
           {
-           cart.items.length > 0 ? cart.items.map((product: CartItem) => (
-              <div class="flex justify-between p-2 rounded border-2">
-                <div class="flex flex-col sm:flex-row items-center gap-4">
-                  <img
-                    src={product.picture_url}
-                    alt={product.title}
-                    class="w-20 h-20 sm:w-32 sm:h-32"
-                  />
-                  <div class="flex flex-col gap-2">
-                    <h4 class="text-primary font-bold text-base sm:text-2xl 2xl:text-3xl">
-                      {product.title}
-                    </h4>
-                    <p
-                      class="text-black
-                    text-base sm:text-lg 2xl:text-xl"
-                    >
-                      {product.unit_price.toLocaleString("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                        minimumFractionDigits: 0,
-                      })}
-                    </p>
-                  </div>
-                </div>
-                <div class="flex flex-col justify-evenly px-3">
-                  <span class="bg-primary text-white p-2 rounded">
-                    Unidades: <strong>{`${product.quantity}`}</strong>
-                  </span>
-                  {/* <QuantitySelect id={product.id}/> Hardcode id */}
-                  <DeleteItemButton
-                    client:visible
-                    product_id={product.id}
-                  />
-                </div>
-              </div>
-            )) : (
-              <div class="border p-3 rounded-lg flex flex-col justify-center items-center gap-2">
+            cart.items.length > 0 ? (
+              <table>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th class="font-normal">Productos</th>
+                  <th class="font-normal">Precio</th>
+                  <th class="font-normal">Unidades</th>
+                  <th class="font-normal">Subtotal</th>
+                  <th>&nbsp;</th>
+                </tr>
+                {cart.items.map((product: CartItem) => (
+                  <tr>
+                    <td class="max-w-14">
+                      <img
+                        src={product.picture_url}
+                        alt={product.title}
+                        class="w-10 h-10 sm:w-14 sm:h-14"
+                      />
+                    </td>
+                    <td>
+                      <h4 class="text-primary sm:text-xl text-center">
+                        {product.title}
+                      </h4>
+                    </td>
+                    <td>
+                      <p class="text-black text-center text-base">
+                        {product.unit_price.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 0,
+                        })}
+                      </p>
+                    </td>
+                    <td class="text-center">
+                      <span class="text-center">{product.quantity}</span>
+                    </td>
+                    <td class="text-center">
+                      {(product.quantity * product.unit_price).toLocaleString(
+                        "es-AR",
+                        {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 0,
+                        }
+                      )}
+                    </td>
+                    <td>
+                      <DeleteItemButton
+                        client:visible
+                        product_id={product.id}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </table>
+            ) : (
+              <div class="p-3  flex flex-col justify-center items-center gap-2">
                 <Sad />
                 <span class="text-base">No hay productos en el carrito</span>
               </div>
@@ -78,62 +98,108 @@ if(token == undefined){
           }
         </div>
       </article>
-      <article class="w-full sm:w-3/4">
-        <h3 class="text-primary font-bold my-1 text-base">Resumen</h3>
-        <div class="flex">
-          <table class="bg-gray-200 rounded-lg w-full">
-            <tr>
-              <th class="text-center text-xs">Producto</th>
-              <th class="text-center text-xs">Precio por unidad</th>
-              <th class="text-center text-xs">Unidades</th>
-              <th class="text-center text-xs">Subtotal</th>
-            </tr>
-              {
-                cart.items.map((product: CartItem) => {
-                  return (
-                    <tr>
-                      <td class="text-center">{product.title}</td>
-                      <td class="text-center">{product.unit_price.toLocaleString("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                        minimumFractionDigits: 0,
-                      })}</td>
-                      <td class="text-center">{product.quantity}</td>
-                      <td class="text-center">{(product.quantity * product.unit_price).toLocaleString("es-AR",{
-                        style: "currency",
-                        currency: "ARS",
-                        minimumFractionDigits: 0,
-                      })}</td>
-                    </tr>
-                  );
-                })
-              }
-              <tr>
-                <td class="text-center font-bold">Total:</td>
-                <td></td>
-                <td class="text-center font-bold">{cart.products_total}</td>
-                <td class="text-center font-bold">{cart.amount_to_pay.toLocaleString("es-AR",{
+      <article class="w-full sm:w-2/4 bg-gray-200 px-10 py-5 rounded-md">
+        <div class="w-full mb-8">
+          <h5 class="my-2 font-semibold text-lg">Entrega</h5>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <span class="text-xs">Conoce las opciones de envio, incluyendo plazos y costos
+            </span>
+            <button
+              class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
+              >Calcular</button
+            >
+          </div>
+        </div>
+        <div class="w-full mb-8">
+          <h5 class="my-2 font-semibold text-lg">Instalacion</h5>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <span class="text-xs">Si necesitas a un profesional para tu instalacion, lo tenemos.
+            </span>
+            <button
+              class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
+              >Calcular</button
+            >
+          </div>
+        </div>
+        <div class="mb-12">
+          <h5 class="my-2 font-semibold text-lg">¿Tienes un cupón?</h5>
+          <form>
+            <label> Código del cupón</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                placeholder="XXXX XXXX"
+                type="text"
+                class="bg-gray-200 border-b-2 border-gray-300 focus:border-none"
+              />
+              <button
+                class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
+                >Agregar</button
+              >
+            </div>
+          </form>
+        </div>
+        <div>
+          <h5 class="my-2 text-lg text-center">Resumen de la compra</h5>
+          <div class="flex justify-between">
+            <span>Subtotal</span>
+            <span>{
+                cart.amount_to_pay.toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
                   minimumFractionDigits: 0,
-                })}</td>
-              </tr>
-          </table>
+                })
+              }</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <span>Envio</span>
+            <span>{
+                cart.amount_to_pay.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <span>Descuento</span>
+            <span>- {
+                cart.amount_to_pay.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }</span
+            >
+          </div>
+          <div class="flex justify-between my-6">
+            <span class="font-bold">Total:</span>
+            <span class="font-bold">{
+                cart.amount_to_pay.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }</span
+            >
+          </div>
         </div>
-        <PayCartButton client:visible cart={cart}/>
+        <PayCartButton client:visible cart={cart} />
       </article>
     </section>
   </main>
 </Layout>
 
 <style>
-  table {;
+  table {
     width: 100%;
     border-collapse: collapse;
   }
 
-  th, td {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1) ;
+  th,
+  td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: 7px;
   }
 </style>
