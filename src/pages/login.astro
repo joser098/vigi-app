@@ -1,7 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import LoginForm from "@/components/Forms/LoginForm";
-import ContinueAsGuestButton from "@/components/Buttons/ContinueAsGuestButton";
 ---
 
 <Layout title="Iniciar sesión | VIGI">
@@ -22,12 +21,12 @@ import ContinueAsGuestButton from "@/components/Buttons/ContinueAsGuestButton";
     <article class="sm:border-r-[2px]">
       <LoginForm client:visible/>
     </article>
-    <article class="shadow-lg p-5 rounded-lg sm:shadow-none">
+    <!-- <article class="shadow-lg p-5 rounded-lg sm:shadow-none">
       <div class="flex flex-col justify-center items-center gap-2">
         <h6 class="text-xl font-semibold">Invitado</h6>
         <span>Proceder y crear usuario luego.</span>
         <ContinueAsGuestButton client:visible/>
       </div>
-    </article>
+    </article> -->
   </section>
 </Layout>

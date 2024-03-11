@@ -3,7 +3,7 @@ import { addToCart, getQuantity } from "@/store/cartStore";
 import Toast from "../Toast";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
-import { addCartAsInvited, getToken } from "@/services/scripts";
+import { getToken } from "@/services/scripts";
 
 const AddCartButton = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +12,12 @@ const AddCartButton = ({ product }: { product: Product }) => {
 
   const onAddCartClick = async () => {
     setIsLoading(true);
+
+    const token = getToken();
+    if(token == "null"){
+      window.location.href = "/login";
+    }
+
     const quantity = getQuantity(product._id);
     const item = {
       id: product._id,
@@ -21,19 +27,6 @@ const AddCartButton = ({ product }: { product: Product }) => {
       unit_price: product.price,
     };
 
-    const token = getToken();
-    //ADD TO CART AS INVITED IF USER IS NOT LOGGED IN
-    if (token == "null") {
-      addCartAsInvited(item, product.price);
-      
-      setIsLoading(false);
-      setitem(item);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 5000);
-      return;
-    }
 
     //ADD TO CART AS LOGGED IN USER
     const res = await addToCart(item);
