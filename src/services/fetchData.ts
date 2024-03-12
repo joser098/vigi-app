@@ -34,11 +34,11 @@ export const saveCartData = async (cart: CartModel, token: string) => {
   }
 };
 
-export const getCartData = async (token_: string = 'null') => {
+export const getCartData = async (token_: string = "null") => {
   try {
     let token;
 
-    if(token_ != null && token_ != 'null'){
+    if (token_ != null && token_ != "null") {
       token = token_;
     } else {
       token = getToken();
@@ -47,7 +47,7 @@ export const getCartData = async (token_: string = 'null') => {
     const response = await fetch(`${BASE_URL}/api/cart`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     });
 
     const res = await response.json();
@@ -137,6 +137,22 @@ export const registerCustomer = async (data: any) => {
     const res = await response.json();
 
     return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getShippingCost = async (token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/logistic/cost`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await response.json();
+
+    return res.data;
   } catch (error) {
     return error;
   }

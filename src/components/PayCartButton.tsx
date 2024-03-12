@@ -3,7 +3,16 @@ import { getToken } from "@/services/scripts";
 import type { CartModel } from "@/services/types";
 import { useEffect, useState } from "react";
 
-const PayCartButton = ({ cart }: {cart: CartModel}) => {
+interface Shipments {
+  local_pickup: boolean,
+  cost: number,
+  free_shipping: boolean,
+  receiver_address: {
+    street_name: string,
+  }
+}
+
+const PayCartButton = ({ cart, finalTotal, shipments }: {cart: CartModel, finalTotal: number, shipments: Shipments}) => {
    const [isEnable, setIsEnable] = useState(true);
 
   const onPayCartClick = async () => {
@@ -11,9 +20,10 @@ const PayCartButton = ({ cart }: {cart: CartModel}) => {
       const cartModel = {
         items: cart.items,
         products_total:cart.products_total,
-        amount_to_pay: cart.products_total,
+        amount_to_pay: finalTotal,
+        shipments: shipments
       }
-  
+      
       const token = getToken()
       const res = await createPaymentOrder(cartModel, token);
       if(res.success){

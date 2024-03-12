@@ -5,7 +5,7 @@ import { type CartItem } from "../services/types";
 import QuantitySelect from "../components/Buttons/QuantitySelect";
 import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/Buttons/DeleteItemButton";
-import PayCartButton from "../components/PayCartButton";
+import OrderResume from "../components/OrderResume";
 
 export const prerender = false;
 
@@ -98,95 +98,7 @@ if (token == undefined) {
           }
         </div>
       </article>
-      <article class="w-full sm:w-2/4 bg-gray-200 px-10 py-5 rounded-md">
-        <div class="w-full mb-8">
-          <h5 class="my-2 font-semibold text-lg">Entrega</h5>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <span class="text-xs">Conoce las opciones de envio, incluyendo plazos y costos
-            </span>
-            <button
-              class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
-              >Calcular</button
-            >
-          </div>
-        </div>
-        <div class="w-full mb-8">
-          <h5 class="my-2 font-semibold text-lg">Instalacion</h5>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <span class="text-xs">Si necesitas a un profesional para tu instalacion, lo tenemos.
-            </span>
-            <button
-              class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
-              >Calcular</button
-            >
-          </div>
-        </div>
-        <div class="mb-12">
-          <h5 class="my-2 font-semibold text-lg">¿Tienes un cupón?</h5>
-          <form>
-            <label> Código del cupón</label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                placeholder="XXXX XXXX"
-                type="text"
-                class="bg-gray-200 border-b-2 border-gray-300 focus:border-none"
-              />
-              <button
-                class="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
-                >Agregar</button
-              >
-            </div>
-          </form>
-        </div>
-        <div>
-          <h5 class="my-2 text-lg text-center">Resumen de la compra</h5>
-          <div class="flex justify-between">
-            <span>Subtotal</span>
-            <span>{
-                cart.amount_to_pay.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                  minimumFractionDigits: 0,
-                })
-              }</span
-            >
-          </div>
-          <div class="flex justify-between">
-            <span>Envio</span>
-            <span>{
-                cart.amount_to_pay.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                  minimumFractionDigits: 0,
-                })
-              }</span
-            >
-          </div>
-          <div class="flex justify-between">
-            <span>Descuento</span>
-            <span>- {
-                cart.amount_to_pay.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                  minimumFractionDigits: 0,
-                })
-              }</span
-            >
-          </div>
-          <div class="flex justify-between my-6">
-            <span class="font-bold">Total:</span>
-            <span class="font-bold">{
-                cart.amount_to_pay.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                  minimumFractionDigits: 0,
-                })
-              }</span
-            >
-          </div>
-        </div>
-        <PayCartButton client:visible cart={cart} />
-      </article>
+      <OrderResume client:visible cart={cart}/>
     </section>
   </main>
 </Layout>
