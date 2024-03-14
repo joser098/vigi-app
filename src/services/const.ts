@@ -84,11 +84,6 @@ export const footerData = [
                 id: 1,
                 title: 'Quiénes Somos',
                 url: '/nosotros'
-            },
-            {
-                id: 2,
-                title: 'Nuestros Valores',
-                url: '/valores'
             }
         ]
     },
