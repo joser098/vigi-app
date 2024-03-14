@@ -68,7 +68,7 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
         <!-- BOTONES -->
         <div class="grid gap-3">
           <BuyButton client:visible product={product}/>
-          <AddCartButton client:visible product={product} />
+          <AddCartButton client:visible product={product} buttonLabel="Agregar al carrito"/>
         </div>
       </article>
     </section>

@@ -5,7 +5,13 @@ import { useState } from "react";
 import Loader from "../Icons/Loader";
 import { getToken } from "@/services/scripts";
 
-const AddCartButton = ({ product }: { product: Product }) => {
+const AddCartButton = ({
+  product,
+  buttonLabel,
+}: {
+  product: Product;
+  buttonLabel: string;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [item, setitem] = useState<CartItem>({} as CartItem);
@@ -44,6 +50,10 @@ const AddCartButton = ({ product }: { product: Product }) => {
         setShowToast(false);
       }, 5000);
     }
+
+    if (buttonLabel.includes("Elegir")) {
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -57,7 +67,7 @@ const AddCartButton = ({ product }: { product: Product }) => {
             <Loader />
           </span>
         ) : (
-          "Agregar al carrito"
+          `${buttonLabel}`
         )}
       </button>
       {showToast && (

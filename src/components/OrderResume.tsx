@@ -72,7 +72,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   }, [discount, shipments.cost]);
 
   return (
-    <article className="w-full sm:w-2/4 bg-gray-200 px-10 py-5 rounded-md">
+    <article className="w-full sm:max-w-sm bg-gray-200 px-10 py-5 rounded-tl-md rounded-tr-md">
       <div className="w-full mb-8">
         <h5 className="my-2 font-semibold text-lg">Entrega</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

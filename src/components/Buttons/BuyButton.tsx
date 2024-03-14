@@ -1,39 +1,25 @@
 import * as AlertDialog from "@radix-ui/react-dialog";
-import type { CartModel, Product } from "@/services/types";
+import type { Product } from "@/services/types";
 import { getQuantity } from "@/store/cartStore";
-import { createPaymentOrder } from "@/services/fetchData";
 import { useState } from "react";
-import { getToken } from "@/services/scripts";
+import OrderResume from "../OrderResume";
+import AddCartButton from "./AddCartButton";
 
 const BuyButton = ({ product }: { product: Product }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const onBuyClick = async () => {
-    const token = getToken();
-    if (token == "null") {
-      window.location.href = "/login";
-    }
-
-    const quantity = getQuantity(product._id);
-
-    const cartModel = {
-      items: [
-        {
-          id: product._id,
-          title: product.model,
-          picture_url: product.thumbnail,
-          quantity,
-          unit_price: product.price,
-        },
-      ],
-      products_total: quantity,
-      amount_to_pay: product.price * quantity,
-    };
-
-    const res = await createPaymentOrder(cartModel, token);
-    if (res.success) {
-      window.location.href = res.data.init_point;
-    }
+  const cartModel = {
+    items: [
+      {
+        id: product._id,
+        title: product.model,
+        picture_url: product.thumbnail,
+        quantity,
+        unit_price: product.price,
+      },
+    ],
+    products_total: quantity,
+    amount_to_pay: product.price * quantity,
   };
 
   return (
@@ -48,12 +34,12 @@ const BuyButton = ({ product }: { product: Product }) => {
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="backdrop-blur-sm inset-0 fixed flex justify-center items-center p-4">
-          <AlertDialog.Content className=" bg-white rounded p-4 flex flex-col gap-5 shadow-lg sm:min-w-[500px]">
+          <AlertDialog.Content className=" bg-white rounded p-4 flex flex-col gap-5 shadow-lg sm:min-w-[500px] max-h-screen overflow-y-scroll">
             <AlertDialog.Title className="text-primary font-semibold text-xl">
               Verifica tu compra
             </AlertDialog.Title>
-            <AlertDialog.Description className="flex flex-col justify-center">
-              <table className="min-w-5">
+            <AlertDialog.Description className="flex flex-col justify-center items-center">
+              <table className="w-full sm:max-w-sm">
                 <tr>
                   <th className="text-start px-4 pt-4 bg-gray-200 rounded-tl-md">
                     Producto
@@ -74,40 +60,20 @@ const BuyButton = ({ product }: { product: Product }) => {
                     })}
                   </td>
                 </tr>
-                <tr>
-                  <td className="font-bold px-4 pt-4">Total</td>
-                  <td className="px-4 pt-4"></td>
-                  <td className="px-4 pt-4 font-bold">
-                    {(product.price * quantity).toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                      minimumFractionDigits: 0,
-                    })}
-                  </td>
-                </tr>
               </table>
-              <span className="text-[10px] px-4 mt-10">
-                *Una vez confirmes tu compra, serás redirigido de forma segura
-                al pago.
-              </span>
-            </AlertDialog.Description>
-            <div className="flex justify-end gap-4">
+              {quantity > 0 && quantity < 21 && <OrderResume cart={cartModel} />}
+              <div className="w-full px-10 max-w-sm bg-gray-200 py-3">
+                <AddCartButton
+                  product={product}
+                  buttonLabel="Elegir mas productos"
+                />
               <AlertDialog.Close asChild>
-                <button className="bg-gray-200 p-3 rounded hover:opacity-75 transition-opacity">
+                <button className="bg-red-400 text-white p-3 rounded hover:opacity-75 transition-opacity my-3 w-full">
                   Cancelar
                 </button>
               </AlertDialog.Close>
-              <AlertDialog.Close asChild>
-                {quantity > 0 && quantity < 21 && (
-                  <button
-                    onClick={onBuyClick}
-                    className="bg-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity"
-                  >
-                    Confirmar
-                  </button>
-                )}
-              </AlertDialog.Close>
-            </div>
+              </div>
+            </AlertDialog.Description>
           </AlertDialog.Content>
         </AlertDialog.Overlay>
       </AlertDialog.Portal>
