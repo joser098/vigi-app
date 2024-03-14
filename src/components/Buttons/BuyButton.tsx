@@ -98,12 +98,14 @@ const BuyButton = ({ product }: { product: Product }) => {
                 </button>
               </AlertDialog.Close>
               <AlertDialog.Close asChild>
-                <button
-                  onClick={onBuyClick}
-                  className="bg-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity"
-                >
-                  Confirmar
-                </button>
+                {quantity > 0 && quantity < 21 && (
+                  <button
+                    onClick={onBuyClick}
+                    className="bg-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity"
+                  >
+                    Confirmar
+                  </button>
+                )}
               </AlertDialog.Close>
             </div>
           </AlertDialog.Content>

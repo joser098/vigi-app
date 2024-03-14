@@ -20,6 +20,12 @@ const QuantitySelect = ({ id }: { id: string }) => {
       updateQuantity(id, 0);
       return;
     }
+    if(value == ""){
+      setErrors("Ingresa la cantidad");
+      updateQuantity(id, 0);
+      return;
+    }
+
     updateQuantity(id, parseInt(value));
   };
 
@@ -63,7 +69,7 @@ const QuantitySelect = ({ id }: { id: string }) => {
             inputMode="numeric"
           />
       )}
-      <span className="text-xs text-red-500 h-1 inline-block w-16">{errors}</span>
+      <span className="text-xs text-red-500 h-1 inline-block w-full">{errors}</span>
     </>
   );
 };
