@@ -13,12 +13,19 @@ const AddCartButton = ({ product }: { product: Product }) => {
   const onAddCartClick = async () => {
     setIsLoading(true);
 
+    //Verify user is logged
     const token = getToken();
-    if(token == "null"){
+    if (token == "null") {
       window.location.href = "/login";
     }
 
+    //Verify quantity is valid
     const quantity = getQuantity(product._id);
+    if (!quantity) {
+      setIsLoading(false);
+      return;
+    }
+
     const item = {
       id: product._id,
       picture_url: product.thumbnail,
@@ -26,7 +33,6 @@ const AddCartButton = ({ product }: { product: Product }) => {
       quantity,
       unit_price: product.price,
     };
-
 
     //ADD TO CART AS LOGGED IN USER
     const res = await addToCart(item);

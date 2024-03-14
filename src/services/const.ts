@@ -26,8 +26,8 @@ export const quantity = [
     },
     {
         id: 6,
-        value: "+5",
-        descripcion: 'Más de 5 Unidades'
+        value: 6,
+        descripcion: '6 Unidades o más'
     }
 ];
 
