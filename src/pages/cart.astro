@@ -1,4 +1,5 @@
 ---
+export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { getCartData } from "../services/fetchData";
 import { type CartItem } from "../services/types";
@@ -7,14 +8,17 @@ import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/Buttons/DeleteItemButton";
 import OrderResume from "../components/OrderResume";
 
+
 const token = Astro.cookies.get("check");
 
 let cart;
-if (token == undefined) {
+if (Astro.cookies.has("check")) {
   return Astro.redirect("/login");
   // cart = {items: [], products_total: 0, amount_to_pay: 0};
 } else {
-  cart = await getCartData(token.value);
+  if(token?.value){ 
+    cart = await getCartData(token.value);
+  }
 }
 ---
 
