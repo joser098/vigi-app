@@ -1,5 +1,5 @@
 ---
-// export const prerender = false;
+export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { getCartData } from "../services/fetchData";
 import { type CartItem } from "../services/types";
@@ -8,17 +8,16 @@ import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/Buttons/DeleteItemButton";
 import OrderResume from "../components/OrderResume";
 
-
-const token = Astro.cookies.get("check");
-
 let cart;
 if (Astro.cookies.has("check")) {
-  return Astro.redirect("/login");
-  // cart = {items: [], products_total: 0, amount_to_pay: 0};
-} else {
-  if(token?.value){ 
+  const token = Astro.cookies.get("check");
+  if (token?.value) {
     cart = await getCartData(token.value);
+  } else {
+    cart = { items: [], products_total: 0, amount_to_pay: 0 };
   }
+} else {
+  return Astro.redirect("/login");
 }
 ---
 
@@ -100,7 +99,7 @@ if (Astro.cookies.has("check")) {
           }
         </div>
       </article>
-      <OrderResume client:visible cart={cart}/>
+      <OrderResume client:visible cart={cart} />
     </section>
   </main>
 </Layout>
