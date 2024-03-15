@@ -14,7 +14,7 @@ const { url } = Astro
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es-AR">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
@@ -22,13 +22,13 @@ const { url } = Astro
 		<link rel="icon" type="image/svg" href="/vigi_white.svg" />
 		<meta name="keywords" content="seguridad, camaras, alarmas, vigilancia, argentina, vision"/>
 		<meta name="author" content="Jose Jaramillo" />
-		<meta name="robots" content="index"/>
+		<meta name="robots" content="index, follow"/>
 		<title>{title}</title>
 		<ViewTransitions />
 	</head>
 	<body>
 		<Header />
-		{url.pathname !== '/' && <BackButton client:visible/>}
+		{(url.pathname !== '/' && url.pathname !== '/login') && <BackButton client:visible/>}
 		<slot />
 		<Footer />
 	</body>

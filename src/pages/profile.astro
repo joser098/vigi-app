@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import LogOutButton from "../components/Buttons/LogOutButton";
 
-export const prerender = false;
 const session = Astro.cookies.get("check");
 
 if (session == undefined) {
