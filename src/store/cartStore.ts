@@ -4,7 +4,10 @@ import { formatItems, calulateTotals, formatStoreItems, getToken } from "@/servi
 import { getCartData, saveCartData } from "@/services/fetchData";
 
 const initialItems = await getCartData();
-const initialItemsFormated = formatStoreItems(initialItems.items);
+let initialItemsFormated;
+if(initialItems?.items){
+  initialItemsFormated = formatStoreItems(initialItems.items);
+}
 
 //SET USER ID FROM LOCALSTORAGE
 export const check = atom("null");
