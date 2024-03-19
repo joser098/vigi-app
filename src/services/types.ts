@@ -49,38 +49,38 @@ export interface CameraDetails {
   storage_type: string; // MicroSD, Cloud, NVR
   storage_capacity: string; // 32GB, 64GB, 128GB
   color_night_vision: boolean;
-  accessories: string[]; 
+  accessories: string[];
 }
 
 interface Dimensions {
-    width: string;
-    height: string;
-    depth: string;
-    weight: string;
+  width: string;
+  height: string;
+  depth: string;
+  weight: string;
 }
 
 export interface DvrDetails {
-  resolution: string,
-  resolution_type: string,
-  channels: string,
-  audio: boolean,
-  output_connectors: string[],
-  input_connectors: string[],
-  supported_operating_systems: string[],
-  type: string,
-  storage_type: string[],
-  storage_capacity: string,
-  connection_types: string[],
-  recording_modes: string,
-  motion_sensor: boolean,
-  live_stream: boolean,
-  video_compression: string,
-  min_temperature: string,
-  max_temperature: string,
-  max_fps: string,
-  control_types: string,
-  usb_port: boolean,
-  dimensions: Dimensions
+  resolution: string;
+  resolution_type: string;
+  channels: string;
+  audio: boolean;
+  output_connectors: string[];
+  input_connectors: string[];
+  supported_operating_systems: string[];
+  type: string;
+  storage_type: string[];
+  storage_capacity: string;
+  connection_types: string[];
+  recording_modes: string;
+  motion_sensor: boolean;
+  live_stream: boolean;
+  video_compression: string;
+  min_temperature: string;
+  max_temperature: string;
+  max_fps: string;
+  control_types: string;
+  usb_port: boolean;
+  dimensions: Dimensions;
 }
 
 // export interface AlarmsDetails {
@@ -93,11 +93,9 @@ export interface DvrDetails {
 //   storage_type: string;
 //   storage_capacity: string;
 //   color_night_vision: boolean;
-//   anti_vandal: boolean; 
+//   anti_vandal: boolean;
 //   others: string;
 // }
-
-
 
 export interface ItemsQuantity {
   id: string;
@@ -140,157 +138,183 @@ export interface RegisterIForm {
   conditions: boolean;
 }
 
+export interface Customer {
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+  user_data: {
+    name: string;
+    last_name: string;
+    phone: string;
+    address: {
+      province: string;
+      location: string;
+      address_name: string;
+      address_number: string;
+      department: string;
+      zip_code: string;
+    };
+  };
+  conditions_accepted: boolean;
+  has_order_active: boolean;
+  register_date: string;
+  isActive: boolean;
+  last_login: string;
+  cart_id: string;
+}
+
 // PAYMENT TYPES
 export interface Payment {
-    _id: string
-    id: number
-    additional_info: AdditionalInfo
-    authorization_code: string
-    card: Card
-    charges_detail: any
-    cuotas: number
-    date_approved: string
-    date_created: string
-    date_last_updated: string
-    description: string
-    fee_details: FeeDetail[]
-    marketplace_details: MarketplaceDetails
-    money_details: MoneyDetails
-    operation_type: string
-    order: Order
-    payer: Payer2
-    payment_method: PaymentMethod
-    point_of_interaction: PointOfInteraction
-    refunds: any[]
-    status: string
-    status_detail: string
-    transaction_details: TransactionDetails
-    updatedAt: string
+  _id: string;
+  id: number;
+  additional_info: AdditionalInfo;
+  authorization_code: string;
+  card: Card;
+  charges_detail: any;
+  cuotas: number;
+  date_approved: string;
+  date_created: string;
+  date_last_updated: string;
+  description: string;
+  fee_details: FeeDetail[];
+  marketplace_details: MarketplaceDetails;
+  money_details: MoneyDetails;
+  operation_type: string;
+  order: Order;
+  payer: Payer2;
+  payment_method: PaymentMethod;
+  point_of_interaction: PointOfInteraction;
+  refunds: any[];
+  status: string;
+  status_detail: string;
+  transaction_details: TransactionDetails;
+  updatedAt: string;
 }
 
 export interface AdditionalInfo {
-  authentication_code: any
-  available_balance: any
-  ip_address: string
-  items: Item[]
-  nsu_processadora: any
-  payer: Payer
+  authentication_code: any;
+  available_balance: any;
+  ip_address: string;
+  items: Item[];
+  nsu_processadora: any;
+  payer: Payer;
 }
 
 export interface Item {
-  name: string
-  quantity: string
-  unit_price: string
+  name: string;
+  quantity: string;
+  unit_price: string;
 }
 
 export interface Payer {
-  first_name: string
+  first_name: string;
 }
 
 export interface Card {
-  cardholder: Cardholder
-  date_created: string
-  date_last_updated: string
-  expiration_month: number
-  expiration_year: number
-  first_six_digits: string
-  id: any
-  last_four_digits: string
+  cardholder: Cardholder;
+  date_created: string;
+  date_last_updated: string;
+  expiration_month: number;
+  expiration_year: number;
+  first_six_digits: string;
+  id: any;
+  last_four_digits: string;
 }
 
 export interface Cardholder {
-  identification: Identification
-  name: string
+  identification: Identification;
+  name: string;
 }
 
 export interface Identification {
-  number: string
-  type: string
+  number: string;
+  type: string;
 }
 
 export interface FeeDetail {
-  amount: number
-  fee_payer: string
-  type: string
+  amount: number;
+  fee_payer: string;
+  type: string;
 }
 
 export interface MarketplaceDetails {
-  marketplace_owner: any
-  merchant_account_id: any
+  marketplace_owner: any;
+  merchant_account_id: any;
 }
 
 export interface MoneyDetails {
-  money_release_date: string
-  money_release_status: string
-  money_release_schema: any
+  money_release_date: string;
+  money_release_status: string;
+  money_release_schema: any;
 }
 
 export interface Order {
-  id: string
-  type: string
+  id: string;
+  type: string;
 }
 
 export interface Payer2 {
-  identification: Identification2
-  entity_type: any
-  phone: Phone
-  last_name: any
-  id: string
-  type: any
-  first_name: any
-  email: string
+  identification: Identification2;
+  entity_type: any;
+  phone: Phone;
+  last_name: any;
+  id: string;
+  type: any;
+  first_name: any;
+  email: string;
 }
 
 export interface Identification2 {
-  number: string
-  type: string
+  number: string;
+  type: string;
 }
 
 export interface Phone {
-  number: any
-  extension: any
-  area_code: any
+  number: any;
+  extension: any;
+  area_code: any;
 }
 
 export interface PaymentMethod {
-  data: Data
-  id: string
-  issuer_id: string
-  type: string
+  data: Data;
+  id: string;
+  issuer_id: string;
+  type: string;
 }
 
 export interface Data {
-  routing_data: RoutingData
+  routing_data: RoutingData;
 }
 
 export interface RoutingData {
-  merchant_account_id: string
+  merchant_account_id: string;
 }
 
 export interface PointOfInteraction {
-  business_info: BusinessInfo
-  transaction_data: TransactionData
-  type: string
+  business_info: BusinessInfo;
+  transaction_data: TransactionData;
+  type: string;
 }
 
 export interface BusinessInfo {
-  branch: any
-  sub_unit: string
-  unit: string
+  branch: any;
+  sub_unit: string;
+  unit: string;
 }
 
 export interface TransactionData {
-  e2e_id: any
+  e2e_id: any;
 }
 
 export interface TransactionDetails {
-  acquirer_reference: any
-  external_resource_url: any
-  financial_institution: any
-  installment_amount: number
-  net_received_amount: number
-  overpaid_amount: number
-  payable_deferral_period: any
-  payment_method_reference_id: any
-  total_paid_amount: number
+  acquirer_reference: any;
+  external_resource_url: any;
+  financial_institution: any;
+  installment_amount: number;
+  net_received_amount: number;
+  overpaid_amount: number;
+  payable_deferral_period: any;
+  payment_method_reference_id: any;
+  total_paid_amount: number;
 }

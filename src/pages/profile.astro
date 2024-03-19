@@ -2,6 +2,9 @@
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import LogOutButton from "../components/Buttons/LogOutButton";
+import {type Customer } from "@/services/types"
+import { getCustomerData } from "@/services/fetchData"
+import ProfileIndex from "@/components/profile/ProfileIndex"
 
 
 const session = Astro.cookies.get("check");
@@ -9,10 +12,18 @@ const session = Astro.cookies.get("check");
 if (session == undefined) {
   return Astro.redirect("/login");
 }
----
 
+const customer: Customer = await getCustomerData(session.value);
+---
 <Layout title="Perfil | VIGI">
   <section class="p-4 sm:p-8 max-w-[1180px] m-auto">
-    <LogOutButton client:visible />
+    <article class="flex justify-between">
+      <div class="flex items-center gap-5">
+        <img class="max-h-16" title=`Imagen de perfil de ${customer.user_data.name}` src="/avatar.png" alt=`Imagen de perfil de ${customer.user_data.name}`>
+        <span class="text-primary font-bold text-lg">¡Hola  {customer.user_data.name}!</span>
+      </div>
+        <LogOutButton client:visible />
+    </article>
+    <ProfileIndex client:visible customer={customer}/>
   </section>
 </Layout>
