@@ -173,3 +173,21 @@ export const getCustomerData = async (token: string) => {
     return error;
   }
 };
+
+export const uploadFile = async (token: string, file: any) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/image`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: file,
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
