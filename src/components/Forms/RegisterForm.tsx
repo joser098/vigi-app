@@ -273,6 +273,14 @@ const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                minLength: {
+                  value: 8,
+                  message: "DNI debe tener 8 digitos",
+                },
+                maxLength: {
+                  value: 8,
+                  message: "DNI debe tener 8 digitos",
+                }
               })}
             />
             {errors.DNI && (
@@ -343,6 +351,10 @@ const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/,
+                  message: "La contraseña debe tener al menos 6 caracteres, una letra y un número",
+                }
               })}
             />
             {errors.password && (
