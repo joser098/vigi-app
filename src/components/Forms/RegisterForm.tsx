@@ -7,8 +7,11 @@ import Loader from "../Icons/Loader";
 
 const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState("");
+  const [toastConfig, setToastConfig] = useState({
+    show: false,
+    message: "",
+    status: ""
+  });
 
   const {
     register,
@@ -23,12 +26,23 @@ const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
     const formatData = formatUserRegister(data);
     const response = await registerCustomer(formatData);
     if(response.success){
-      setShowToast(false);
+      setToastConfig({
+        show: true,
+        message: `Registro completado con éxito!`,
+        status: "success"
+      });
       reset();
+      setTimeout(() => {
+        window.location.href = "/login"
+      }, 4000);
     }
+
     if(!response.success){
-      setShowToast(true);
-      setMessage(response.message);
+      setToastConfig({
+        show: true,
+        message: response.message,
+        status: "error"
+      });
     }
     setIsLoading(false);
   };
@@ -403,9 +417,9 @@ const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
               "Registrar"
             )}
           </button>
-          {showToast && (
-            <span className=" bg-red-200 py-1 px-4 rounded-md text-red-600 text-center">
-              {message}
+          {toastConfig.show && (
+            <span className={toastConfig.status == "error" ? "bg-red-200 py-2 px-4 rounded-md text-red-600 text-center" : "bg-green-200 py-3 px-4 rounded-md text-green-600 text-center flex justify-center gap-5"}>
+              {toastConfig.message} {toastConfig.status == "error" ? "⚠️" : <Loader/>}
             </span>
           )}
           <a
