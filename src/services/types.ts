@@ -143,6 +143,7 @@ export interface Customer {
   username: string;
   email: string;
   password: string;
+  profile_image: string;
   user_data: {
     name: string;
     last_name: string;
