@@ -23,6 +23,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
     setValue("email", customer.email);
     setValue("cod", phone[0]);
     setValue("phone", phone[1]);
+    setValue("DNI", customer.user_data.DNI);
   }, []);
 
   return (
@@ -92,10 +93,12 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
             DNI
           </label>
           <input
+            {...register("DNI")}
             className="border-b-2 border-gray-400 bg-transparent"
             type="tel"
             id="DNI"
             name="DNI"
+            disabled
           />
         </div>
         <div className="flex flex-col">

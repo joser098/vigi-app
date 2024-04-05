@@ -55,6 +55,7 @@ export const formatUserRegister = (data: RegisterIForm) => {
     email,
     password,
     conditions,
+    DNI
   } = data;
 
   const dataFormated = {
@@ -73,7 +74,7 @@ export const formatUserRegister = (data: RegisterIForm) => {
       zip_code,
     },
     conditions_accepted: conditions,
-    //DNI
+    DNI
   };
 
   return dataFormated;

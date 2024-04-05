@@ -149,6 +149,7 @@ export interface Customer {
     name: string;
     last_name: string;
     phone: string;
+    DNI: string;
     address: {
       province: string;
       location: string;
