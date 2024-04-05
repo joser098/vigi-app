@@ -136,6 +136,7 @@ export interface RegisterIForm {
   password: string;
   confirm_password: string;
   conditions: boolean;
+  DNI: string;
 }
 
 export interface Customer {
@@ -163,6 +164,16 @@ export interface Customer {
   isActive: boolean;
   last_login: string;
   cart_id: string;
+}
+
+export interface Province {
+  id: string;
+  name: string;
+  coordinates: {
+    lon: number;
+    lat: number;
+  };
+  iso_id: string;
 }
 
 // PAYMENT TYPES

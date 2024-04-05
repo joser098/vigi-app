@@ -191,3 +191,15 @@ export const uploadFile = async (token: string, file: any) => {
     return error;
   }
 };
+
+export const getProvincesForDropdown = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/provinces`);
+
+    const res = await response.json();
+
+    return res.data[0].provinces;
+  } catch (error) {
+    return error;
+  }
+};

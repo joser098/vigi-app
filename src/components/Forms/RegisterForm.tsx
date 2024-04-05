@@ -1,12 +1,11 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { registerCustomer } from "@/services/fetchData";
 import { formatUserRegister } from "@/services/scripts";
-import { type RegisterIForm } from "@/services/types";
+import { type Province, type RegisterIForm } from "@/services/types";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
 
-
-const RegisterForm = () => {
+const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
@@ -136,8 +135,11 @@ const RegisterForm = () => {
               },
             })}
           >
-            <option value="CABA">Capital Federal</option>
-            <option value="BA">Buenos Aires</option>
+            {provinces.map((province: Province) => (
+              <option key={province.id} value={province.name}>
+                {province.name}
+              </option>
+            ))}
           </select>
           {errors.province && (
             <span className="text-xs text-red-500">
@@ -149,7 +151,9 @@ const RegisterForm = () => {
           <label htmlFor="city">
             Localidad<span className="text-xs text-red-500">*</span>
           </label>
-          <select
+          <input
+            type="text"
+            placeholder="Caballito"
             className="w-full p-2 border-[.5px] border-black rounded-md"
             {...register("location", {
               required: {
@@ -157,10 +161,7 @@ const RegisterForm = () => {
                 message: "Este campo es requerido",
               },
             })}
-          >
-            <option value="Caballito">Caballito</option>
-            <option value="flores">Flores</option>
-          </select>
+          />
           {errors.location && (
             <span className="text-xs text-red-500">
               {errors.location.message}
@@ -174,7 +175,7 @@ const RegisterForm = () => {
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
             type="text"
-            placeholder="San Martin"
+            placeholder="Av Rivadavia"
             {...register("address", {
               required: {
                 value: true,
@@ -191,7 +192,7 @@ const RegisterForm = () => {
         <div className="grid grid-cols-2 gap-4 w-full max">
           <div>
             <label htmlFor="address_number">
-              Altura<span className="text-xs text-red-500">*</span>
+              Numero<span className="text-xs text-red-500">*</span>
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
@@ -243,6 +244,25 @@ const RegisterForm = () => {
               <span className="text-xs text-red-500">
                 {errors.zip_code.message}
               </span>
+            )}
+          </div>
+          <div>
+            <label htmlFor="DNI">
+              DNI<span className="text-xs text-red-500">*</span>
+            </label>
+            <input
+              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              type="text"
+              placeholder="12345678"
+              {...register("DNI", {
+                required: {
+                  value: true,
+                  message: "Este campo es requerido",
+                },
+              })}
+            />
+            {errors.DNI && (
+              <span className="text-xs text-red-500">{errors.DNI.message}</span>
             )}
           </div>
         </div>
@@ -335,7 +355,7 @@ const RegisterForm = () => {
                   if (value !== getValues("password")) {
                     return "Las contraseñas no coinciden";
                   }
-                }
+                },
               })}
             />
             {errors.confirm_password && (
@@ -375,14 +395,25 @@ const RegisterForm = () => {
             </span>
           )}
           <button className="w-full bg-primary border-2 border-primary text-white h-1o p-2 rounded-md hover:opacity-70 transition-opacity max">
-            {isLoading ? <span className="flex justify-center"><Loader /></span> : "Registrar"}
+            {isLoading ? (
+            <span className="flex justify-center">
+                <Loader />
+              </span>
+            ) : (
+              "Registrar"
+            )}
           </button>
           {showToast && (
-          <span className=" bg-red-200 py-1 px-4 rounded-md text-red-600 text-center">
-            {message}
-          </span>
-        )}
-        <a href="/login" className="text-primary hover:underline block text-center">Ya tengo cuenta</a>
+            <span className=" bg-red-200 py-1 px-4 rounded-md text-red-600 text-center">
+              {message}
+            </span>
+          )}
+          <a
+            href="/login"
+            className="text-primary hover:underline block text-center"
+          >
+            Ya tengo cuenta
+          </a>
         </div>
       </fieldset>
     </form>
