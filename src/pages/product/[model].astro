@@ -7,6 +7,7 @@ import BuyButton from "@/components/Buttons/BuyButton";
 import AddCartButton from "@/components/Buttons/AddCartButton";
 import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
+import Favorite from "@/components/Icons/Favorite.astro";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -29,7 +30,8 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
     </header>
     <section class="w-full flex flex-col sm:flex-row-reverse">
       <!-- GALERIA -->
-      <article class="w-full flex justify-center">
+      <article class="relative w-full flex justify-center">
+        <span class="absolute right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite status={false}/></span>
         <img src={product.thumbnail} alt={product.model} />
       </article>
       <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
