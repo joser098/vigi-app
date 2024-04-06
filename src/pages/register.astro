@@ -1,9 +1,6 @@
 ---
-import { getProvincesForDropdown } from "@/services/fetchData";
 import Layout from "../layouts/Layout.astro";
 import RegisterForm from "@/components/Forms/RegisterForm";
-
-const provinces = await getProvincesForDropdown();
 ---
 
 <Layout title="Crea una cuenta | VIGI">
@@ -19,6 +16,6 @@ const provinces = await getProvincesForDropdown();
     </div>
   </section>
   <section>
-    <RegisterForm client:visible provinces={provinces}/>    
+    <RegisterForm client:visible/>    
   </section>
 </Layout>
