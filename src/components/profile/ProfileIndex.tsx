@@ -6,8 +6,9 @@ import Favorite from "../Icons/Favorites";
 import Location from "../Icons/Location";
 import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
+import AddressInfo from "./AddressInfo";
 
-type Tab = "info" | "history" | "favorites" | "location";
+type Tab = "info" | "purchasesInfo" | "favoritesInfo" | "addressInfo";
 
 const ProfileIndex = ({ customer }: { customer: Customer }) => {
   const [currentTab, setCurrentTab] = useState<Tab>("info");
@@ -25,37 +26,37 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
             onClick={() => changeTab("info")}
           >
             <div className="flex gap-3 items-center">
-              <InfoIcon />
+              <InfoIcon currentColor={currentTab == "info" ? "#CDA3FF" : "#1E053F"}/>
               <span>Informacion personal</span>
             </div>
             <ChevronRight />
           </li>
           <li
             className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("location")}
+            onClick={() => changeTab("addressInfo")}
           >
             <div className="flex gap-3 items-center">
-              <Location />
+              <Location currentColor={currentTab == "addressInfo" ? "#CDA3FF" : "#1E053F"}/>
               <span>Direcciones </span>
             </div>
             <ChevronRight />
           </li>
           <li
             className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("history")}
+            onClick={() => changeTab("purchasesInfo")}
           >
             <div className="flex gap-3 items-center">
-              <Bag />
+              <Bag currentColor={currentTab == "purchasesInfo" ? "#CDA3FF" : "#1E053F"}/>
               <span>Compras </span>
             </div>
             <ChevronRight />
           </li>
           <li
             className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("favorites")}
+            onClick={() => changeTab("favoritesInfo")}
           >
             <div className="flex gap-3 items-center">
-              <Favorite />
+              <Favorite currentColor={currentTab == "favoritesInfo" ? "#CDA3FF" : "#1E053F"}/>
               <span>Favoritos</span>
             </div>
             <ChevronRight />
@@ -64,9 +65,9 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
       </article>
       <div className="w-full">
         {currentTab === "info" && <CustomerInfo customer={customer}/>}
-        {currentTab === "location" && <p>Direcciones</p>}
-        {currentTab === "history" && <p>Compras</p>}
-        {currentTab === "favorites" && <p>Favoritos</p>}
+        {currentTab === "addressInfo" && <AddressInfo customer={customer}/>}
+        {currentTab === "purchasesInfo" && <p>Compras</p>}
+        {currentTab === "favoritesInfo" && <p>Favoritos</p>}
       </div>
     </section>
   );
