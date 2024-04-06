@@ -4,8 +4,9 @@ import { formatUserRegister } from "@/services/scripts";
 import { type Province, type RegisterIForm } from "@/services/types";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
+import { provinces } from "@/services/const"
 
-const RegisterForm = ({ provinces }: { provinces: Province[] }) => {
+const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [toastConfig, setToastConfig] = useState({
     show: false,

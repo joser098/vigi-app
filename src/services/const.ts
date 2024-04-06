@@ -178,3 +178,222 @@ export const footerData = [
         ]
     }
 ];
+
+export const provinces = [
+    {
+      "id": "02",
+      "name": "Ciudad Autónoma de Buenos Aires",
+      "coordinates": {
+        "lon": -58.4458763250916,
+        "lat": -34.6144420654301
+      },
+      "iso_id": "AR-C"
+    },
+    {
+      "id": "58",
+      "name": "Neuquén",
+      "coordinates": {
+        "lon": -70.1198972237318,
+        "lat": -38.6419828626673
+      },
+      "iso_id": "AR-Q"
+    },
+    {
+      "id": "74",
+      "name": "San Luis",
+      "coordinates": {
+        "lon": -66.0252312714021,
+        "lat": -33.7611035381154
+      },
+      "iso_id": "AR-D"
+    },
+    {
+      "id": "82",
+      "name": "Santa Fe",
+      "coordinates": {
+        "lon": -60.9506872769706,
+        "lat": -30.7088227091528
+      },
+      "iso_id": "AR-S"
+    },
+    {
+      "id": "46",
+      "name": "La Rioja",
+      "coordinates": {
+        "lon": -67.1817575814487,
+        "lat": -29.6849372775783
+      },
+      "iso_id": "AR-F"
+    },
+    {
+      "id": "10",
+      "name": "Catamarca",
+      "coordinates": {
+        "lon": -66.9478972451295,
+        "lat": -27.3359537960762
+      },
+      "iso_id": "AR-K"
+    },
+    {
+      "id": "90",
+      "name": "Tucumán",
+      "coordinates": {
+        "lon": -65.3647655803683,
+        "lat": -26.948283501723
+      },
+      "iso_id": "AR-T"
+    },
+    {
+      "id": "22",
+      "name": "Chaco",
+      "coordinates": {
+        "lon": -60.765116260356,
+        "lat": -26.3869871835867
+      },
+      "iso_id": "AR-H"
+    },
+    {
+      "id": "34",
+      "name": "Formosa",
+      "coordinates": {
+        "lon": -59.9321901121647,
+        "lat": -24.8950871761481
+      },
+      "iso_id": "AR-P"
+    },
+    {
+      "id": "78",
+      "name": "Santa Cruz",
+      "coordinates": {
+        "lon": -69.9557619144913,
+        "lat": -48.8155471830527
+      },
+      "iso_id": "AR-Z"
+    },
+    {
+      "id": "26",
+      "name": "Chubut",
+      "coordinates": {
+        "lon": -68.5267363339818,
+        "lat": -43.7886271389083
+      },
+      "iso_id": "AR-U"
+    },
+    {
+      "id": "50",
+      "name": "Mendoza",
+      "coordinates": {
+        "lon": -68.5829456019867,
+        "lat": -34.6303887067166
+      },
+      "iso_id": "AR-M"
+    },
+    {
+      "id": "30",
+      "name": "Entre Ríos",
+      "coordinates": {
+        "lon": -59.201262616496,
+        "lat": -32.0589278938558
+      },
+      "iso_id": "AR-E"
+    },
+    {
+      "id": "70",
+      "name": "San Juan",
+      "coordinates": {
+        "lon": -68.8881597071776,
+        "lat": -30.8656607015096
+      },
+      "iso_id": "AR-J"
+    },
+    {
+      "id": "38",
+      "name": "Jujuy",
+      "coordinates": {
+        "lon": -65.764423919292,
+        "lat": -23.3199750616583
+      },
+      "iso_id": "AR-Y"
+    },
+    {
+      "id": "86",
+      "name": "Santiago del Estero",
+      "coordinates": {
+        "lon": -63.2526268856462,
+        "lat": -27.7834318817521
+      },
+      "iso_id": "AR-G"
+    },
+    {
+      "id": "62",
+      "name": "Río Negro",
+      "coordinates": {
+        "lon": -67.2296757996036,
+        "lat": -40.4050796306359
+      },
+      "iso_id": "AR-R"
+    },
+    {
+      "id": "18",
+      "name": "Corrientes",
+      "coordinates": {
+        "lon": -57.8010818603331,
+        "lat": -28.7742044813623
+      },
+      "iso_id": "AR-W"
+    },
+    {
+      "id": "54",
+      "name": "Misiones",
+      "coordinates": {
+        "lon": -54.6515705627219,
+        "lat": -26.8753025989034
+      },
+      "iso_id": "AR-N"
+    },
+    {
+      "id": "66",
+      "name": "Salta",
+      "coordinates": {
+        "lon": -64.8141586574346,
+        "lat": -24.2992838957201
+      },
+      "iso_id": "AR-A"
+    },
+    {
+      "id": "14",
+      "name": "Córdoba",
+      "coordinates": {
+        "lon": -63.801973466573,
+        "lat": -32.1447993873859
+      },
+      "iso_id": "AR-X"
+    },
+    {
+      "id": "06",
+      "name": "Buenos Aires",
+      "coordinates": {
+        "lon": -60.5584771084959,
+        "lat": -36.6773920760823
+      },
+      "iso_id": "AR-B"
+    },
+    {
+      "id": "42",
+      "name": "La Pampa",
+      "coordinates": {
+        "lon": -65.4476439990213,
+        "lat": -37.1350652212898
+      },
+      "iso_id": "AR-L"
+    },
+    {
+      "id": "94",
+      "name": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+      "coordinates": {
+        "lon": -50.7428606764691,
+        "lat": -82.5211345211545
+      },
+      "iso_id": "AR-V"
+    }
+  ]
