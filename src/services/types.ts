@@ -13,6 +13,7 @@ export interface Product {
   has_promotion: boolean;
   others: string;
   tags: string[];
+  favorites: string[];
 }
 
 export interface CameraDetails {

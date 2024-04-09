@@ -9,8 +9,9 @@ if(initialItems?.items){
   initialItemsFormated = formatStoreItems(initialItems.items);
 }
 
-//SET USER ID FROM LOCALSTORAGE
+//SET TOKEN FROM LOCALSTORAGE
 export const check = atom("null");
+export const customer_id = atom("");
 
 //STATE TO STORE THE QUANTITY OF ITEMS BEFORE ADDING TO CART
 export const ItemsQuantityStore = map<Record<string, ItemsQuantity>>({});
