@@ -7,7 +7,7 @@ import BuyButton from "@/components/Buttons/BuyButton";
 import AddCartButton from "@/components/Buttons/AddCartButton";
 import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
-import Favorite from "@/components/Icons/Favorite.astro";
+import Favorite from "@/components/Icons/Favorite";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -30,8 +30,7 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
     </header>
     <section class="w-full flex flex-col sm:flex-row-reverse">
       <!-- GALERIA -->
-      <article class="relative w-full flex justify-center">
-        <span class="absolute right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite status={false}/></span>
+      <article class="w-full flex justify-center">
         <img src={product.thumbnail} alt={product.model} />
       </article>
       <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
@@ -42,15 +41,18 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
               <span class="text-green-600 mb-1">Oferta</span>
             )
           }
-          <h6 class="text-3xl sm:text-4xl">
-            {
-              product.price.toLocaleString("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                minimumFractionDigits: 0,
-              })
-            }
+          <div class="flex justify-between">
+            <h6 class="text-3xl sm:text-4xl">
+              {
+                product.price.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }
           </h6>
+          <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product}/></span>
+        </div>
           <h4 class="text-4xl font-bold mb-2 sm:text-5xl">{product.model}</h4>
         </div>
         <!-- CANTIDAD Y ENVIO -->

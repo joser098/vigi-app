@@ -203,3 +203,22 @@ export const getProvincesForDropdown = async () => {
     return error;
   }
 };
+
+export const updateFavorite = async (token: string, product_id: string, action: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/favorite`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ product_id, action }),
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
