@@ -7,11 +7,12 @@ import Location from "../Icons/Location";
 import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 import AddressInfo from "./AddressInfo";
+import FavoritesInfo from "./FavoritesInfo";
 
 type Tab = "info" | "purchasesInfo" | "favoritesInfo" | "addressInfo";
 
 const ProfileIndex = ({ customer }: { customer: Customer }) => {
-  const [currentTab, setCurrentTab] = useState<Tab>("info");
+  const [currentTab, setCurrentTab] = useState<Tab>("favoritesInfo");
 
   const changeTab = (tab: Tab): void => {
     setCurrentTab(tab);
@@ -63,11 +64,11 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
           </li>
         </ul>
       </article>
-      <div className="w-full">
+      <div className="w-full flex flex-col justify-center">
         {currentTab === "info" && <CustomerInfo customer={customer}/>}
         {currentTab === "addressInfo" && <AddressInfo customer={customer}/>}
         {currentTab === "purchasesInfo" && <p>Compras</p>}
-        {currentTab === "favoritesInfo" && <p>Favoritos</p>}
+        {currentTab === "favoritesInfo" && <FavoritesInfo/>}
       </div>
     </section>
   );

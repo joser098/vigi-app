@@ -222,3 +222,19 @@ export const updateFavorite = async (token: string, product_id: string, action: 
     return error;
   }
 }
+
+export const getFavorites = async (token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/favorite`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
