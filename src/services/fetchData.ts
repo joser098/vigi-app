@@ -142,6 +142,25 @@ export const registerCustomer = async (data: any) => {
   }
 };
 
+export const updateCustomerData = async (data: any, token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getShippingCost = async (token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/logistic/cost`, {

@@ -1,3 +1,5 @@
+import { updateCustomerData } from "@/services/fetchData";
+import { getToken } from "@/services/scripts";
 import type { Customer } from "@/services/types";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -10,8 +12,16 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const fomartForUpdate = {
+      name: data.name,
+      last_name: data.lastname,
+      phone: `${data.cod}-${data.phone}`,
+    }
+
+    const token = getToken();
+    const res = await updateCustomerData(fomartForUpdate, token);
+    //TODO: Show success message
   };
 
   useEffect(() => {
@@ -19,7 +29,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
 
     setValue("name", customer.user_data.name);
     setValue("lastname", customer.user_data.last_name);
-    setValue("username", customer.username);
+    // setValue("username", customer.username);
     setValue("email", customer.email);
     setValue("cod", phone[0]);
     setValue("phone", phone[1]);
@@ -61,7 +71,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
         </div>
       </fieldset>
       <fieldset className="flex flex-col gap-10">
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <label className="text-gray-400 my-1" htmlFor="username">
             Usuario
           </label>
@@ -72,7 +82,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
             id="username"
             name="username"
           />
-        </div>
+        </div> */}
         <div className="flex flex-col">
           <label className="text-gray-400 my-1" htmlFor="email">
             Correo electrónico
