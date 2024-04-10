@@ -1,27 +1,42 @@
 import { updateCustomerData } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { Customer } from "@/services/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Loader from "../Icons/Loader";
 
 const CustomerInfo = ({ customer }: { customer: Customer }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
+    formState,
   } = useForm();
 
+  const { dirtyFields } = formState;
+
+  const isAnyFieldDirty = Object.values(dirtyFields).some(Boolean);
+
   const onSubmit = async (data: any) => {
+    setIsLoading(true);
     const fomartForUpdate = {
       name: data.name,
       last_name: data.lastname,
       phone: `${data.cod}-${data.phone}`,
-    }
+    };
 
     const token = getToken();
     const res = await updateCustomerData(fomartForUpdate, token);
-    //TODO: Show success message
+
+    if (res.success) {
+      const message = document.getElementById("message");
+      const btn = document.getElementById("Btn");
+      btn?.classList.add("hidden");
+      message?.classList.remove("hidden");
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -37,7 +52,11 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
   }, []);
 
   return (
-    <form className="flex flex-col gap-10" method="PATCH" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-10"
+      method="PATCH"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="border-b-2 border-gray-400">
         <h6 className="mb-2 text-primary text-xl font-bold">
           Datos personales
@@ -131,10 +150,22 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
           </div>
         </div>
       </fieldset>
-      <fieldset className="flex justify-center">
-        <button className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity max-w-40">
-          Actualizar
+      <fieldset className="flex justify-center items-center">
+        <button
+          id="Btn"
+          className={`w-full flex justify-center bg-primary border-2 border-primary text-white p-3 rounded-md transition-opacity max-w-40 ${
+            !isAnyFieldDirty ? "opacity-65" : "opacity-100 hover:opacity-75"
+          }`}
+          disabled={!isAnyFieldDirty}
+        >
+          {isLoading ? <Loader /> : "Actualizar"}
         </button>
+        <p
+          id="message"
+          className="text-center bg-green-300 w-full py-2 rounded-sm hidden"
+        >
+          Datos actualizados ✅
+        </p>
       </fieldset>
     </form>
   );
