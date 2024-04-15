@@ -12,7 +12,7 @@ import FavoritesInfo from "./FavoritesInfo";
 type Tab = "info" | "purchasesInfo" | "favoritesInfo" | "addressInfo";
 
 const ProfileIndex = ({ customer }: { customer: Customer }) => {
-  const [currentTab, setCurrentTab] = useState<Tab>("favoritesInfo");
+  const [currentTab, setCurrentTab] = useState<Tab>("info");
 
   const changeTab = (tab: Tab): void => {
     setCurrentTab(tab);
