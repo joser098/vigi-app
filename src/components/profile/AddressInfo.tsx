@@ -1,27 +1,62 @@
 import type { Customer, Province } from "@/services/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { provinces } from "@/services/const"
+import UpdateProfileInfoButton from "../Buttons/UpdateProfileInfoButto";
+import { getToken } from "@/services/scripts";
+import { updateCustomerData } from "@/services/fetchData";
 
 const AddressInfo = ({ customer }: { customer: Customer }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [disabledForm, setDisabledForm] = useState(false);
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+    formState,
+  } = useForm({ disabled: disabledForm });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const { dirtyFields } = formState;
+
+  const isAnyFieldDirty = Object.values(dirtyFields).some(Boolean);
+
+  const onSubmit = async (data: any) => {
+    setIsLoading(true);
+    const formatForUpdate = {
+      address : {
+        province: data.province,
+        location: data.location,
+        address_name: data.address,
+        address_number: data.address_number,
+        department: data.department,
+        zip_code: data.zip_code,
+      }
+    }
+
+    const token = getToken();
+    const res = await updateCustomerData(formatForUpdate, token);
+
+    if (res.success) {
+      const message = document.getElementById("message");
+      const btn = document.getElementById("Btn");
+      btn?.classList.add("hidden");
+      message?.classList.remove("hidden");
+    }
+
+    setDisabledForm(true);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setValue("province", customer.user_data.address.province);
-    setValue("location", customer.user_data.address.location);
-    setValue("address", customer.user_data.address.address_name);
-    setValue("address_number", customer.user_data.address.address_number);
-    setValue("department",customer.user_data.address.department);
-    setValue("zip_code", customer.user_data.address.zip_code);
+    const { address } = customer.user_data
+    setValue("province", address.province);
+    setValue("location", address.location);
+    setValue("address", address.address_name);
+    setValue("address_number", address.address_number);
+    setValue("department",address.department);
+    setValue("zip_code", address.zip_code);
   }, []);
 
   return (
@@ -123,11 +158,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
             />
         </div>
       </fieldset>
-      <fieldset className="flex justify-center">
-        <button className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity max-w-40">
-          Actualizar
-        </button>
-      </fieldset>
+      <UpdateProfileInfoButton isAnyFieldDirty={isAnyFieldDirty} isLoading={isLoading} />
     </form>
   );
 };
