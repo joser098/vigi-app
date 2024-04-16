@@ -257,3 +257,19 @@ export const getFavorites = async (token: string) => {
     return error;
   }
 };
+
+export const getCustomerOrders = async (token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/order/customer`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+}

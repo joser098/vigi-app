@@ -125,3 +125,12 @@ export const addCartAsInvited = (item: any, price:number) => {
     window.localStorage.setItem("IC_LOCAL", JSON.stringify(model));
   }
 };
+
+export const formatDate = (date: string) => {
+  const allMonths = [null, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const day = date.slice(0, 2);
+  const month = allMonths[parseInt(date.slice(3, 5))];
+  const year = date.slice(6, 10);
+
+  return `${day} de ${month} ${year}`;
+}

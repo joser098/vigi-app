@@ -8,6 +8,7 @@ import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 import AddressInfo from "./AddressInfo";
 import FavoritesInfo from "./FavoritesInfo";
+import PurchasesInfo from "./PurchasesInfo";
 
 type Tab = "info" | "purchasesInfo" | "favoritesInfo" | "addressInfo";
 
@@ -67,7 +68,7 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
       <div className="w-full flex flex-col justify-center">
         {currentTab === "info" && <CustomerInfo customer={customer}/>}
         {currentTab === "addressInfo" && <AddressInfo customer={customer}/>}
-        {currentTab === "purchasesInfo" && <p>Compras</p>}
+        {currentTab === "purchasesInfo" && <PurchasesInfo />}
         {currentTab === "favoritesInfo" && <FavoritesInfo/>}
       </div>
     </section>
