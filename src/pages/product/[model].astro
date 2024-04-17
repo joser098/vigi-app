@@ -36,25 +36,27 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
       <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
         <!-- DESCRIPCION -->
         <div>
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-4xl font-bold">{product.model}</h4>
+            <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product} /></span>
+          </div>
           {
             product.has_promotion && (
               <span class="text-green-600 mb-1">Oferta</span>
             )
           }
-          <div class="flex justify-between">
-            <h6 class="text-3xl sm:text-4xl">
-              {
-                product.price.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                  minimumFractionDigits: 0,
-                })
-              }
+        <div class="flex justify-between">
+          <h6 class="text-4xl">
+            {
+              product.price.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 0,
+              })
+            }
           </h6>
-          <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product}/></span>
         </div>
-          <h4 class="text-4xl font-bold mb-2 sm:text-5xl">{product.model}</h4>
-        </div>
+      </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
           <QuantitySelect client:visible id={product._id} />
