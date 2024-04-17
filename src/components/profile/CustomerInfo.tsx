@@ -2,8 +2,7 @@ import { updateCustomerData } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { Customer } from "@/services/types";
 import { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
-import Loader from "../Icons/Loader";
+import { useForm } from "react-hook-form";
 import UpdateProfileInfoButton from "../Buttons/UpdateProfileInfoButto";
 
 const CustomerInfo = ({ customer }: { customer: Customer }) => {
@@ -16,7 +15,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
     setValue,
     formState: { errors },
     formState,
-  } = useForm({ disabled: disabledForm } );
+  } = useForm();
 
   const { dirtyFields } = formState;
 
@@ -78,6 +77,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
             type="text"
             id="name"
             name="name"
+            disabled={disabledForm}
           />
         </div>
         <div className="flex flex-col">
@@ -90,6 +90,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
             type="text"
             id="lastname"
             name="lastname"
+            disabled={disabledForm}
           />
         </div>
       </fieldset>
@@ -143,6 +144,8 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
               {...register("cod")}
               type="number"
               className="border-b-2 border-gray-400 bg-transparent max-w-14"
+              disabled={disabledForm}
+
             />
             <input
               {...register("phone")}
@@ -150,6 +153,7 @@ const CustomerInfo = ({ customer }: { customer: Customer }) => {
               type="tel"
               id="phone"
               name="phone"
+              disabled={disabledForm}
             />
           </div>
         </div>
