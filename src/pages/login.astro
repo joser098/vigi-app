@@ -18,15 +18,11 @@ import LoginForm from "@/components/Forms/LoginForm";
   <section
     class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2 gap-32 sm:gap-0"
   >
-    <article class="sm:border-r-[2px]">
+    <article>
       <LoginForm client:visible/>
     </article>
-    <!-- <article class="shadow-lg p-5 rounded-lg sm:shadow-none">
-      <div class="flex flex-col justify-center items-center gap-2">
-        <h6 class="text-xl font-semibold">Invitado</h6>
-        <span>Proceder y crear usuario luego.</span>
-        <ContinueAsGuestButton client:visible/>
-      </div>
-    </article> -->
+    <article>
+      <img class="rounded-lg" src="/login_banner.png" alt="login Banner">
+    </article>
   </section>
 </Layout>
