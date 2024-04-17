@@ -6,6 +6,7 @@ import { type Product } from "../services/types";
 import ProductCard from "../components/ProductCard.astro";
 import InfoCard from "@/components/InfoCard.astro";
 import Faq from "@/components/Faq";
+import Chevron from "@/components/Icons/Chevron.astro";
 
 const promotions = await fetchData("getAllProducts");
 ---
@@ -67,13 +68,19 @@ const promotions = await fetchData("getAllProducts");
       </h2>
     </div>
 
-    <section class="flex gap-5 overflow-x-scroll mb-16 py-4">
-      {
-        promotions.map((product: Product) => (
-          <ProductCard product={product}/>
-        ))
-      }
-    </section>
+    <section class="relative">
+      <div class="flex gap-5 mb-16 overflow-x-hidden">
+        <div id="promotions_slider" class="flex gap-5 mb-16 py-4 transition-transform duration-1000 ease-out translate-x-0" data-items={promotions.length}>
+          {
+            promotions.map((product: Product) => (
+            <ProductCard product={product}/>
+          ))
+        }
+      </div>
+      <button id="prev" class="absolute top-1/3 left-0 sm:-left-7 bg-violet-100 hover:shadow-2xl hover:scale-110 transition-transform duration-700 rounded-full p-2"><Chevron rotate={true}/></button>
+      <button id="next" class="absolute top-1/3 right-0 sm:-right-7 bg-violet-100 hover:shadow-2xl hover:scale-110 transition-transform duration-700 rounded-full p-2"><Chevron/></button>
+    </div>
+  </section>
     
     <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 my-24">
       <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
@@ -108,6 +115,38 @@ const promotions = await fetchData("getAllProducts");
     if(token != null){
       check.set(token[1])
     }
+
+    //Carrousel Slider
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    const slider = document.getElementById("promotions_slider");
+    const arrItems = slider?.getAttribute("data-items");
+
+    let current = 0;
+    let translateXpercentage = current;
+
+    const addOne = () => {
+      if(arrItems != null){
+        const total = parseInt(arrItems)
+        if(!(current == total - 3)){
+          current += 1;
+        } 
+      }
+    };
+    
+    const removeOne = () => current >= 1 ? current -= 1 : null;
+    const updatePercentaje = () => translateXpercentage = current * 3.7;
+    
+    const handlerClick = (e: any, action: number) => {
+      e.preventDefault();
+      action == 1 ? addOne() : removeOne();
+      updatePercentaje();
+      if(slider) slider.style.transform = `translateX(-${translateXpercentage}%)`;
+    }
+
+    prevBtn?.addEventListener('click', (e) => handlerClick(e,0));
+    nextBtn?.addEventListener('click', (e) => handlerClick(e,1));
+    //
   </script>
 </Layout>
 
