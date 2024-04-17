@@ -30,7 +30,7 @@ const { url } = Astro
 	</head>
 	<body>
 		<Header />
-		{(url.pathname !== '/' && url.pathname !== '/login') && <BackButton client:visible/>}
+		{(url.pathname !== '/' && url.pathname !== '/login' && !url.pathname.includes('payment')) && <BackButton client:visible/>}
 		<slot />
 		<Footer />
 	</body>
