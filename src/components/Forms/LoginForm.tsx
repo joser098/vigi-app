@@ -47,7 +47,6 @@ const LoginForm = () => {
       className="flex flex-col justify-center gap-5 items-center"
       method="post"
       onSubmit={handleSubmit(onSubmitLogin)}
-      action="/" data-astro-reload
     >
       <h5 className="text-gray-600 text-xl">Ingresar a mi cuenta</h5>
       <fieldset className="w-full flex flex-col items-center gap-6">

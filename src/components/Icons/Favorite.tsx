@@ -1,3 +1,4 @@
+import { navigate } from "astro:transitions/client"
 import { getCustomerData, updateFavorite } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { Product } from "@/services/types";
@@ -11,7 +12,7 @@ const Favorite = ({ product }: { product: Product }) => {
 
   const handleFavClick = async () => {
     const token = getToken();
-    if(token === "null") return (window.location.href = "/login");
+    if(token === "null") return (navigate('/login'));
     if (status) {
       const res = await updateFavorite (token, product._id, "remove");
 

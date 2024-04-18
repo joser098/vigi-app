@@ -1,3 +1,4 @@
+import { navigate } from "astro:transitions/client";
 import type { CartItem, Product } from "@/services/types";
 import { addToCart, getQuantity } from "@/store/cartStore";
 import Toast from "../Toast";
@@ -17,14 +18,13 @@ const AddCartButton = ({
   const [item, setitem] = useState<CartItem>({} as CartItem);
 
   const onAddCartClick = async () => {
-    setIsLoading(true);
-
     //Verify user is logged
     const token = getToken();
     if (token == "null") {
-      window.location.href = "/login";
+      navigate("/login");
     }
 
+    setIsLoading(true);
     //Verify quantity is valid
     const quantity = getQuantity(product._id);
     if (!quantity) {
@@ -52,7 +52,7 @@ const AddCartButton = ({
     }
 
     if (buttonLabel.includes("Elegir")) {
-      window.location.href = "/";
+      navigate("/")
     }
   };
 

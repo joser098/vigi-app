@@ -1,4 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { navigate } from "astro:transitions/client";
 import { registerCustomer } from "@/services/fetchData";
 import { formatUserRegister } from "@/services/scripts";
 import { type Province, type RegisterIForm } from "@/services/types";
@@ -34,7 +35,7 @@ const RegisterForm = () => {
       });
       reset();
       setTimeout(() => {
-        window.location.href = "/login"
+        navigate("/login");
       }, 4000);
     }
 

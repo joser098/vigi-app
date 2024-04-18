@@ -1,3 +1,4 @@
+import { navigate } from "astro:transitions/client";
 import { createPaymentOrder } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { CartModel } from "@/services/types";
@@ -27,7 +28,7 @@ const PayCartButton = ({ cart, finalTotal, shipments }: {cart: CartModel, finalT
       const token = getToken()
       const res = await createPaymentOrder(cartModel, token);
       if(res.success){
-        window.location.href = res.data.init_point;
+        navigate(res.data.init_point)
       }
     }
   };
