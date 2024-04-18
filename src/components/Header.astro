@@ -11,12 +11,26 @@ import Profile from "../components/Icons/Profile.astro";
     </a>
 
     <nav class="flex gap-5">
-      <a class="text-primary " href="/cart">
-        <Cart />
-      </a>
+      <div class="relative">
+        <a class="text-primary" href="/cart">
+          <Cart />
+          <span transition:persist id="cart_label" class="absolute -top-1 -right-2 bg-red-500 text-white rounded-full text-[10px] w-4 text-center"></span>
+        </a>
+      </div>
       <a class="text-primary " href="/profile">
         <Profile />
       </a>
     </nav>
   </div>
 </header>
+
+<script>
+  import { totalItems } from "@/store/cartStore";
+  
+  const cartEle = document.getElementById("cart_label");
+  if(cartEle) cartEle.innerText = totalItems.value;
+  
+  totalItems.listen(num => {
+    if(cartEle) cartEle.innerText = num;
+  })
+</script>

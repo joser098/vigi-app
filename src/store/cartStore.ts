@@ -12,6 +12,7 @@ if(initialItems?.items){
 //SET TOKEN FROM LOCALSTORAGE
 export const check = atom("null");
 export const customer_id = atom("");
+export const totalItems = atom(initialItems.products_total);
 
 //STATE TO STORE THE QUANTITY OF ITEMS BEFORE ADDING TO CART
 export const ItemsQuantityStore = map<Record<string, ItemsQuantity>>({});
@@ -53,6 +54,7 @@ export function addToCart(item: CartItem) {
 
   const token = getToken();
   const res = saveCartData(cartModel, token);
+  totalItems.set(cartModel.products_total);
   return res;
 }
 
