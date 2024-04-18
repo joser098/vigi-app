@@ -11,19 +11,31 @@ interface Props {
 }
 
 const { title } = Astro.props;
-const { url } = Astro
+const { url } = Astro;
 ---
 
 <!doctype html>
 <html lang="es-AR">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
-		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg" href="/vigi_white.svg" />
+		<meta charset="UTF-8" />
+		<meta name="theme-color" content="#1E053F" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
 		<meta name="keywords" content="seguridad, camaras, alarmas, vigilancia, argentina, vision"/>
 		<meta name="author" content="Jose Jaramillo" />
+
 		<meta name="robots" content="index, follow"/>
+		<meta name="googlebot" content="index, follow" />
+
+		<meta name="og:image" content={new URL("https://d1dg60jlo0321c.cloudfront.net/assets/og.png", Astro.url)} />
+		<meta name="og:title" content={title} />
+		<meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
+		<meta name="og:url" content={Astro.url} />
+		<meta name="og:site_name" content="Vigi | Tienda online" />
+		<meta name="og:type" content="website" />
+		<meta name="og:locale" content="es_AR" />
+
 		<title>{title}</title>
 		<ViewTransitions />
 		<SpeedInsights />
