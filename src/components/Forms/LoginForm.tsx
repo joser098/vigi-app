@@ -1,7 +1,9 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { navigate } from "astro:transitions/client";
 import { login } from "@/services/fetchData";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
+import { setItemsAfterLog } from "@/store/cartStore";
 
 interface IFormInput {
   email: string;
@@ -28,7 +30,8 @@ const LoginForm = () => {
 
       window.localStorage.setItem("check", response.data.token);
       document.cookie = `check=${response.data.token}; expires=${expires.toUTCString()}; path=/`;
-      window.location.href = "/";
+      setItemsAfterLog(false)
+      navigate("/");
     }
     if (!response.success) {
       setShowToast(true);
@@ -44,6 +47,7 @@ const LoginForm = () => {
       className="flex flex-col justify-center gap-5 items-center"
       method="post"
       onSubmit={handleSubmit(onSubmitLogin)}
+      action="/" data-astro-reload
     >
       <h5 className="text-gray-600 text-xl">Ingresar a mi cuenta</h5>
       <fieldset className="w-full flex flex-col items-center gap-6">
