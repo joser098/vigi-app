@@ -31,36 +31,35 @@ if (Astro.cookies.has("check")) {
       </h2>
     </div>
 
-    <section class="flex flex-col sm:flex-row gap-12 justify-between">
+    <section class="flex flex-col md:flex-row gap-12 justify-between">
       <article class="w-full">
         <div class="flex flex-col gap-4 border rounded-md px-2 pt-2">
           {
             cart.items.length > 0 ? (
               <table>
                 <tr>
-                  <th>&nbsp;</th>
-                  <th class="font-normal">Productos</th>
-                  <th class="font-normal">Precio</th>
-                  <th class="font-normal">Unidades</th>
-                  <th class="font-normal">Subtotal</th>
+                  <th class="font-normal text-xs sm:text-base">Productos</th>
+                  <th class="font-normal text-xs sm:text-base">Precio</th>
+                  <th class="font-normal text-xs sm:text-base">Unidades</th>
+                  <th class="font-normal text-xs sm:text-base">Subtotal</th>
                   <th>&nbsp;</th>
                 </tr>
                 {cart.items.map((product: CartItem) => (
                   <tr>
-                    <td class="max-w-14">
-                      <img
+                    <td>
+                      <div class="flex flex-col xl:flex-row xl:gap-3 justify-center items-center">
+                        <img
                         src={product.picture_url}
                         alt={product.title}
                         class="w-10 h-10 sm:w-14 sm:h-14"
-                      />
+                        />
+                        <h4 class="text-primary text-xs sm:text-lg text-center">
+                          {product.title}
+                        </h4>
+                      </div>
                     </td>
                     <td>
-                      <h4 class="text-primary sm:text-xl text-center">
-                        {product.title}
-                      </h4>
-                    </td>
-                    <td>
-                      <p class="text-black text-center text-base">
+                      <p class="text-black text-center text-xs sm:text-lg">
                         {product.unit_price.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -69,9 +68,9 @@ if (Astro.cookies.has("check")) {
                       </p>
                     </td>
                     <td class="text-center">
-                      <span class="text-center">{product.quantity}</span>
+                      <span class="text-center text-xs sm:text-lg">{product.quantity}</span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center text-xs sm:text-lg">
                       {(product.quantity * product.unit_price).toLocaleString(
                         "es-AR",
                         {

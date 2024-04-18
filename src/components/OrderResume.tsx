@@ -18,7 +18,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [codeResult, setCodeResult] = useState("");
 
-  const [install, setInstall] = useState(0);
+  // const [install, setInstall] = useState(0);
   const [total, setTotal] = useState(cart.amount_to_pay);
 
   const calulateCost = async () => {
@@ -72,7 +72,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   }, [discount, shipments.cost]);
 
   return (
-    <article className="w-full sm:max-w-sm bg-gray-200 px-10 py-5 rounded-tl-md rounded-tr-md">
+    <article className="w-full md:max-w-sm bg-gray-200 px-10 py-5 rounded-tl-md rounded-tr-md">
       <div className="w-full mb-8">
         <h5 className="my-2 font-semibold text-lg">Entrega</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

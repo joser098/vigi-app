@@ -1,6 +1,7 @@
 const Delete = () => {
   return (
     <svg
+    className="max-h-4 sm:max-h-none"
       width="20"
       height="20"
       viewBox="0 0 35 40"
