@@ -22,6 +22,7 @@ const AddCartButton = ({
     const token = getToken();
     if (token == "null") {
       navigate("/login");
+      return;
     }
 
     setIsLoading(true);
