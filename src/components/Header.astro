@@ -28,9 +28,14 @@ import Profile from "../components/Icons/Profile.astro";
   import { totalItems } from "@/store/cartStore";
   
   const cartEle = document.getElementById("cart_label");
-  if(cartEle) cartEle.innerText = totalItems.value;
+
+  if(cartEle && totalItems.value! > 0) cartEle.innerText = totalItems.value?.toString()!;
   
   totalItems.listen(num => {
-    if(cartEle) cartEle.innerText = num;
+    if(cartEle && num > 0){
+      cartEle.innerText = num.toString();
+    } else if (cartEle){
+      cartEle.innerText = "";
+    }
   })
 </script>
