@@ -1,6 +1,13 @@
 ---
+export const prerender = false;
 import Layout from "@/layouts/Layout.astro";
 import LoginForm from "@/components/Forms/LoginForm";
+
+const session = Astro.cookies.get("check");
+
+if (session) {
+  return Astro.redirect("/profile");
+}
 ---
 
 <Layout title="Iniciar sesión | VIGI">
