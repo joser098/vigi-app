@@ -1,3 +1,30 @@
+export const categories = [
+  { name: "Interior",
+    path: "interior"
+   }, 
+  { name: "Exterior",
+    path: "exterior"
+   }, 
+  { name: "Batería",
+    path: "bateria"
+   }, 
+  { name: "DVR",
+    path: "DVR"
+   }, 
+  { name: "Análogas",
+    path: "analogas"
+   }, 
+  { name: "Porteros",
+    path: "porteros"
+   }, 
+  { name: "Alarmas",
+    path: "alarmas"
+   }, 
+  { name: "Almacenamiento" ,
+    path: "almacenamiento"
+  }
+]
+
 export const quantity = [
     {
         id: 1,

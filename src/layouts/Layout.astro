@@ -12,6 +12,7 @@ interface Props {
 
 const { title } = Astro.props;
 const { url } = Astro;
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
 <!doctype html>
@@ -28,7 +29,7 @@ const { url } = Astro;
 		<meta name="robots" content="index, follow"/>
 		<meta name="googlebot" content="index, follow" />
 
-		<meta name="og:image" content={new URL("https://d1dg60jlo0321c.cloudfront.net/assets/og.png", Astro.url)} />
+		<meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
 		<meta name="og:title" content={title} />
 		<meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (camaras, alarmas) en Argentina. Envios a todo el pais" />
 		<meta name="og:url" content={Astro.url} />
