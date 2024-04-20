@@ -1,0 +1,57 @@
+<div class="bg-primary py-1 font-semibold relative text-[10px]">
+  <div class="overflow-hidden min-w-full w-auto whitespace-nowrap relative">
+    <div class="marquee-content">
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</span>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+      <span class="text-white uppercase mr-20">SAME DAY! Envíos en el día en AMBA</span>
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</span>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+      <span class="text-white uppercase mr-20">SAME DAY! Envíos en el día en AMBA</span>
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</span>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+    </div>
+    <div class="marquee-content clone">
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</s>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+      <span class="text-white uppercase mr-20">SAME DAY! Envíos en el día en AMBA</span>
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</span>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+      <span class="text-white uppercase mr-20">SAME DAY! Envíos en el día en AMBA</span>
+      <span class="text-white uppercase mr-20">3 cuotas sin interés con Visa y Mastercard</span>
+      <span class="text-white uppercase mr-20">Descuentos en productos seleccionados</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-content {
+    display: inline-block;
+    width: auto;
+    min-width: 100%;
+    animation: marquee 70s linear infinite;
+    animation-delay: -70s;
+  }
+
+  .marquee-content.clone {
+    animation: marqueeClone 70s linear infinite;
+    animation-delay: -35s;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marqueeClone {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+</style>

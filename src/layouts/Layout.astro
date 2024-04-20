@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import BackButton from "@/components/Buttons/BackButton";
 import '@fontsource/poppins';
 import  SpeedInsights  from "@vercel/speed-insights/astro"
+import Marquee from "@/components/Marquee.astro";
 
 interface Props {
 	title: string;
@@ -42,6 +43,9 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 		<SpeedInsights />
 	</head>
 	<body>
+		{
+			url.pathname == "/" && <Marquee/>
+		}
 		<Header />
 		{(url.pathname !== '/' && url.pathname !== '/login' && !url.pathname.includes('payment')) && <BackButton client:visible/>}
 		<slot />
