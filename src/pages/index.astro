@@ -90,46 +90,49 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     </div>
     <Faq client:visible />
   </section>
+
   <script>
     import { check } from "@/store/cartStore";
-
     const token = document.cookie.split('=');
 
     if(token != null){
       check.set(token[1])
     }
+  </script>
 
-    //Carrousel Slider
-    const prevBtn = document.getElementById("prev");
-    const nextBtn = document.getElementById("next");
-    const slider = document.getElementById("promotions_slider");
-    const arrItems = slider?.getAttribute("data-items");
-
-    let current = 0;
-    let translateXpercentage = current;
-
-    const addOne = () => {
-      if(arrItems != null){
-        const total = parseInt(arrItems)
-        if(!(current == total - 3)){
-          current += 1;
-        } 
+  <script is:inline>
+    document.addEventListener('astro:page-load', () => {
+      //Carrousel Slider
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const slider = document.getElementById("promotions_slider");
+      const arrItems = slider?.getAttribute("data-items");
+  
+      let current = 0;
+      let translateXpercentage = current;
+  
+      const addOne = () => {
+        if(arrItems != null){
+          const total = parseInt(arrItems)
+          if(!(current == total - 3)){
+            current += 1;
+          } 
+        }
+      };
+      
+      const removeOne = () => current >= 1 ? current -= 1 : null;
+      const updatePercentaje = () => translateXpercentage = current * 3.7;
+      
+      const handlerClick = (e, action) => {
+        e.preventDefault();
+        action == 1 ? addOne() : removeOne();
+        updatePercentaje();
+        if(slider) slider.style.transform = `translateX(-${translateXpercentage}%)`;
       }
-    };
-    
-    const removeOne = () => current >= 1 ? current -= 1 : null;
-    const updatePercentaje = () => translateXpercentage = current * 3.7;
-    
-    const handlerClick = (e: any, action: number) => {
-      e.preventDefault();
-      action == 1 ? addOne() : removeOne();
-      updatePercentaje();
-      if(slider) slider.style.transform = `translateX(-${translateXpercentage}%)`;
-    }
-
-    prevBtn?.addEventListener('click', (e) => handlerClick(e,0));
-    nextBtn?.addEventListener('click', (e) => handlerClick(e,1));
-    //
+  
+      prevBtn.addEventListener('click', (e) => handlerClick(e,0));
+      nextBtn.addEventListener('click', (e) => handlerClick(e,1));
+    })
   </script>
 </Layout>
 
