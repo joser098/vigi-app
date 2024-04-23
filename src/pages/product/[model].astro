@@ -60,16 +60,13 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
         <!-- CANTIDAD Y ENVIO -->
         <div>
           <QuantitySelect client:visible id={product._id} />
-          <span class="block text-xs mt-1"
-            >*Mas de 5 unidades tienen precios especiales</span
-          >
           <div class="mt-3 flex items-center gap-2">
             <Truck height="18" width="18" />
             <span class="font-bold text-sm"> Envíos a todo el país</span>
           </div>
-          <a class="text-primary text-xs hover:underline" href="#"
-            >Otras formas de entrega</a
-          >
+          <menu>
+            <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Otras formas de entrega</button>
+          </menu>
         </div>
         <!-- BOTONES -->
         <div class="grid gap-3">
@@ -79,7 +76,12 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
       </article>
     </section>
     <section class="bg-gray-100 p-4 shadow-xl rounded-2xl my-20">
-      <ProductCaracteristics product={product} />
+      <details>
+        <summary class="text-lg sm:text-xl font-bold">
+          Características de {product.provider} {product.model}
+        </summary>
+        <ProductCaracteristics product={product} />
+      </details>
     </section>
     <section>
       {
@@ -91,5 +93,25 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
         //Otros productos
       }
     </section>
+    <!-- MODALES -->
+    <dialog id="entregas_modal">
+      <article>
+        <h6>Formas de entrega</h6>
+        <ul>
+          <li>Forma 1</li>
+          <li>Forma 1</li>
+          <li>Forma 1</li>
+        </ul>
+      </article>
+    </dialog>
   </main>
 </Layout>
+
+<script>
+  const entregas_btn = document.getElementById("entregas_modal_btn");
+  const entregas_modal = document.getElementById("entregas_modal") as HTMLDialogElement;
+
+  entregas_btn?.addEventListener('click', () => {
+    entregas_modal.showModal();
+  })
+</script>
