@@ -8,6 +8,7 @@ import AddCartButton from "@/components/Buttons/AddCartButton";
 import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
 import Favorite from "@/components/Icons/Favorite";
+import ProductDescription from "@/components/ProductDescription.astro";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -75,18 +76,13 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
         </div>
       </article>
     </section>
-    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl my-20">
+    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl mt-20 mb-10">
       <details>
-        <summary class="text-lg sm:text-xl font-bold">
-          Características de {product.provider} {product.model}
-        </summary>
         <ProductCaracteristics product={product} />
       </details>
     </section>
-    <section>
-      {
-        //DESCRIPCION
-      }
+    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl py-4">
+      <ProductDescription description={product.description}/>
     </section>
     <section>
       {
