@@ -11,8 +11,6 @@ import Favorite from "@/components/Icons/Favorite";
 import ProductDescription from "@/components/ProductDescription.astro";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 
-const promotions = await fetchData("getAllProducts");
-
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
 
@@ -25,6 +23,7 @@ export async function getStaticPaths() {
 
 const { model } = Astro.params;
 const product = (await fetchData(`getProduct?model=${model}`)) as Product;
+const similarProducts = await fetchData(`getSimilarProducts?provider=${product.provider}&category=${product.category}`);
 ---
 
 <Layout title=`${model} | VIGI`>
@@ -95,7 +94,7 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
             Encuentra el que mas se ajuste.</span>
         </h2>
       </div>
-      <CardsCarrusel products={promotions}/>
+      <CardsCarrusel products={similarProducts}/>
     </section>
     <!-- MODALES -->
     <dialog id="entregas_modal">

@@ -40,7 +40,7 @@ const { products } = Astro.props;
     const addOne = () => {
       if (arrItems != null) {
         const total = parseInt(arrItems);
-        if (!(current == total - 3)) {
+        if (!(current == total) && arrItems > 4) {
           current += 1;
         }
       }
