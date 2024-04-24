@@ -9,6 +9,9 @@ import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
 import Favorite from "@/components/Icons/Favorite";
 import ProductDescription from "@/components/ProductDescription.astro";
+import CardsCarrusel from "@/components/CardsCarrusel.astro";
+
+const promotions = await fetchData("getAllProducts");
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -84,10 +87,15 @@ const product = (await fetchData(`getProduct?model=${model}`)) as Product;
     <section class="bg-gray-100 p-4 shadow-xl rounded-2xl py-4">
       <ProductDescription description={product.description}/>
     </section>
-    <section>
-      {
-        //Otros productos
-      }
+    <section class="relative">
+      <div class="sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+        <h2
+          class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl">
+          Otras opciones. <span class="text-black font-normal">
+            Encuentra el que mas se ajuste.</span>
+        </h2>
+      </div>
+      <CardsCarrusel products={promotions}/>
     </section>
     <!-- MODALES -->
     <dialog id="entregas_modal">
