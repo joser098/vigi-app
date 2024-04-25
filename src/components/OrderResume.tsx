@@ -77,7 +77,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         <h5 className="my-2 font-semibold text-lg">Entrega</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <span className="text-xs">
-            Conoce las opciones de envio, incluyendo plazos y costos
+            Conoce las opciones de envío, incluyendo plazos y costos
           </span>
           <select
             onChange={onShipTypeChange}
@@ -88,7 +88,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
               Retiro en oficina
             </option>
             <option className="text-xs" value="shipping">
-              Envio a domicilio
+              Envío a domicilio
             </option>
           </select>
         </div>
@@ -99,20 +99,20 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             </span>
           ) : (
             <span className="text-xs">
-              Envio a: <strong>{`${shipments.receiver_address.street_name}`}</strong>
+              Envío a: <strong>{`${shipments.receiver_address.street_name}`}</strong>
             </span>
           )}
         </div>
       </div>
       <div className="w-full mb-8">
-        <h5 className="my-2 font-semibold text-lg">Instalacion</h5>
+        <h5 className="my-2 font-semibold text-lg">Instalación</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <span className="text-xs">
-            Si necesitas a un profesional para tu instalacion, lo tenemos.
+            Si necesitas a un profesional para tu instalación, ¡lo tenemos!
           </span>
-          <button className="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity">
+          {/* <button className="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity">
             Calcular
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="mb-12">
@@ -173,7 +173,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           </span>
         </div>
         <div className="flex justify-between">
-          <span>Envio</span>
+          <span>Envío</span>
           <span className={`${shipments.cost == 0 && "text-green-500"}`}>
             {shipments.cost == 0
               ? "GRATIS"

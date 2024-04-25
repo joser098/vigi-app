@@ -67,7 +67,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
     >
       <div className="border-b-2 border-gray-400">
         <h6 className="mb-2 text-primary text-xl font-bold">
-          Datos Envio
+          Datos Envío
         </h6>
       </div>
       <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -107,7 +107,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
       <fieldset className="flex flex-col gap-10">
         <div className="flex flex-col">
           <label className="text-gray-400 my-1" htmlFor="address">
-            Direccion
+            Dirección
           </label>
           <input
             {...register("address")}

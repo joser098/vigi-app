@@ -20,7 +20,7 @@ if (Astro.cookies.has("check")) {
 }
 ---
 
-<Layout title={`Cart (${cart.products_total}) | VIGI`}>
+<Layout title={`(${cart.products_total}) Carrito de compras | VIGI`}>
   <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
     <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
       <h2
@@ -91,7 +91,8 @@ if (Astro.cookies.has("check")) {
             ) : (
               <div class="p-3  flex flex-col justify-center items-center gap-2">
                 <Sad />
-                <span class="text-base">No hay productos en el carrito</span>
+                <span class="text-center">Tu carrito está vacío por el momento.</span>
+                <a href="/" class="text-center text-primary font-bold hover:underline">¡Añade productos para comenzar tu experiencia de compra!</a>
               </div>
             )
           }

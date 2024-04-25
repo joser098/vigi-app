@@ -186,7 +186,7 @@ const RegisterForm = () => {
         </div>
         <div className="flex flex-col gap-1 w-full max">
           <label htmlFor="address">
-            Direccion<span className="text-xs text-red-500">*</span>
+            Dirección<span className="text-xs text-red-500">*</span>
           </label>
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"

@@ -29,7 +29,7 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
           >
             <div className="flex gap-3 items-center">
               <InfoIcon currentColor={currentTab == "info" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Informacion personal</span>
+              <span>Información personal</span>
             </div>
             <ChevronRight />
           </li>
@@ -39,7 +39,7 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
           >
             <div className="flex gap-3 items-center">
               <Location currentColor={currentTab == "addressInfo" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Direcciones </span>
+              <span>Dirección</span>
             </div>
             <ChevronRight />
           </li>
