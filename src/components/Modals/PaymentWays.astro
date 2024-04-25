@@ -5,9 +5,10 @@ import MP from "@/components/Icons/MP.astro";
 import Mastercard from "../Icons/Mastercard.astro";
 import Visa from "../Icons/Visa.astro";
 import Amex from "../Icons/Amex.astro";
+import Maestro from "../Icons/Maestro.astro";
 ---
 
-<dialog id="entregas_modal" class="px-3 py-2 rounded">
+<dialog id="pagos_modal" class="px-3 py-2 rounded">
     <header class="flex justify-between border-b-2">
         <div class="flex justify-center items-center gap-2">
             <CreditCard width="max-w-5"/> 
@@ -27,6 +28,7 @@ import Amex from "../Icons/Amex.astro";
             <Mastercard/>
             <Visa/>
             <Amex/>
+            <Maestro/>
         </div>
     </main>
     <footer class="border-t-2 py-2 mt-2 flex justify-end items-center">
@@ -39,11 +41,11 @@ import Amex from "../Icons/Amex.astro";
   <script is:inline>
     document.addEventListener("astro:page-load", () => {
       const close_btns = document.querySelectorAll(".close_btn");
-      const entregas_modal = document.getElementById("entregas_modal");
+      const pagos_modal = document.getElementById("pagos_modal");
 
       close_btns.forEach(btn => {
         btn.addEventListener('click', () => {
-            entregas_modal.close();
+            pagos_modal.close();
         })
       });
     });

@@ -11,6 +11,10 @@ import Favorite from "@/components/Icons/Favorite";
 import ProductDescription from "@/components/ProductDescription.astro";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import PaymentWays from "@/components/Modals/PaymentWays.astro";
+import CreditCard from "@/components/Icons/CreditCard.astro";
+import MP from "@/components/Icons/MP.astro";
+import Mastercard from "@/components/Icons/Mastercard.astro";
+import Visa from "@/components/Icons/Visa.astro";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -49,18 +53,18 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
               <span class="text-green-600 mb-1">Oferta</span>
             )
           }
-        <div class="flex justify-between">
-          <h6 class="text-4xl">
-            {
-              product.price.toLocaleString("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                minimumFractionDigits: 0,
-              })
-            }
-          </h6>
+          <div class="flex justify-between">
+            <h6 class="text-4xl">
+              {
+                product.price.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }
+            </h6>
+          </div>
         </div>
-      </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
           <QuantitySelect client:visible id={product._id} />
@@ -69,9 +73,25 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
             <span class="font-bold text-sm"> Envíos a todo el país</span>
           </div>
           <menu>
-            <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Otras formas de entrega</button>
+            <!-- <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Otras formas de entrega</button> -->
           </menu>
-        </div>
+          <div class="mt-3 flex items-center gap-2">
+            <CreditCard width="max-w-5"/>
+            <span class="font-bold text-sm">Medios de pago</span>
+          </div>
+          <div class="max-h-6 flex justify-start items-center">
+            <MP/>
+            <Visa/>
+            <div class="flex gap-2 items-center">
+              <Mastercard/>
+              <menu>
+                <button id="pagos_modal_btn" class="text-gray-500 text-sm hover:text-gray-700 hover:underline">
+                  + Más
+                </button>
+              </menu>
+            </div>
+          </div>
+      </div>
         <!-- BOTONES -->
         <div class="grid gap-3">
           <BuyButton client:visible product={product}/>
@@ -106,9 +126,15 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
   document.addEventListener("astro:page-load", () => {
     const entregas_btn = document.getElementById("entregas_modal_btn");
     const entregas_modal = document.getElementById("entregas_modal");
+    const pagos_btn = document.getElementById("pagos_modal_btn");
+    const pagos_modal = document.getElementById("pagos_modal");
   
     entregas_btn?.addEventListener('click', () => {
       entregas_modal.showModal();
+    })
+
+    pagos_btn?.addEventListener('click', () => {
+      pagos_modal.showModal();
     })
   });
 </script>
