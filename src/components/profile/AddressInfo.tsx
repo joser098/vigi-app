@@ -14,7 +14,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    // formState: { errors },
     formState,
   } = useForm({ disabled: disabledForm });
 

@@ -1,4 +1,4 @@
-type ProductDetails = CameraDetails | DvrDetails;
+// type ProductDetails = CameraDetails | DvrDetails;
 
 export interface Product {
   _id: string;

@@ -18,7 +18,6 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<IFormInput>();
 
   const onSubmitLogin: SubmitHandler<IFormInput> = async (data: any) => {
