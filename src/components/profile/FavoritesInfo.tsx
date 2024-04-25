@@ -34,12 +34,12 @@ const FavoritesInfo = () => {
       {favorites.length > 0 ? (
         favorites.map((favorite: Product) => {
           return (
-            <article key={favorite._id} className="flex justify-between bg-white gap-3 max-h-80 p-2 border-b-2">
+            <article key={favorite._id} className="flex flex-col sm:flex-row sm:justify-between bg-white gap-3 max-h-80 p-2 border-b-2">
               <a href={`/product/${favorite.model}`} className="flex">
                 <img
                   src={favorite.thumbnail}
                   alt={favorite.model}
-                  className="object-cover max-w-32"
+                  className="object-cover max-w-16 sm:max-w-32"
                 />
                 <div className="p-4 flex flex-col justify-between">
                   <h5>{favorite.model}</h5>
@@ -66,7 +66,7 @@ const FavoritesInfo = () => {
                   </p>
                 </div>
               </a>
-              <button onClick={() => removeFavorite(favorite._id)} className="text-red-600 hover:underline p-5">Eliminar</button>
+              <button onClick={() => removeFavorite(favorite._id)} className="bg-red-400 text-white rounded p-1 sm:text-red-600 sm:bg-transparent hover:underline sm:p-5">Eliminar</button>
             </article> 
           );
         })
