@@ -10,6 +10,7 @@ import ProductCaracteristics from "../../components/ProductCaracteristics.astro"
 import Favorite from "@/components/Icons/Favorite";
 import ProductDescription from "@/components/ProductDescription.astro";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
+import PaymentWays from "@/components/Modals/PaymentWays.astro";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -97,24 +98,17 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
       <CardsCarrusel products={similarProducts}/>
     </section>
     <!-- MODALES -->
-    <dialog id="entregas_modal">
-      <article>
-        <h6>Formas de entrega</h6>
-        <ul>
-          <li>Forma 1</li>
-          <li>Forma 1</li>
-          <li>Forma 1</li>
-        </ul>
-      </article>
-    </dialog>
+    <PaymentWays />
   </main>
 </Layout>
 
-<script>
-  const entregas_btn = document.getElementById("entregas_modal_btn");
-  const entregas_modal = document.getElementById("entregas_modal") as HTMLDialogElement;
-
-  entregas_btn?.addEventListener('click', () => {
-    entregas_modal.showModal();
-  })
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const entregas_btn = document.getElementById("entregas_modal_btn");
+    const entregas_modal = document.getElementById("entregas_modal");
+  
+    entregas_btn?.addEventListener('click', () => {
+      entregas_modal.showModal();
+    })
+  });
 </script>

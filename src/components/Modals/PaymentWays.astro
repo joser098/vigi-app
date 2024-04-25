@@ -1,0 +1,50 @@
+---
+import CreditCard from "../Icons/CreditCard.astro";
+import Cross from "@/components/Icons/Cross.astro";
+import MP from "@/components/Icons/MP.astro";
+import Mastercard from "../Icons/Mastercard.astro";
+import Visa from "../Icons/Visa.astro";
+import Amex from "../Icons/Amex.astro";
+---
+
+<dialog id="entregas_modal" class="px-3 py-2 rounded">
+    <header class="flex justify-between border-b-2">
+        <div class="flex justify-center items-center gap-2">
+            <CreditCard width="max-w-5"/> 
+            <h5 class="text-lg text-gray-500">Medios de pago</h5>
+        </div>
+        <button class="close_btn">
+            <Cross/>
+        </button>
+    </header>
+    <main class="flex flex-col justify-center items-center">
+        <h6 class="text-lg text-primary font-bold my-3">Pagá online</h6>
+        <MP/>
+        <span class="font-bold text-sm">Mercado Pago</span>
+        <span class="text-xs text-center">Todos los pagos son procesados con mercado pago.</span>
+        <span class="text-sm font-bold my-4 text-center">Pagá con QR, dinero de tu cuenta o tarjetas de crédito o débito.</span>
+        <div class="w-full flex justify-evenly">
+            <Mastercard/>
+            <Visa/>
+            <Amex/>
+        </div>
+    </main>
+    <footer class="border-t-2 py-2 mt-2 flex justify-end items-center">
+        <button class="close_btn text-white bg-primary px-8 py-2 rounded text-sm">
+            Cerrar           
+        </button>
+    </footer>
+  </dialog>
+
+  <script is:inline>
+    document.addEventListener("astro:page-load", () => {
+      const close_btns = document.querySelectorAll(".close_btn");
+      const entregas_modal = document.getElementById("entregas_modal");
+
+      close_btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            entregas_modal.close();
+        })
+      });
+    });
+  </script>
