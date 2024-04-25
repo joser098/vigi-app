@@ -1,0 +1,63 @@
+---
+import Cross from "@/components/Icons/Cross.astro";
+import Truck from "../Icons/Truck.astro";
+---
+
+<dialog id="entregas_modal" class="px-8 py-6 rounded">
+    <header class="flex justify-between border-b-2 mb-2">
+        <div class="flex justify-center items-center gap-2">
+            <Truck width="24" height='24'/> 
+            <h5 class="text-lg text-gray-500">Envios</h5>
+        </div>
+        <button class="close_btn">
+            <Cross/>
+        </button>
+    </header>
+    <main class="flex flex-col justify-center items-center gap-3 max-w-[500px]">
+        <ul class="flex flex-col gap-3">
+            <div class="my-2">
+                <span class="font-bold text-start text-sm block">Contamos con las siguientes modalidades de envíos*:</span>
+                <span class="text-[10px] sm:text-xs italic">*Los costos de envío están sujetos a la región.</span>
+            </div>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·Estándar: </span>en AMBA tiene una entrega máxima de 2 días hábiles, luego de la confirmación de la compra. Para entregas al interior del país, el envío tiene un plazo de entrega de 7 a 10 días hábiles, luego de la confirmación de la compra.</p>
+            </li>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·Express: </span>(sólo disponible para CABA y parte de GBA), la entrega se realizará en el mismo día, finalizando el proceso de compra con pago aprobado antes de las 11:00 am. Si la aprobación del pago se realiza después de las 11:00 am, la entrega se realizará al siguiente día hábil.</p>
+            </li>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·Retiro en oficina: </span>Contas con la opción de retirar en nuestra oficina en caballito (CABA), a partir de las 24Hs hábiles de la aprobación de pago. El retiro lo puede realizar únicamente el titular de la compra presentando DNI. Vas a recibir un correo electrónico cuando tu pedido esté disponible para retiro.</p>
+            </li>
+        </ul>
+        <ul class="flex flex-col list-decimal">
+            <span class="text-primary font-bold underline text-sm uppercase">Recomendaciones:</span>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500">Te aconsejamos que sumes todos los artículos elegidos en el mismo carrito de compra para recibirlos en un mismo envío.</p>
+            </li>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500">Tené a mano tu DNI al momento de la entrega/retiro.</p>
+            </li>
+            <li>
+                <p class="text-xs sm:text-sm text-gray-500">Revisa el estado y la coincidencia de tu pedido previo a firmar el remito de entrega</p>
+            </li>
+        </ul>
+    </main>
+    <footer class="border-t-2 py-2 mt-2 flex justify-end items-center">
+        <button class="close_btn text-white bg-primary px-8 py-2 rounded text-sm">
+            Cerrar           
+        </button>
+    </footer>
+  </dialog>
+
+  <script is:inline>
+    document.addEventListener("astro:page-load", () => {
+      const close_btns = document.querySelectorAll(".close_btn");
+      const entrega_modal = document.getElementById("entregas_modal");
+
+      close_btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            entrega_modal.close();
+        })
+      });
+    });
+  </script>
