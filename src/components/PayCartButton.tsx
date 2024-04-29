@@ -29,6 +29,8 @@ const PayCartButton = ({ cart, finalTotal, shipments }: {cart: CartModel, finalT
       const res = await createPaymentOrder(cartModel, token);
       if(res.success){
         navigate(res.data.init_point)
+      } else {
+        navigate('/login')
       }
     }
   };
