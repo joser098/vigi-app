@@ -6,6 +6,8 @@ import { type CartItem } from "../services/types";
 import Sad from "../components/Icons/Sad.astro";
 import DeleteItemButton from "../components/Buttons/DeleteItemButton";
 import OrderResume from "../components/OrderResume";
+import QuantitySelect from "@/components/Buttons/QuantitySelect";
+import AddCartButton from "@/components/Buttons/AddCartButton";
 
 let cart;
 if (Astro.cookies.has("check")) {
@@ -32,7 +34,7 @@ if (Astro.cookies.has("check")) {
 
     <section class="flex flex-col md:flex-row gap-12 justify-between">
       <article class="w-full">
-        <div class="flex flex-col gap-4 border rounded-md px-2 pt-2">
+        <div id="row_contain" data-items={cart.items.length} class="flex flex-col gap-4 border rounded-md px-2 pt-2">
           {
             cart.items.length > 0 ? (
               <table>
@@ -43,7 +45,7 @@ if (Astro.cookies.has("check")) {
                   <th class="font-normal text-xs sm:text-base">Subtotal</th>
                   <th>&nbsp;</th>
                 </tr>
-                {cart.items.map((product: CartItem) => (
+                {cart.items.map((product: CartItem, index:number) => (
                   <tr>
                     <td>
                       <div class="flex flex-col xl:flex-row xl:gap-3 justify-center items-center">
@@ -66,8 +68,13 @@ if (Astro.cookies.has("check")) {
                         })}
                       </p>
                     </td>
-                    <td class="text-center">
-                      <span class="text-center text-xs sm:text-lg">{product.quantity}</span>
+                    <td class="max-w-12 ">
+                      <div id={`selectQ_${index}`}>
+                        <QuantitySelect client:visible id={product.id} inherit_value={product.quantity} padding="p-1"/>
+                      </div>
+                      <div id={`addBtn_${index}`} class="hidden mt-2">
+                        <AddCartButton client:visible product={product} buttonLabel="Actualizar" padding="p-1"/>
+                      </div>
                     </td>
                     <td class="text-center text-xs sm:text-lg">
                       {(product.quantity * product.unit_price).toLocaleString(
@@ -102,6 +109,24 @@ if (Astro.cookies.has("check")) {
     </section>
   </main>
 </Layout>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const items_contain = document.getElementById("row_contain");
+    const itemsTotal = items_contain?.getAttribute("data-items");
+    const total = itemsTotal && parseInt(itemsTotal);
+  
+  
+    for(let i = 0; i < total; i++){
+      const div = document.getElementById(`selectQ_${i}`);
+      const btn = document.getElementById(`addBtn_${i}`);
+    
+      div?.addEventListener('click', () => {
+        btn?.classList.remove("hidden");
+      })
+    }
+  })
+</script>
 
 <style>
   table {

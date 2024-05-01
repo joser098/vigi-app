@@ -68,7 +68,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
-          <QuantitySelect client:visible id={product._id} />
+          <QuantitySelect client:visible id={product._id} inherit_value={0} padding="p-3"/>
           <div class="mt-3 flex items-center gap-2">
             <Truck height="18" width="18" />
             <span class="font-bold text-sm"> Envíos a todo el país</span>
@@ -96,7 +96,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         <!-- BOTONES -->
         <div class="grid gap-3">
           <BuyButton client:visible product={product}/>
-          <AddCartButton client:visible product={product} buttonLabel="Agregar al carrito"/>
+          <AddCartButton client:visible product={product} buttonLabel="Agregar al carrito" padding="p-3"/>
         </div>
       </article>
     </section>

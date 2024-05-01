@@ -9,9 +9,11 @@ import { getToken } from "@/services/scripts";
 const AddCartButton = ({
   product,
   buttonLabel,
+  padding
 }: {
-  product: Product;
+  product: any;
   buttonLabel: string;
+  padding: string;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -27,18 +29,19 @@ const AddCartButton = ({
 
     setIsLoading(true);
     //Verify quantity is valid
-    const quantity = getQuantity(product._id);
+    const id = product._id || product.id;
+    const quantity = getQuantity(id);
     if (!quantity) {
       setIsLoading(false);
       return;
     }
 
     const item = {
-      id: product._id,
-      picture_url: product.thumbnail,
-      title: product.model,
+      id: product._id || product.id,
+      picture_url: product.thumbnail || product.picture_url,
+      title: product.model || product.title,
       quantity,
-      unit_price: product.price,
+      unit_price: product.price || product.unit_price,
     };
 
     //ADD TO CART AS LOGGED IN USER
@@ -55,13 +58,16 @@ const AddCartButton = ({
     if (buttonLabel.includes("Elegir")) {
       navigate("/")
     }
+    if (buttonLabel.includes("Actualizar")) {
+      navigate("/cart")
+    }
   };
 
   return (
     <>
       <button
         onClick={onAddCartClick}
-        className="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-3 rounded-md hover:opacity-75 transition-opacity"
+        className={`block w-full ${padding} bg-violet-100 border-2 border-violet-100 text-primary rounded-md hover:opacity-75 transition-opacity`}
       >
         {isLoading ? (
           <span className="flex justify-center">
