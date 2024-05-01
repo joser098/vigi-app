@@ -30,13 +30,13 @@ const RegisterForm = () => {
     if(response.success){
       setToastConfig({
         show: true,
-        message: `Registro completado con éxito!`,
+        message: `Registro enviado. Verifique su correo electrónico para completar.`,
         status: "success"
       });
       reset();
       setTimeout(() => {
         navigate("/login");
-      }, 4000);
+      }, 15000);
     }
 
     if(!response.success){
