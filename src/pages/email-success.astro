@@ -1,0 +1,44 @@
+---
+import Approved from "@/components/Icons/Approved.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Email verificado con éxito! | VIGI">
+  <section class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
+    <div class="flex flex-col justify-center items-center p-10">
+      <span><Approved /></span>
+      <h5 class="text-xl font-bold">
+        ¡Correo electrónico verificado con éxito!
+      </h5>
+      <span
+        >Inicia sesión para comenzar a disfrutar de la experiencia de compra.</span
+      >
+    </div>
+    <div class="flex flex-col justify-center items-center">
+      Serás redirigido en: <span id="counter" class="font-bold">8</span>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+//   import { navigate } from "astro:transitions/client";
+  document.addEventListener("astro:page-load", () => {
+    const contadorElemento = document.getElementById("counter");
+    let segRestantes = 8;
+
+    const intervalo = setInterval(() => {
+      segRestantes--;
+      updateCounter(segRestantes);
+    }, 1000);
+
+    const updateCounter = (seg) => {
+      contadorElemento.textContent = seg.toString();
+
+      if (seg <= 0) {
+        clearInterval(intervalo);
+        window.location.href = "/login"
+        // navigate("/login");
+      }
+    };
+  });
+</script>
