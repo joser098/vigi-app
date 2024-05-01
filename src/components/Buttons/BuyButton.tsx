@@ -66,6 +66,7 @@ const BuyButton = ({ product }: { product: Product }) => {
                 <AddCartButton
                   product={product}
                   buttonLabel="Elegir mas productos"
+                  padding="p-3"
                 />
               <AlertDialog.Close asChild>
                 <button className="bg-red-400 text-white p-3 rounded hover:opacity-75 transition-opacity my-3 w-full">
