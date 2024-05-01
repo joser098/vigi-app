@@ -55,7 +55,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
     if (discountCode === code) {
       setDiscount(cart.amount_to_pay * discount_percentaje);
       setDiscountCode("");
-      setCodeResult("El descuento fue agregado con exito!");
+      setCodeResult("El descuento fue agregado con éxito!");
       setTimeout(() => {
         setCodeResult("");
       }, 3000);
