@@ -13,6 +13,7 @@ interface IFormInput {
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
 
   const {
     register,
@@ -33,6 +34,7 @@ const LoginForm = () => {
       navigate("/");
     }
     if (!response.success) {
+      setMessage(response.message);
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -110,7 +112,7 @@ const LoginForm = () => {
         </button>
         {showToast && (
           <span className=" bg-red-200 py-1 px-4 rounded-md text-red-600">
-            Correo o contraseña son invalidos
+            {message}
           </span>
         )}
         <div className="flex flex-col justify-center items-center">
