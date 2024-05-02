@@ -200,7 +200,7 @@ export const footerData = [
             {
                 id: 3,
                 title: 'Perfil',
-                url: '/perfil'
+                url: '/profile'
             }
         ]
     }
