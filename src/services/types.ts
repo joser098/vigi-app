@@ -178,6 +178,11 @@ export interface Province {
   iso_id: string;
 }
 
+export interface IFormForgotPass {
+  email: string;
+  email_confirm: string;
+}
+
 // PAYMENT TYPES
 export interface Payment {
   _id: string;

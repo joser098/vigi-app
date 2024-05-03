@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.PUBLIC_API_URL;
-import { type CartModel } from "@/services/types";
+import { type CartModel, type IFormForgotPass } from "@/services/types";
 import { getToken } from "./scripts";
 
 export const fetchData = async (query: string) => {
@@ -273,3 +273,33 @@ export const getCustomerOrders = async (token: string) => {
     return error;
   }
 }
+
+export const forgotPassword = async (data: IFormForgotPass) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    });
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const validateHash = async (hash: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/validate-hash/${hash}`);
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
