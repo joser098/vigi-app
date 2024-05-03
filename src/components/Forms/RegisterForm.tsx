@@ -139,7 +139,7 @@ const RegisterForm = () => {
           </div>
         </div>
         <div className="flex flex-col gap-1 w-full max">
-          <label htmlFor="password">
+          <label htmlFor="province">
             Provincia<span className="text-xs text-red-500">*</span>
           </label>
           <select

@@ -72,7 +72,7 @@ const ForgotPasswordForm = () => {
             },
             validate: (value) => {
               if (value !== getValues("email")) {
-                return "Las contraseñas no coinciden";
+                return "Los correos no coinciden";
               }
             },
           })}
