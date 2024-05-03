@@ -116,7 +116,7 @@ const LoginForm = () => {
           </span>
         )}
         <div className="flex flex-col justify-center items-center">
-          <a href="#" className="text-primary hover:underline block">
+          <a href="/forgot-password" className="text-primary hover:underline block">
             ¿Olvidaste tu contraseña?
           </a>
           <a href="/register" className="text-primary hover:underline">
