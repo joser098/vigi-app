@@ -183,6 +183,11 @@ export interface IFormForgotPass {
   email_confirm: string;
 }
 
+export interface IFormNewPass {
+  password: string;
+  password_confirm: string;
+}
+
 // PAYMENT TYPES
 export interface Payment {
   _id: string;
