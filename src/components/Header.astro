@@ -3,6 +3,8 @@ import Logo from "./Logo.astro";
 import Cart from "../components/Icons/Cart.astro";
 import Profile from "../components/Icons/Profile.astro";
 import SearchInput from "../components/SearchInput";
+
+const { render } = Astro.props;
 ---
 
 <header class="flex justify-center border-b-primary border-b-[1px]">
@@ -11,9 +13,11 @@ import SearchInput from "../components/SearchInput";
       <Logo />
     </a>
 
-    <SearchInput client:visible/>
+    <div class={`${!render && "hidden" }`}>
+      <SearchInput client:visible/>
+    </div>
 
-    <nav class="flex gap-5">
+    <nav class={`flex gap-5 ${!render && "hidden" }`}>
       <div class="relative">
         <a class="text-primary" href="/cart">
           <Cart />

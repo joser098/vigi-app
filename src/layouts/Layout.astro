@@ -46,7 +46,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 		{
 			url.pathname == "/" && <Marquee/>
 		}
-		<Header />
+		<Header render={url.pathname != '/login' && url.pathname !== '/register' && true}/>
 		{(url.pathname !== '/' && url.pathname !== '/login' && !url.pathname.includes('payment')) && <BackButton client:visible/>}
 		<slot />
 		<Footer />
