@@ -2,6 +2,7 @@
 import Logo from "./Logo.astro";
 import Cart from "../components/Icons/Cart.astro";
 import Profile from "../components/Icons/Profile.astro";
+import SearchInput from "../components/SearchInput";
 ---
 
 <header class="flex justify-center border-b-primary border-b-[1px]">
@@ -9,6 +10,8 @@ import Profile from "../components/Icons/Profile.astro";
     <a href="/">
       <Logo />
     </a>
+
+    <SearchInput client:visible/>
 
     <nav class="flex gap-5">
       <div class="relative">
