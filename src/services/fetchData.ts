@@ -320,3 +320,39 @@ export const validateHash = async (hash: string) => {
     return error;
   }
 };
+
+export const searchSuggest = async (keyword: string, limit: number) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/suggest`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ keyword, limit })
+    })
+    
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const searchProducts = async (keyword: string, limit: number | null = null) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ keyword, limit })
+    })
+    
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
