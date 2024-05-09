@@ -6,7 +6,7 @@ import { getToken } from "@/services/scripts";
 
 const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [shipments, setShipments] = useState({
-    local_pickup: true,
+    local_pickup: false,
     cost: 0,
     free_shipping: false,
     receiver_address: {
@@ -43,7 +43,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
       cost: 0,
       free_shipping: true,
     });
-    if (value == "shipping") calulateCost();
+    if (value == "shipping" && total > 0) calulateCost();
   };
 
   const calculateDiscount = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,6 +68,12 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   };
 
   useEffect(() => {
+    if(total > 1){
+      calulateCost();
+    }
+  }, []);
+
+  useEffect(() => {
     setTotal(cart.amount_to_pay + shipments.cost - discount);
   }, [discount, shipments.cost]);
 
@@ -83,22 +89,22 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             onChange={onShipTypeChange}
             className="max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
           >
-            <option className="text-xs">Selecciona uno</option>
-            <option className="text-xs" value="local_pickup">
-              Retiro en oficina
-            </option>
+            {/* <option className="text-xs">Selecciona uno</option> */}
             <option className="text-xs" value="shipping">
               Envío a domicilio
+            </option>
+            <option className="text-xs" value="local_pickup">
+              Retiro en oficina
             </option>
           </select>
         </div>
         <div className="my-2">
           {shipments.local_pickup ? (
             <span className="text-xs">
-              Retiro en <strong>Oficina 007, CABA</strong>
+              Retiro en <strong>Figueroa 973, CABA</strong>
             </span>
           ) : (
-            <span className="text-xs">
+            total > 0 && <span className="text-xs">
               Envío a: <strong>{`${shipments.receiver_address.street_name}`}</strong>
             </span>
           )}
@@ -174,7 +180,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         </div>
         <div className="flex justify-between">
           <span>Envío</span>
-          <span className={`${shipments.cost == 0 && "text-green-500"}`}>
+          <span className={`${shipments.cost == 0 && "text-green-500 font-bold"}`}>
             {shipments.cost == 0
               ? "GRATIS"
               : shipments.cost.toLocaleString("es-AR", {
