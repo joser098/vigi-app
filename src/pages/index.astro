@@ -7,7 +7,7 @@ import Faq from "@/components/Faq";
 import { categories } from "@/services/const";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 
-const promotions = await fetchData("getAllProducts");
+const promotions = await fetchData("getProducts?promotion=true");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
