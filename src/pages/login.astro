@@ -1,0 +1,35 @@
+---
+export const prerender = false;
+import Layout from "@/layouts/Layout.astro";
+import LoginForm from "@/components/Forms/LoginForm";
+
+const session = Astro.cookies.get("check");
+
+if (session) {
+  return Astro.redirect("/profile");
+}
+---
+
+<Layout title="Iniciar sesión | VIGI">
+  <section class="p-4 sm:px-8 max-w-[1180px] m-auto">
+    <div class="my-2 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h2
+        class="text-primary font-bold my-2 text-base sm:text-2xl 2xl:text-3xl"
+      >
+        Iniciar sesión. <span class="text-black font-normal">
+          Con una sesión iniciada, todo es más rápido.</span
+        >
+      </h2>
+    </div>
+  </section>
+  <section
+    class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2 gap-32 sm:gap-0"
+  >
+    <article>
+      <LoginForm client:visible/>
+    </article>
+    <article>
+      <img class="rounded-lg" src="/login_banner.png" alt="login Banner">
+    </article>
+  </section>
+</Layout>

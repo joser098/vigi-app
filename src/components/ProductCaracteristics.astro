@@ -1,0 +1,360 @@
+---
+import { type Product } from "../services/types";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+<summary class="text-lg sm:text-xl font-bold">
+  Características de {product.provider} {product.model}
+</summary>
+  {
+    product.category == "camaras" && (
+      <article class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div class="grid gap-3">
+          <div>
+            <table>
+              <h4>General</h4>
+              <tr>
+                <td>Marca</td>
+                <td>{product.provider}</td>
+              </tr>
+              <tr>
+                <td>Modelo</td>
+                <td>{product.model}</td>
+              </tr>
+              <tr>
+                <td>Tipo de cámara</td>
+                <td>{product.details.type}</td>
+              </tr>
+              <tr>
+                <td>Con visión nocturna</td>
+                <td>{product.details.night_vision ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Lente</td>
+                <td>{product.details.lens}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Video</h4>
+            <table>
+              <tr>
+                <td>Resolución</td>
+                <td>{product.details.resolution}</td>
+              </tr>
+              <tr>
+                <td>Tipo de resolución</td>
+                <td>{product.details.resolution_type}</td>
+              </tr>
+              <tr>
+                <td>Formato de ompresión de video</td>
+                <td>{product.details.video_compression}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Conectividad</h4>
+            <table>
+              <tr>
+                <td>Conectividad</td>
+                <td>{product.details.conectivity}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Funciones</h4>
+            <table>
+              <tr>
+                <td>Con sensor de movimiento</td>
+                <td>{product.details.motion_sensor ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Con alerta al móvil</td>
+                <td>{product.details.mobile_alert ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Con alarma</td>
+                <td>{product.details.alarm ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Con vídeo en vivo</td>
+                <td>{product.details.live_stream ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Distancia de alcance nocturno</td>
+                <td>{product.details.night_range_distance}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Dimensiones</h4>
+            <table>
+              <tr>
+                <td>Alto</td>
+                <td>{product.details.dimensions.height}</td>
+              </tr>
+              <tr>
+                <td>Ancho</td>
+                <td>{product.details.dimensions.width}</td>
+              </tr>
+              <tr>
+                <td>Profundidad</td>
+                <td>{product.details.dimensions.depth}</td>
+              </tr>
+              <tr>
+                <td>Peso</td>
+                <td>{product.details.dimensions.weight}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="grid gap-5">
+          <div>
+            <h4>Especificaciones</h4>
+            <table>
+              <tr>
+                <td>Tipo de cámara de vigilancia</td>
+                <td>{product.details.type}</td>
+              </tr>
+              <tr>
+                <td>Calidad de resolución</td>
+                <td>{product.details.resolution_type}</td>
+              </tr>
+              <tr>
+                <td>Tipos de conexiones</td>
+                <td>{product.details.connection_types}</td>
+              </tr>
+              <tr>
+                <td>Locaciones de la cámara</td>
+                <td>{product.details.location}</td>
+              </tr>
+              <tr>
+                <td>Campo visual</td>
+                <td>{product.details.visual_field}</td>
+              </tr>
+              <tr>
+                <td>Es motorizada</td>
+                <td>{product.details.motorized ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Tipo de movimiento</td>
+                <td>{product.details.motion_type}</td>
+              </tr>
+              <tr>
+                <td>Con visión nocturna</td>
+                <td>{product.details.night_vision ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Temperatura mínima soportada</td>
+                <td>{product.details.min_temperature}</td>
+              </tr>
+              <tr>
+                <td>Temperatura máxima soportada</td>
+                <td>{product.details.max_temperature}</td>
+              </tr>
+              <tr>
+                <td>Con micrófono</td>
+                <td>{product.details.microfone ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Cantidad máxima de FPS</td>
+                <td>{product.details.max_fps}</td>
+              </tr>
+              <tr>
+                <td>Tipos de control</td>
+                <td>{product.details.control_types}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Almacenamiento</h4>
+            <table class=" rounded-lg">
+              <tr>
+                <td>Tipos de almacenamiento</td>
+                <td>{product.details.storage_type}</td>
+              </tr>
+              <tr>
+                <td>Capacidad de almacenamiento</td>
+                <td>{product.details.storage_capacity}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Alimentación</h4>
+            <table>
+              <tr>
+                <td>Alimentación</td>
+                <td>{product.details.power_type}</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <h4>Otros</h4>
+            <table>
+              <tr>
+                <td>Con puerto USB</td>
+                <td>{product.details.usb_port ? "Sí" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Es resistente al agua</td>
+                <td>
+                  {product.details.location == "Exterior" ? "Sí" : "No"}
+                </td>
+              </tr>
+              <tr>
+                <td>Clasificación de resistancia al agua</td>
+                <td>
+                  {product.details.location == "Exterior" ? "IP65" : "N/A"}
+                </td>
+              </tr>
+              <tr>
+                <td>Accesorios incluidos</td>
+                <td>{product.details.accessories.join(", ")}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </article>
+    )
+  }
+  {
+    product.category == "DVR" && (
+    <article class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div class="grid gap-3">
+        <div>
+          <table>
+              <h4>General</h4>
+              <tr>
+                <td>Marca</td>
+                <td>{product.provider}</td>
+              </tr>
+              <tr>
+                <td>Modelo</td>
+                <td>{product.model}</td>
+              </tr>
+              <tr>
+                <td>Tipo de DVR</td>
+                <td>{product.dvr_details.type}</td>
+              </tr>
+            </table>
+        </div>
+        <div>
+          <h4>Dimensiones</h4>
+          <table>
+            <tr>
+              <td>Alto</td>
+              <td>{product.dvr_details.dimensions.height}</td>
+            </tr>
+            <tr>
+              <td>Ancho</td>
+              <td>{product.dvr_details.dimensions.width}</td>
+            </tr>
+            <tr>
+              <td>Profundidad</td>
+              <td>{product.dvr_details.dimensions.depth}</td>
+            </tr>
+            <tr>
+              <td>Peso</td>
+              <td>{product.dvr_details.dimensions.weight}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      {/* Columna derecha */}
+      <div>
+        <div>
+          <table>
+            <h4>Especificaciones</h4>
+            <tr>
+              <td>Cantidad de canales</td>
+              <td>{product.dvr_details.channels}</td>
+            </tr>
+            <tr>
+              <td>Resolución maxima de video</td>
+              <td>{product.dvr_details.resolution_type}</td>
+            </tr>
+            <tr>
+              <td>Tipo de resolución</td>
+              <td>{product.dvr_details.resolution}</td>
+            </tr>
+            <tr>
+              <td>Conectores de salida</td>
+              <td>{product.dvr_details.output_connectors.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Conectores de entrada</td>
+              <td>{product.dvr_details.input_connectors}</td>
+            </tr>
+            <tr>
+              <td>Capacidad de almacenamiento</td>
+              <td>{product.dvr_details.storage_capacity}</td>
+            </tr>
+            <tr>
+              <td>Tipo de almacenamiento</td>
+              <td>{product.dvr_details.storage_type.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Tipo de control</td>
+              <td>{product.dvr_details.control_types}</td>
+            </tr>
+            <tr>
+              <td>Sistema operativo compatibles</td>
+              <td>{product.dvr_details.supported_operating_systems.join(", ")}</td>
+            </tr>
+            <tr>
+              <td>Con vídeo en vivo</td>
+              <td>{product.dvr_details.live_stream ? "Sí" : "No"}</td>
+            </tr>
+            <tr>
+              <td>Con sensor de movimiento</td>
+              <td>{product.dvr_details.motion_sensor ? "Sí" : "No"}</td>
+            </tr>
+            <tr>
+              <td>Formatos de compresión de video</td>
+              <td>{product.dvr_details.video_compression}</td>
+            </tr>
+            <tr>
+              <td>Modos de grabación</td>
+              <td>{product.dvr_details.recording_modes}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </article>
+    )
+  }
+
+<style>
+    h4 {
+      font-size: medium;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    td {
+      padding: 1rem;
+      font-size: small;
+    }
+  
+    table {
+      width: 100%;;
+    }
+  
+    td {
+      width: 70%;
+    }
+    
+    td:first-child {
+      font-weight: bold;
+    }
+    tr:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+    tr:nth-child(even) {
+      background-color: #f3f3f3;
+    }
+  
+  </style>

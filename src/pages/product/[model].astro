@@ -1,0 +1,167 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { fetchData } from "../../services/fetchData";
+import type { Product } from "../../services/types";
+import Truck from "@/components/Icons/Truck.astro";
+import BuyButton from "@/components/Buttons/BuyButton";
+import AddCartButton from "@/components/Buttons/AddCartButton";
+import QuantitySelect from "@/components/Buttons/QuantitySelect";
+import ProductCaracteristics from "../../components/ProductCaracteristics.astro";
+import Favorite from "@/components/Icons/Favorite";
+import ProductDescription from "@/components/ProductDescription.astro";
+import CardsCarrusel from "@/components/CardsCarrusel.astro";
+import PaymentWays from "@/components/Modals/PaymentWays.astro";
+import CreditCard from "@/components/Icons/CreditCard.astro";
+import MP from "@/components/Icons/MP.astro";
+import Mastercard from "@/components/Icons/Mastercard.astro";
+import Visa from "@/components/Icons/Visa.astro";
+import ShippingWays from "@/components/Modals/ShippingWays.astro";
+
+export async function getStaticPaths() {
+  const products = await fetchData("getAllProducts");
+
+  return products.map((product: Product) => ({
+    params: {
+      model: product.model,
+    },
+  }));
+}
+
+const { model } = Astro.params;
+
+const product = (await fetchData(`getProduct?model=${model}`)) as Product;
+
+const similarProducts = await fetchData(`getSimilarProducts?provider=${product.provider}&category=${product.category}`);
+---
+
+<Layout title=`${model} | VIGI`>
+  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+    <header class="my-5">
+      <h3 class="text-primary font-bold text-2xl">{product.provider}</h3>
+    </header>
+    <section class="w-full flex flex-col sm:flex-row-reverse">
+      <!-- GALERIA -->
+      <article class="relative w-full flex justify-center">
+        {
+          product.has_promotion && (
+          <div class="absolute w-1/4 flex flex-col  justify-center items-center top-4 right-0 rounded-l gradient_violet bg-gradient-to-tr py-2">
+            <span class="text-white text-sm">Ahorras</span>
+            <span class="text-white text font-bold">{product.price_diferred?.toLocaleString("es-AR", {
+              style:"currency",
+              currency: "ARS",
+              maximumFractionDigits: 0,
+            })}</span>
+          </div>
+          )
+        }
+        <img src={product.thumbnail} alt={product.model} />
+      </article>
+      <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
+        <!-- DESCRIPCION -->
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-4xl font-bold">{product.model}</h4>
+            <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product} /></span>
+          </div>
+          <div class="flex justify-between flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <h6 class="text-4xl">
+                {
+                product.price?.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 0,
+                })
+              }
+            </h6>
+            {
+              product.has_promotion && <span class="text-green_ ">{product.discount}% OFF</span>
+            }
+          </div>
+            {
+              product.has_promotion && (
+              <p class="text-sm line-through bg-gray-200 text-gray-400 rounded-full px-4 p-2 max-w-fit">
+                {product.price_original?.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 0,
+                })}
+              </p>
+              )
+            }
+          </div>
+        </div>
+        <!-- CANTIDAD Y ENVIO -->
+        <div>
+          <QuantitySelect client:visible id={product._id} inherit_value={0} padding="p-3"/>
+          <div class="mt-3 flex items-center gap-2">
+            <Truck height="18" width="18" color="#3A3545"/>
+            <span class="font-bold text-sm"> Envíos a todo el país</span>
+          </div>
+          <menu>
+            <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Formas de entrega</button>
+          </menu>
+          <div class="mt-3 flex items-center gap-2">
+            <CreditCard width="max-w-5"/>
+            <span class="font-bold text-sm">Medios de pago</span>
+          </div>
+          <div class="max-h-6 flex justify-start items-center">
+            <MP/>
+            <Visa/>
+            <div class="flex gap-2 items-center">
+              <Mastercard/>
+              <menu>
+                <button id="pagos_modal_btn" class="text-gray-500 text-sm hover:text-gray-700 hover:underline">
+                  + Más
+                </button>
+              </menu>
+            </div>
+          </div>
+      </div>
+        <!-- BOTONES -->
+        <div class="grid gap-3">
+          <BuyButton client:visible product={product}/>
+          <AddCartButton client:visible product={product} buttonLabel="Agregar al carrito" padding="p-3"/>
+        </div>
+      </article>
+    </section>
+    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl mt-20 mb-10">
+      <details>
+        <ProductCaracteristics product={product} />
+      </details>
+    </section>
+    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl py-4">
+      <ProductDescription description={product.description}/>
+    </section>
+    <section class="relative">
+      <div class="sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+        <h2
+          class="text-primary font-bold mt-16 text-base sm:text-2xl 2xl:text-3xl">
+          Otras opciones similares. <span class="text-black font-normal">
+            Encuentra la que más se ajuste a tus necesidades.</span>
+        </h2>
+      </div>
+      <CardsCarrusel products={similarProducts}/>
+    </section>
+    <!-- MODALES -->
+    <PaymentWays />
+    <ShippingWays />
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const entregas_btn = document.getElementById("entregas_modal_btn");
+    const entregas_modal = document.getElementById("entregas_modal");
+    const pagos_btn = document.getElementById("pagos_modal_btn");
+    const pagos_modal = document.getElementById("pagos_modal");
+  
+    entregas_btn?.addEventListener('click', () => {
+      entregas_modal.showModal();
+    })
+
+    pagos_btn?.addEventListener('click', () => {
+      pagos_modal.showModal();
+    })
+  });
+</script>

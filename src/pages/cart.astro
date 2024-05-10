@@ -1,0 +1,142 @@
+---
+export const prerender = false;
+import Layout from "../layouts/Layout.astro";
+import { getCartData } from "../services/fetchData";
+import { type CartItem } from "../services/types";
+import Sad from "../components/Icons/Sad.astro";
+import DeleteItemButton from "../components/Buttons/DeleteItemButton";
+import OrderResume from "../components/OrderResume";
+import QuantitySelect from "@/components/Buttons/QuantitySelect";
+import AddCartButton from "@/components/Buttons/AddCartButton";
+
+let cart;
+if (Astro.cookies.has("check")) {
+  const token = Astro.cookies.get("check");
+  if (token?.value) {
+    cart = await getCartData(token.value);
+  } else {
+    cart = { items: [], products_total: 0, amount_to_pay: 0 };
+  }
+} else {
+  return Astro.redirect("/login");
+}
+---
+
+<Layout title={`(${cart.products_total}) Carrito de compras | VIGI`}>
+  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+    <div class="sm:py-3 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h2
+        class="text-primary font-bold mt-1 mb-3 text-base sm:text-2xl 2xl:text-3xl"
+      >
+        Carrito.<span class="text-black font-normal"> ¡Ya casi es tuyo!</span>
+      </h2>
+    </div>
+
+    <section class="flex flex-col md:flex-row gap-12 justify-between">
+      <article class="w-full">
+        <div id="row_contain" data-items={cart.items.length} class="flex flex-col gap-4 border rounded-md px-2 pt-2">
+          {
+            cart.items.length > 0 ? (
+              <table>
+                <tr>
+                  <th class="font-normal text-xs sm:text-base">Productos</th>
+                  <th class="font-normal text-xs sm:text-base">Precio</th>
+                  <th class="font-normal text-xs sm:text-base">Unidades</th>
+                  <th class="font-normal text-xs sm:text-base">Subtotal</th>
+                  <th>&nbsp;</th>
+                </tr>
+                {cart.items.map((product: CartItem, index:number) => (
+                  <tr>
+                    <td>
+                      <div class="flex flex-col xl:flex-row xl:gap-3 justify-center items-center">
+                        <img
+                        src={product.picture_url}
+                        alt={product.title}
+                        class="w-10 h-10 sm:w-14 sm:h-14"
+                        />
+                        <h4 class="text-primary text-xs sm:text-lg text-center">
+                          {product.title}
+                        </h4>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-black text-center text-xs sm:text-lg">
+                        {product.unit_price.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 0,
+                        })}
+                      </p>
+                    </td>
+                    <td class="max-w-12 ">
+                      <div id={`selectQ_${index}`}>
+                        <QuantitySelect client:visible id={product.id} inherit_value={product.quantity} padding="p-1"/>
+                      </div>
+                      <div id={`addBtn_${index}`} class="hidden mt-2">
+                        <AddCartButton client:visible product={product} buttonLabel="Actualizar" padding="p-1"/>
+                      </div>
+                    </td>
+                    <td class="text-center text-xs sm:text-lg">
+                      {(product.quantity * product.unit_price).toLocaleString(
+                        "es-AR",
+                        {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 0,
+                        }
+                      )}
+                    </td>
+                    <td>
+                      <DeleteItemButton
+                        client:visible
+                        product_id={product.id}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </table>
+            ) : (
+              <div class="p-3  flex flex-col justify-center items-center gap-2">
+                <Sad />
+                <span class="text-center">Tu carrito está vacío por el momento.</span>
+                <a href="/" class="text-center text-primary font-bold hover:underline">¡Añade productos para comenzar tu experiencia de compra!</a>
+              </div>
+            )
+          }
+        </div>
+      </article>
+      <OrderResume client:visible cart={cart} />
+    </section>
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const items_contain = document.getElementById("row_contain");
+    const itemsTotal = items_contain?.getAttribute("data-items");
+    const total = itemsTotal && parseInt(itemsTotal);
+  
+  
+    for(let i = 0; i < total; i++){
+      const div = document.getElementById(`selectQ_${i}`);
+      const btn = document.getElementById(`addBtn_${i}`);
+    
+      div?.addEventListener('click', () => {
+        btn?.classList.remove("hidden");
+      })
+    }
+  })
+</script>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 7px;
+  }
+</style>

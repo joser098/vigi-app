@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+import Layout from "@/layouts/Layout.astro";
+import { validateHash } from "@/services/fetchData"
+import NewPasswordForm from "@/components/Forms/NewPasswordForm";
+
+
+const { pathname } = Astro.url;
+const hash = pathname.split("/")[2]
+
+const isHashValid = await validateHash(hash);
+
+if(!isHashValid.success){
+   return Astro.redirect("/");
+}
+---
+<Layout title="Nueva contraseña">
+    <main
+    class="px-4 sm:px-8 max-w-[1180px] m-auto flex flex-col gap-4 justify-center items-center">
+    <div
+      class="sm:py-2 sm:w-[550px] lg:w-[600px] 2xl:w-[750px] flex flex-col justify-center items-center">
+      <h3 class="text-primary font-bold my-1 text-xl">Restablecer contraseña.</h3>
+      <span class="text-black font-normal text-xs text-center"
+        >Por favor, ingresa tu nueva contraseña. Una vez enviada, esta será la contraseña que utilizarás para acceder a tu cuenta en el futuro. Asegúrate de elegir una contraseña segura y fácil de recordar.</span
+      >
+    </div>
+    <section class="w-full flex flex-col items-center">
+        <NewPasswordForm client:visible hash={hash}/>
+    </section>
+  </main>
+</Layout>

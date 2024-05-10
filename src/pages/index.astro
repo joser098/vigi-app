@@ -1,86 +1,104 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import CategoryCard from "../components/CategoryCard.astro";
+import { fetchData } from "../services/fetchData";
+import InfoCard from "@/components/InfoCard.astro";
+import Faq from "@/components/Faq";
+import { categories } from "@/services/const";
+import CardsCarrusel from "@/components/CardsCarrusel.astro";
+
+const promotions = await fetchData("getProducts?promotion=true");
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
-<Layout title="Bienvenido a VIGI">
-	<main>
-		<h1><span class="text-gradient">Próximamente podrás hacer tus compras!</span></h1>
-		<p>Mientras tanto, puedes hacer tu compra a través de la tienda en <a target="_blank" href="https://api.whatsapp.com/send?phone=541126039243&text=Hola!%20Me%20interesa%20saber%20más!">WhatsApp.<a/></p>
-		<p class="emoji">⚠️</p>
-	</main>
+<Layout title="Bienvenido a VIGI | Tienda Online de artículos de seguridad para el hogar">
+  <!-- BG FOR DESKTOP -->
+  <div class="hidden w-auto sm:flex">
+    <img class="w-full object-cover" src="/carrusel1.png" alt="pricipal_banner">
+  </div>
+  <!-- BG FOR MOBILE -->
+  <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
+    <div class="my-10 sm:py-5 sm:hidden sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h1 class="text-primary font-bold my-1 text-xl sm:text-4xl 2xl:text-5xl">
+        Tienda online. <span class="text-black font-normal"
+          >Compra seguro tus artículos de seguridad.</span
+        >
+      </h1>
+    </div>
+    
+    <!-- CATEGORIES -->
+    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-16 sm:mb-10">
+    {
+      categories.map(c => {
+        return (
+          <CategoryCard
+            image_path={`${BASE_URL}/categories/${c.path}.png`}
+            title={c.name}
+          />
+        )
+      })
+    }
+    </section>
+
+    <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+      <h2
+        class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
+      >
+        Destacados. <span class="text-black font-normal">
+          El mejor precio por el mejor producto.</span
+        >
+      </h2>
+    </div>
+
+    <!-- CARRUSEL -->
+    <CardsCarrusel products={promotions}/>
+    
+    <!-- INFORMATIVES CARDS -->
+    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 mb-12">
+      <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
+      <InfoCard icon="card" title="Todos los medios de pago" description="Descuentos en efectivo" />
+      <InfoCard icon="mail" title="Seguimiento de tu compra" description="Elige cualquier medio" />
+    </section>
+  </main>
+
+  <!-- BANNER -->
+  <div class="banner flex flex-col justify-center items-start">
+    <div class="w-full flex justify-between p-4 sm:p-8 max-w-[1180px] m-auto">
+      <h5 class="text-white sm:text-2xl text-balance">Hoy, tu seguridad al alcance de tus manos.</h5>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section id="faq" class="p-4 sm:p-8 max-w-[1180px] m-auto">
+    <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px] ">
+      <h2
+        class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
+      >
+       Preguntas frecuentes. <span class="text-black font-normal">
+        Si necesitas ayuda adicional, puedes ponerte en contacto con soporte.</span
+        >
+      </h2>
+    </div>
+    <Faq client:visible />
+  </section>
+
+  <script>
+    import { check } from "@/store/cartStore";
+    const token = document.cookie.split('=');
+
+    if(token != null){
+      check.set(token[1])
+    }
+  </script>
 </Layout>
 
-<style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		height: calc(100% - 106px);
-		max-width: calc(100% - 2rem);
-		color: #231F20;
-		font-size: 20px;
-		line-height: 1.6;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
-	h1 {
-		font-size: 2rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: .5em;
-		transition: ease-in-out .2s;
-		cursor: pointer;
-	}
-	h1:hover {
-		transform: scale(1.1);
-	}
-	a {
-		color: var(--accent);
-		font-weight: bold;
-		text-decoration: none;
-	}
-	a:hover {
-		text-decoration: underline;
-	}
-	p {
-		text-align: center;
-		font-size: small;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.emoji {
-		font-size: 2rem;
-		transition: ease-in-out .2s;
-	}
-	.emoji:hover {
-		transform: rotate(180deg);
-	}
 
-	@media (min-width: 768px) {
-		h1 {
-			font-size: 4rem;
-		}
-		p {
-			font-size: medium;
-		}
-		.emoji {
-			font-size: 4rem;
-		}
-	}
+<style>
+  .banner {
+    background-image: url('/banner1.webp');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    width: 100%;
+  }
 </style>

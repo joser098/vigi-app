@@ -1,0 +1,74 @@
+---
+import { getTime } from "@/services/scripts";
+import { type Product } from "../services/types";
+import Truck from "./Icons/Truck.astro";
+
+interface Props {
+  product: Product;
+}
+
+const time = getTime();
+const { product } = Astro.props;
+---
+
+  <a href=`/product/${product.model}` class="transition-transform duration-500 hover:scale-105">
+    <article class="relative flex flex-col justify-end items-center p-3 rounded bg-white shadow-md hover:shadow-lg w-60 h-[440px]">
+      {
+        product.has_promotion && (
+        <div class="absolute w-1/2 flex flex-col  justify-center items-center top-4 left-0 rounded-r gradient_violet bg-gradient-to-tr">
+          <span class="text-white text-[10px]">Ahorras</span>
+          <span class="text-white text-sm font-bold">{product.price_diferred?.toLocaleString("es-AR", {
+            style:"currency",
+            currency: "ARS",
+            maximumFractionDigits: 0,
+          })}</span>
+        </div>
+        )
+      }
+      <img class="max-w-52 min-h-48 object-cover mb-4" src={product.thumbnail} alt={product.model} />
+      <div class="px-4">
+        <h2 class="mb-2 font-bold text-center text-primary">{product.model}</h2>
+        <p class="my-2 text-xs text-center" title=`${product.title}`>{product.title}</p>
+        <div class="flex justify-center items-center gap-2">
+          <p class="text-center text-primary font-bold">
+            {product.price?.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+              minimumFractionDigits: 0,
+            })}
+        </p>
+            {
+              product.has_promotion && (
+              <p class="text-xs line-through bg-gray-200 text-gray-400 rounded-full px-2">
+                {product.price_original?.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 0,
+                })}
+              </p>
+              )
+            }
+      </div>
+        <div class="my-2 flex justify-center items-center">
+          <span id="ship_date" class="text-[12px] py-1 px-2 rounded-full gradient text-green_">
+            {
+              time >= 0 && time <16 ? "Llega hoy (CABA)" : "Llega mañana (CABA)"  
+            }
+          </span>
+        </div>
+        <div class="flex justify-center items-center">
+          <Truck height="15" width="15" color="#33BF5E"/>
+          <span class="text-[10px] py-1 px-2 text-green_ font-bold">Envio gratis</span>
+        </div>
+      </div>
+    </article>
+  </a>
+
+  <style is:global>
+    .gradient {
+      background: linear-gradient(120deg, rgb(223, 255, 160) 0%, rgb(230, 255, 219) 100%);
+    }
+    .gradient_violet {
+      background: linear-gradient(to bottom right, #1e053fb9 0%, #1E053F 74%);;
+    }
+  </style>

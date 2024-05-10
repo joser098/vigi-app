@@ -1,0 +1,57 @@
+---
+import Approved from "./Icons/Approved.astro";
+import { type Payment } from "../services/types";
+
+interface Props {
+  payment: Payment;
+}
+const { payment } = Astro.props;
+const date = payment.date_approved.split("T")[0].split("-").reverse().join("/");
+const hour = payment.date_approved.split("T")[1].split(".")[0];
+---
+
+<section class="flex flex-col gap-6 bg-gray-200 p-3 rounded-lg">
+  <div class="flex gap-2">
+    <h3 class="text-xl font-semibold">¡Pago Aprobado!</h3>
+    <Approved />
+  </div>
+
+  <table>
+    <tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold"> Nro de pago:</td>
+      <td class="text-end"> {payment.id}</td>
+    </tr>
+    <tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold">Fecha:</td>
+      <td class="text-end">{date}</td>
+    </tr>
+    <tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold">Hora:</td>
+      <td class="text-end">{hour}</td>
+    </tr>
+    <tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold">Metodo de pago:</td>
+      <td class="text-end">{payment.payment_method.type.includes("debit") ? "Tarjeta de débito" : payment.payment_method.type.includes("credit") ? "Tarjeta de crédito" : "Dinero en cuenta"}</td>
+    </tr>
+    { payment.payment_method.type.includes("card") && (<tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold">Tarjeta:</td>
+      <td class="text-end">{`**** **** **** ${payment.card.last_four_digits}`}</td>
+    </tr>)
+    }
+    <tr class="h-10 border-b-[1px] border-gray-500">
+      <td class="font-semibold">Monto:</td>
+      <td class="text-end"
+        >{
+          payment.transaction_details.total_paid_amount.toLocaleString(
+            "es-AR",
+            {
+              style: "currency",
+              currency: "ARS",
+              minimumFractionDigits: 0,
+            }
+          )
+        }</td
+      >
+    </tr>
+  </table>
+</section>

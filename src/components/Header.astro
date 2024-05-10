@@ -2,36 +2,47 @@
 import Logo from "./Logo.astro";
 import Cart from "../components/Icons/Cart.astro";
 import Profile from "../components/Icons/Profile.astro";
+import SearchInput from "../components/SearchInput";
+
+const { render } = Astro.props;
 ---
 
-<header>
-  <Logo />
+<header class="flex justify-center border-b-primary border-b-[1px]">
+  <div class="bg-back w-full flex justify-between items-center max-w-[1180px] py-3 px-4 sm:px-8">
+    <a href="/">
+      <Logo />
+    </a>
 
-  <nav>
-    <!-- <a href="#"> -->
-      <Cart />
-    <!-- </a> -->
-    <!-- <a href="#"> -->
-      <Profile />
-    <!-- </a> -->
-  </nav>
+    <div class={`${!render && "hidden" }`}>
+      <SearchInput client:visible/>
+    </div>
+
+    <nav class={`flex gap-5 ${!render && "hidden" }`}>
+      <div class="relative">
+        <a class="text-primary" href="/cart">
+          <Cart />
+          <span transition:persist id="cart_label" class="absolute -top-1 -right-2 bg-red-500 text-white rounded-full text-[10px] w-4 text-center"></span>
+        </a>
+      </div>
+      <a class="text-primary " href="/profile">
+        <Profile />
+      </a>
+    </nav>
+  </div>
 </header>
 
-<style>
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem;
-        background-color: #F5F5F7;
-        border-bottom: #1E053F 2px solid;
+<script>
+  import { totalItems } from "@/store/cartStore";
+  
+  const cartEle = document.getElementById("cart_label");
+
+  if(cartEle && totalItems.value! > 0) cartEle.innerText = totalItems.value?.toString()!;
+  
+  totalItems.listen(num => {
+    if(cartEle && num > 0){
+      cartEle.innerText = num.toString();
+    } else if (cartEle){
+      cartEle.innerText = "";
     }
-    nav {
-        display: flex;
-        gap: 1.5rem;
-    }
-    a {
-        color: #1E053F;
-        text-decoration: none;
-    }
-</style>
+  })
+</script>

@@ -1,0 +1,55 @@
+---
+export const prerender = false;
+import CardsCarrusel from "@/components/CardsCarrusel.astro";
+import ProductsList from "@/components/ProductsList.astro";
+import Layout from "@/layouts/Layout.astro";
+import { fetchData } from "@/services/fetchData";
+import { searchProducts } from "@/services/fetchData";
+
+const path = Astro.url;
+const urlParams = path.searchParams.get("search");
+
+const products = await searchProducts(urlParams!);
+
+let similarProducts;
+
+if (products.length > 0) {
+  similarProducts = await fetchData(
+    `getSimilarProducts?provider=${products[0].provider}&category=${products[0].category}`
+  );
+}
+---
+
+<Layout title={`Buscar ${urlParams} | VIGI`}>
+  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+    {
+      products.length > 0 ? (
+        <>
+          <ProductsList productsList={products} />
+          <CardsCarrusel products={similarProducts} />
+        </>
+      ) : (
+        <div class="bg-white p-4 flex flex-col justify-center items-center rounded">
+          <h6 class="text-xl font-bold">
+            No hay publicaciones que coincidan con tu búsqueda
+          </h6>
+          <ul class="list-disc">
+            <li class="my-2">
+              <span class="font-bold">Revisa la ortografía</span> de la palabra.
+            </li>
+            <li class="my-2">
+              Usa <span class="font-bold">palabras más genéricas</span> o menos
+              palabras.
+            </li>
+            <li class="my-2">
+              <a href="/" class="text-primary hover:underline">
+                Navegá por las categorías
+              </a>{" "}
+              para encontrar un producto similar
+            </li>
+          </ul>
+        </div>
+      )
+    }
+  </main>
+</Layout>

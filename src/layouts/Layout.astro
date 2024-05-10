@@ -1,28 +1,55 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BackButton from "@/components/Buttons/BackButton";
+import '@fontsource/poppins';
+import  SpeedInsights  from "@vercel/speed-insights/astro"
+import Marquee from "@/components/Marquee.astro";
 
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
+const { url } = Astro;
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es-AR">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="e-commerce​​ para ventas de productos de seguridad (camaras, alarmas) en Argentina" />
-		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg" href="/vigi_white.svg" />
-		<meta name="keywords" content="seguridad, camaras, alarmas, vigilancia, argentina, vision"/>
+		<meta charset="UTF-8" />
+		<meta name="theme-color" content="#1E053F" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
+		<meta name="keywords" content="seguridad, camaras,cámaras, alarmas, vigilancia, argentina, vision"/>
 		<meta name="author" content="Jose Jaramillo" />
-		<meta name="robots" content="index"/>
+
+		<meta name="robots" content="index, follow"/>
+		<meta name="googlebot" content="index, follow" />
+
+		<meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
+		<meta name="og:title" content={title} />
+		<meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
+		<meta name="og:url" content={Astro.url} />
+		<meta name="og:site_name" content="Vigi | Tienda online" />
+		<meta name="og:type" content="website" />
+		<meta name="og:locale" content="es_AR" />
+
 		<title>{title}</title>
+		<ViewTransitions />
+		<SpeedInsights />
 	</head>
 	<body>
-		<Header />
+		{
+			url.pathname == "/" && <Marquee/>
+		}
+		<Header render={url.pathname != '/login' && url.pathname !== '/register' && true}/>
+		{(url.pathname !== '/' && url.pathname !== '/login' && !url.pathname.includes('payment')) && <BackButton client:visible/>}
 		<slot />
+		<Footer />
 	</body>
 </html>
 <style is:global>
@@ -40,7 +67,7 @@ const { title } = Astro.props;
 		);
 	}
 	html {
-		font-family: system-ui, sans-serif;
+		font-family:  'Poppins',system-ui, sans-serif;
 		background: #f5f5f7;
 		background-size: 224px;
 	}
@@ -48,5 +75,6 @@ const { title } = Astro.props;
 		height: 100vh;
 		width: 100vw;
 		margin: 0;
+		overflow-x: hidden;
 	}
 </style>

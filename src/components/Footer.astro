@@ -1,0 +1,36 @@
+---
+import { footerData } from "../services/const";
+import Logo from "./Logo.astro";
+---
+
+<footer>
+  <div class="max-w-[1180px] mt-14 mx-auto px-4 pb-3 sm:px-8">
+    <section class="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-0 sm:justify-between border-t-2 pt-8">
+      {
+        footerData.map((item) => {
+          return (
+            <div>
+              <h5 class="text-primary text-sm font-bold">{item.title}</h5>
+              <ul>
+                {item.redirects.map((item) => {
+                  return (
+                    <li>
+                      <a class="text-xs text-gray-500 hover:underline" href={item.url} target={item.url.includes("https") ? "_blank" : "_self"}>{item.title}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })
+      }
+    </section>
+    <section class="flex justify-between mt-5">
+        <div>
+            <span class="block text-xs text-gray-400">Copyright © 2024 Vigi S.A</span>
+            <span class="block text-xs text-gray-400">Caballito, Capital Federal. Argentina</span>
+        </div>
+        <Logo />
+    </section>
+  </div>
+</footer>
