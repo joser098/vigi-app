@@ -28,7 +28,9 @@ export async function getStaticPaths() {
 }
 
 const { model } = Astro.params;
+
 const product = (await fetchData(`getProduct?model=${model}`)) as Product;
+
 const similarProducts = await fetchData(`getSimilarProducts?provider=${product.provider}&category=${product.category}`);
 ---
 
@@ -39,7 +41,19 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
     </header>
     <section class="w-full flex flex-col sm:flex-row-reverse">
       <!-- GALERIA -->
-      <article class="w-full flex justify-center">
+      <article class="relative w-full flex justify-center">
+        {
+          product.has_promotion && (
+          <div class="absolute w-1/4 flex flex-col  justify-center items-center top-4 right-0 rounded-l gradient_violet bg-gradient-to-tr py-2">
+            <span class="text-white text-sm">Ahorras</span>
+            <span class="text-white text font-bold">{product.price_diferred?.toLocaleString("es-AR", {
+              style:"currency",
+              currency: "ARS",
+              maximumFractionDigits: 0,
+            })}</span>
+          </div>
+          )
+        }
         <img src={product.thumbnail} alt={product.model} />
       </article>
       <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
@@ -49,28 +63,39 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
             <h4 class="text-4xl font-bold">{product.model}</h4>
             <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product} /></span>
           </div>
-          {
-            product.has_promotion && (
-              <span class="text-green-600 mb-1">Oferta</span>
-            )
-          }
-          <div class="flex justify-between">
-            <h6 class="text-4xl">
-              {
-                product.price.toLocaleString("es-AR", {
+          <div class="flex justify-between flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <h6 class="text-4xl">
+                {
+                product.price?.toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
                   minimumFractionDigits: 0,
                 })
               }
             </h6>
+            {
+              product.has_promotion && <span class="text-green_ ">{product.discount}% OFF</span>
+            }
+          </div>
+            {
+              product.has_promotion && (
+              <p class="text-sm line-through bg-gray-200 text-gray-400 rounded-full px-4 p-2 max-w-fit">
+                {product.price_original?.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 0,
+                })}
+              </p>
+              )
+            }
           </div>
         </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
           <QuantitySelect client:visible id={product._id} inherit_value={0} padding="p-3"/>
           <div class="mt-3 flex items-center gap-2">
-            <Truck height="18" width="18" />
+            <Truck height="18" width="18" color="#3A3545"/>
             <span class="font-bold text-sm"> Envíos a todo el país</span>
           </div>
           <menu>
