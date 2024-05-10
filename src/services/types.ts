@@ -11,6 +11,7 @@ export interface Product {
   price: number;
   price_original: number;
   price_diferred: number;
+  discount: number; 
   details: CameraDetails;
   dvr_details: DvrDetails;
   has_promotion: boolean;
