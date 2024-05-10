@@ -2,9 +2,10 @@
 interface Props {
   height: string;
   width: string;
+  color: string;
 }
 
-const { height, width} = Astro.props;
+const { height, width, color = "#3A3545"} = Astro.props;
 ---
 
 <svg
@@ -19,7 +20,7 @@ const { height, width} = Astro.props;
   stroke-width="1.5"
   viewBox="0 0 24 24"
   width="24"
-  style=`color:#3A3545;width:${width}px;height:${height}px;"`
+  style=`color:${color};width:${width}px;height:${height}px;"`
   ><path d="M1 3h15v13H1z"></path><path d="M16 8h4l3 3v5h-7V8z"></path><circle
     cx="5.5"
     cy="18.5"

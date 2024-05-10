@@ -1,6 +1,6 @@
 ---
 import { type Product } from "../services/types";
-import Badges from "./Badges.astro";
+import Truck from "./Icons/Truck.astro";
 
 interface Props {
   product: Product;
@@ -10,22 +10,34 @@ const { product } = Astro.props;
 ---
 
   <a href=`/product/${product.model}` class="transition-transform duration-500 hover:scale-105">
-    <article class="flex flex-col justify-evenly p-3 rounded bg-white shadow-md hover:shadow-lg w-60 h-96">
+    <article class="flex flex-col justify-center items-center p-3 rounded bg-white shadow-md hover:shadow-lg w-60 h-auto">
       <img class="max-w-52 min-h-48 object-cover mb-4" src={product.thumbnail} alt={product.model} />
       <div class="px-4">
-        {product.has_promotion && (
+        <!-- {product.has_promotion && (
           <span class="text-green-600 text-xs mb-3">Oferta</span>
-        )}
-        <h2 class="mb-2 font-bold">{product.model}</h2>
-        <p>
+        )} -->
+        <h2 class="mb-2 font-bold text-center text-primary">{product.model}</h2>
+        <p class="my-2 text-xs text-center" title="Cámara para el hogar inteligente con wifi.">Cámara para el hogar inteligente con wifi.</p>
+        <p class="text-center text-primary font-bold">
           {product.price.toLocaleString("es-AR", {
             style: "currency",
             currency: "ARS",
             minimumFractionDigits: 0,
           })}
         </p>
-        <Badges product={product}/>
+        <div class="my-2 flex justify-center items-center">
+          <span class="text-[12px] py-1 px-2 rounded-full gradient text-[#33BF5E]">Llega mañana (CABA)</span>
+        </div>
+        <div class="flex justify-center items-center">
+          <Truck height="15" width="15" color="#33BF5E"/>
+          <span class="text-[10px] py-1 px-2 text-[#33BF5E] font-bold">Envio gratis</span>
+        </div>
       </div>
     </article>
   </a>
 
+  <style>
+    .gradient {
+      background: linear-gradient(120deg, rgb(223, 255, 160) 0%, rgb(230, 255, 219) 100%);
+    }
+  </style>
