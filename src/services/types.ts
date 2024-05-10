@@ -5,9 +5,12 @@ export interface Product {
   thumbnail: string;
   provider: string;
   model: string;
+  title: string;
   description: string;
   category: string;
   price: number;
+  price_original: number;
+  price_diferred: number;
   details: CameraDetails;
   dvr_details: DvrDetails;
   has_promotion: boolean;

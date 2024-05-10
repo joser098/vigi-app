@@ -134,3 +134,11 @@ export const formatDate = (date: string) => {
 
   return `${day} de ${month} ${year}`;
 }
+
+export const getTime = () => {
+  const date = new Date();
+  const time_arg = date.toLocaleTimeString("es-AR", { timeZone: "America/Argentina/Buenos_Aires"});
+  const time = parseInt(time_arg.slice(0, 2));
+
+  return time;
+}
