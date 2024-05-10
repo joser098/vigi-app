@@ -4,6 +4,7 @@ import { login } from "@/services/fetchData";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
 import { setItemsAfterLog } from "@/store/cartStore";
+import Eye from "../Icons/Eye";
 
 interface IFormInput {
   email: string;
@@ -14,6 +15,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -30,7 +32,7 @@ const LoginForm = () => {
 
       window.localStorage.setItem("check", response.data.token);
       document.cookie = `check=${response.data.token}; expires=${expires.toUTCString()}; path=/`;
-      setItemsAfterLog(false)
+      setItemsAfterLog(false);
       navigate("/");
     }
     if (!response.success) {
@@ -82,17 +84,22 @@ const LoginForm = () => {
           <label htmlFor="password">
             Contraseña<span className="text-xs text-red-500">*</span>
           </label>
-          <input
-            className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
-            type="password"
-            placeholder="*******"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "Este campo es requerido",
-              },
-            })}
-          />
+          <div className="relative">
+            <input
+              className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Este campo es requerido",
+                },
+              })}
+            />
+            <div className={`absolute top-[10px] right-3 hover:scale-105 transition-transform rounded-full ${showPassword && "opacity-70"}`} onMouseUp={() => setShowPassword(false)} onMouseDown={() => setShowPassword(true)}>
+              <Eye color="#1E053F"/>
+            </div>
+          </div>
           <span>
             {errors.password && (
               <span className="text-xs text-red-500">
@@ -116,7 +123,10 @@ const LoginForm = () => {
           </span>
         )}
         <div className="flex flex-col justify-center items-center">
-          <a href="/forgot-password" className="text-primary hover:underline block">
+          <a
+            href="/forgot-password"
+            className="text-primary hover:underline block"
+          >
             ¿Olvidaste tu contraseña?
           </a>
           <a href="/register" className="text-primary hover:underline">
