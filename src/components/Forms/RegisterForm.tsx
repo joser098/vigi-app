@@ -5,7 +5,7 @@ import { formatUserRegister } from "@/services/scripts";
 import { type Province, type RegisterIForm } from "@/services/types";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
-import { provinces } from "@/services/const"
+import { provinces } from "@/services/const";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,13 +25,17 @@ const RegisterForm = () => {
 
   const onSubmitRegister: SubmitHandler<RegisterIForm> = async (data: any) => {
     setIsLoading(true);
+
+    const province_obj = provinces.find(p => p.id == data.province);
+    data.province = province_obj && province_obj.name;
+
     const formatData = formatUserRegister(data);
     const response = await registerCustomer(formatData);
-    if(response.success){
+    if (response.success) {
       setToastConfig({
         show: true,
         message: `Registro enviado. Verifique su correo electrónico para completar.`,
-        status: "success"
+        status: "success",
       });
       reset();
       setTimeout(() => {
@@ -39,11 +43,11 @@ const RegisterForm = () => {
       }, 15000);
     }
 
-    if(!response.success){
+    if (!response.success) {
       setToastConfig({
         show: true,
         message: response.message,
-        status: "error"
+        status: "error",
       });
     }
     setIsLoading(false);
@@ -152,7 +156,7 @@ const RegisterForm = () => {
             })}
           >
             {provinces.map((province: Province) => (
-              <option key={province.id} value={province.name}>
+              <option key={province.id} value={province.id}>
                 {province.name}
               </option>
             ))}
@@ -247,12 +251,20 @@ const RegisterForm = () => {
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
-              type="text"
-              placeholder="C1723"
+              type="number"
+              placeholder="1723"
               {...register("zip_code", {
                 required: {
                   value: true,
                   message: "Este campo es requerido",
+                },
+                minLength: {
+                  value: 4,
+                  message: "Codigo postal debe tener 4 digitos",
+                },
+                maxLength: {
+                  value: 4,
+                  message: "Codigo postal debe tener 4 digitos",
                 },
               })}
             />
@@ -282,7 +294,7 @@ const RegisterForm = () => {
                 maxLength: {
                   value: 8,
                   message: "DNI debe tener 8 digitos",
-                }
+                },
               })}
             />
             {errors.DNI && (
@@ -356,7 +368,7 @@ const RegisterForm = () => {
                 pattern: {
                   value: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/,
                   message: "La contraseña debe tener al menos 6 caracteres, una letra y un número",
-                }
+                },
               })}
             />
             {errors.password && (
@@ -424,7 +436,7 @@ const RegisterForm = () => {
           )}
           <button className="w-full bg-primary border-2 border-primary text-white h-1o p-2 rounded-md hover:opacity-70 transition-opacity max">
             {isLoading ? (
-            <span className="flex justify-center">
+              <span className="flex justify-center">
                 <Loader />
               </span>
             ) : (
@@ -432,8 +444,15 @@ const RegisterForm = () => {
             )}
           </button>
           {toastConfig.show && (
-            <span className={toastConfig.status == "error" ? "bg-red-200 py-2 px-4 rounded-md text-red-600 text-center" : "bg-green-200 py-3 px-4 rounded-md text-green-600 text-center flex justify-center gap-5"}>
-              {toastConfig.message} {toastConfig.status == "error" ? "⚠️" : <Loader/>}
+            <span
+              className={
+                toastConfig.status == "error"
+                  ? "bg-red-200 py-2 px-4 rounded-md text-red-600 text-center"
+                  : "bg-green-200 py-3 px-4 rounded-md text-green-600 text-center flex justify-center gap-5"
+              }
+            >
+              {toastConfig.message}{" "}
+              {toastConfig.status == "error" ? "⚠️" : <Loader />}
             </span>
           )}
           <a
