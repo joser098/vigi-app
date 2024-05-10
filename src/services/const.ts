@@ -114,22 +114,22 @@ export const footerData = [
             }
         ]
     },
-    {
-        id: 2,
-        title: 'Envíos y Devoluciones',
-        redirects: [
-            {
-                id: 1,
-                title: 'Política de Envíos',
-                url: '/legales/envios'
-            },
-            {
-                id: 2,
-                title: 'Política de Devoluciones',
-                url: '/legales/devoluciones'
-            }
-        ]
-    },
+    // {
+    //     id: 2,
+    //     title: 'Envíos y Devoluciones',
+    //     redirects: [
+    //         {
+    //             id: 1,
+    //             title: 'Política de Envíos',
+    //             url: '/legales/envios'
+    //         },
+    //         {
+    //             id: 2,
+    //             title: 'Política de Devoluciones',
+    //             url: '/legales/devoluciones'
+    //         }
+    //     ]
+    // },
     {
         id: 3,
         title: 'Soporte',
@@ -142,7 +142,7 @@ export const footerData = [
             {
                 id: 2,
                 title: 'Contacto',
-                url: '/contacto'
+                url: 'https://wa.me/541126039243'
             }
         ]
     },
@@ -163,7 +163,7 @@ export const footerData = [
             {
                 id: 3,
                 title: 'Whatsapp',
-                url: 'https://api.whatsapp.com/send?phone=541126039243&text=Hola!.%20Me%20gustaria%20saber%20m%C3%A1s!'
+                url: 'https://wa.me/541126039243'
             }
         ]
     },
