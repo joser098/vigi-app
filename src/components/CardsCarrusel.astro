@@ -33,6 +33,7 @@ const { products } = Astro.props;
     const nextBtn = document.getElementById("next");
     const slider = document.getElementById("promotions_slider");
     const arrItems = slider?.getAttribute("data-items");
+    const slider_W = slider.offsetWidth
 
     let current = 0;
     let translateXpercentage = current;
@@ -40,14 +41,14 @@ const { products } = Astro.props;
     const addOne = () => {
       if (arrItems != null) {
         const total = parseInt(arrItems);
-        if (!(current == total) && arrItems > 4) {
+        if (!(current == total - 4) && total > 4) {
           current += 1;
         }
       }
     };
 
     const removeOne = () => (current >= 1 ? (current -= 1) : null);
-    const updatePercentaje = () => (translateXpercentage = current * 3.7);
+    const updatePercentaje = () => (translateXpercentage = current * ((260 / slider_W) * 100));
 
     const handlerClick = (e, action) => {
       e.preventDefault();

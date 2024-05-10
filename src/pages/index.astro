@@ -54,7 +54,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     <CardsCarrusel products={promotions}/>
     
     <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 my-24">
+    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 mb-12">
       <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
       <InfoCard icon="card" title="Todos los medios de pago" description="Descuentos en efectivo" />
       <InfoCard icon="mail" title="Seguimiento de tu compra" description="Elige cualquier medio" />
@@ -89,41 +89,6 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     if(token != null){
       check.set(token[1])
     }
-  </script>
-
-  <script is:inline>
-    document.addEventListener('astro:page-load', () => {
-      //Carrousel Slider
-      const prevBtn = document.getElementById("prev");
-      const nextBtn = document.getElementById("next");
-      const slider = document.getElementById("promotions_slider");
-      const arrItems = slider?.getAttribute("data-items");
-  
-      let current = 0;
-      let translateXpercentage = current;
-  
-      const addOne = () => {
-        if(arrItems != null){
-          const total = parseInt(arrItems)
-          if(!(current == total - 3)){
-            current += 1;
-          } 
-        }
-      };
-      
-      const removeOne = () => current >= 1 ? current -= 1 : null;
-      const updatePercentaje = () => translateXpercentage = current * 3.7;
-      
-      const handlerClick = (e, action) => {
-        e.preventDefault();
-        action == 1 ? addOne() : removeOne();
-        updatePercentaje();
-        if(slider) slider.style.transform = `translateX(-${translateXpercentage}%)`;
-      }
-  
-      prevBtn.addEventListener('click', (e) => handlerClick(e,0));
-      nextBtn.addEventListener('click', (e) => handlerClick(e,1));
-    })
   </script>
 </Layout>
 
