@@ -5,7 +5,8 @@ export default {
 		extend: {
 			colors: {
 				primary: "#1E053F",
-				back: "#f5f5f7"
+				back: "#f5f5f7",
+				green_: "#33BF5E"
 			},
 			keyframes: {
 				slideDown: {
