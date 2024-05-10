@@ -50,7 +50,7 @@ const { product } = Astro.props;
             }
       </div>
         <div class="my-2 flex justify-center items-center">
-          <span id="ship_date" class="text-[12px] py-1 px-2 rounded-full gradient text-[#33BF5E]">
+          <span id="ship_date" class="text-[12px] py-1 px-2 rounded-full gradient text-green_">
             {
               time >= 0 && time <16 ? "Llega hoy (CABA)" : "Llega mañana (CABA)"  
             }
@@ -58,13 +58,13 @@ const { product } = Astro.props;
         </div>
         <div class="flex justify-center items-center">
           <Truck height="15" width="15" color="#33BF5E"/>
-          <span class="text-[10px] py-1 px-2 text-[#33BF5E] font-bold">Envio gratis</span>
+          <span class="text-[10px] py-1 px-2 text-green_ font-bold">Envio gratis</span>
         </div>
       </div>
     </article>
   </a>
 
-  <style>
+  <style is:global>
     .gradient {
       background: linear-gradient(120deg, rgb(223, 255, 160) 0%, rgb(230, 255, 219) 100%);
     }
