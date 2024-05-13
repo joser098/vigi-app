@@ -42,7 +42,9 @@ const SearchInput = () => {
   };
 
   const onBlurHandler = () => {
-    setSuggestList([]);
+    setTimeout(() => {
+      setSuggestList([]);
+    }, 150)
   };
 
   return (
