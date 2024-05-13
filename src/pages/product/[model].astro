@@ -16,6 +16,7 @@ import MP from "@/components/Icons/MP.astro";
 import Mastercard from "@/components/Icons/Mastercard.astro";
 import Visa from "@/components/Icons/Visa.astro";
 import ShippingWays from "@/components/Modals/ShippingWays.astro";
+import Gallery from "@/components/Gallery.astro";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -41,20 +42,20 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
     </header>
     <section class="w-full flex flex-col sm:flex-row-reverse">
       <!-- GALERIA -->
-      <article class="relative w-full flex justify-center">
+      <article class="relative w-full flex justify-center mb-3 sm:mb-3">
         {
           product.has_promotion && (
-          <div class="absolute w-1/4 flex flex-col  justify-center items-center top-4 right-0 rounded-l gradient_violet bg-gradient-to-tr py-2">
-            <span class="text-white text-sm">Ahorras</span>
-            <span class="text-white text font-bold">{product.price_diferred?.toLocaleString("es-AR", {
+          <div class="absolute w-1/4 flex flex-col justify-center items-center top-0  rounded-b gradient_violet bg-gradient-to-tr py-1">
+            <span class="text-white text-[10px] sm:text:xs">Ahorras</span>
+            <span class="text-white text-xs sm:text-sm font-bold">{product.price_diferred?.toLocaleString("es-AR", {
               style:"currency",
               currency: "ARS",
               maximumFractionDigits: 0,
-            })}</span>
+            })}</span> 
           </div>
           )
         }
-        <img src={product.thumbnail} alt={product.model} />
+        <Gallery model={product.model} gallery_images_total={product.gallery}/>
       </article>
       <article class="w-full sm:w-1/2 flex flex-col gap-8 my-3">
         <!-- DESCRIPCION -->
@@ -125,7 +126,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         </div>
       </article>
     </section>
-    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl mt-20 mb-10">
+    <section class="bg-gray-100 p-4 shadow-xl rounded-2xl my-10">
       <details>
         <ProductCaracteristics product={product} />
       </details>

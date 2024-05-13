@@ -1,0 +1,71 @@
+---
+interface Props {
+  model: string;
+  gallery_images_total: number;
+}
+
+const { model, gallery_images_total } = Astro.props;
+const model_trim = model.split(" ").join("+");
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+---
+
+<section class="flex flex-col sm:flex-row">
+  <div>
+    <a
+      id="current_a"
+      href={`${BASE_URL}/gallery/${model_trim}/0.png`}
+      title={`Abrir imagen de la galería de ${model}`}
+    >
+      <figure class="h-full w-full">
+        <picture class="block h-full w-full">
+          <img
+            id="current_img"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full rounded object-cover object-top"
+            alt={`Imagen de la galería de fotos de ${model}`}
+            src={`${BASE_URL}/gallery/${model_trim}/0.png`}
+          />
+        </picture>
+      </figure>
+    </a>
+  </div>
+  <div class={`flex sm:flex-col`}>
+    {
+      Array.from({ length: gallery_images_total }).map((_, index) => (
+        <figure class="h-full w-full ">
+          <picture class="block h-full w-full">
+            <img
+              loading="lazy"
+              decoding="async"
+              class={`thumbnails h-full w-full rounded object-cover object-top max-h-20 max-w-20 hover:border-[1.5px] hover:border-primary`}
+              alt={`Imagen de la galería de fotos de ${model}`}
+              src={`${BASE_URL}/gallery/${model_trim}/${index}.png`}
+              data-url={`${BASE_URL}/gallery/${model_trim}/${index}.png`};
+            />
+          </picture>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const thumbnails = document.querySelectorAll(".thumbnails");
+    const current_img = document.querySelector("#current_img") as HTMLImageElement;
+    const current_a = document.querySelector("#current_a") as HTMLAnchorElement;
+
+
+    thumbnails.forEach(t => {
+      t.addEventListener("mouseenter", (e) => {
+        const { url } = (e.target as HTMLElement).dataset;
+  
+        if(url){
+          current_img.src = url;
+          current_a.href = url;
+        }
+      })
+    })
+  });
+</script>

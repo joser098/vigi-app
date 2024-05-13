@@ -16,6 +16,7 @@ export interface Product {
   dvr_details: DvrDetails;
   has_promotion: boolean;
   others: string;
+  gallery: number;
   tags: string[];
   favorites: string[];
 }
