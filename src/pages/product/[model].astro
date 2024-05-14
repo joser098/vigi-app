@@ -17,6 +17,7 @@ import Mastercard from "@/components/Icons/Mastercard.astro";
 import Visa from "@/components/Icons/Visa.astro";
 import ShippingWays from "@/components/Modals/ShippingWays.astro";
 import Gallery from "@/components/Gallery.astro";
+import ShipBadge from "@/components/ShipBadge";
 
 export async function getStaticPaths() {
   const products = await fetchData("getAllProducts");
@@ -98,6 +99,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
           <div class="mt-3 flex items-center gap-2">
             <Truck height="18" width="18" color="#3A3545"/>
             <span class="font-bold text-sm"> Envíos a todo el país</span>
+            <ShipBadge client:visible />
           </div>
           <menu>
             <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Formas de entrega</button>
