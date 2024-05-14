@@ -13,7 +13,7 @@ const { render } = Astro.props;
       <Logo />
     </a>
 
-    <div class={`${!render && "hidden" }`}>
+    <div class={`${!render && "hidden"} hidden sm:inline`}>
       <SearchInput client:visible/>
     </div>
 

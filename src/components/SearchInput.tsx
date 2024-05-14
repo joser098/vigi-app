@@ -53,7 +53,7 @@ const SearchInput = () => {
         onKeyDown={onKeyDown}
         onChange={onChangeSearch}
         onBlur={onBlurHandler}
-        className="hidden w-96 sm:inline border-[1px] border-primary rounded py-[10px] pl-1 pr-6"
+        className="w-full sm:w-96 border-b-2 py-4 sm:border-[1px] border-primary rounded-b sm:rounded sm:py-[10px] pl-1 pr-6"
         type="text"
         placeholder="Buscar producto, marca ..."
       />
