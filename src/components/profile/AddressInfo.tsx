@@ -121,7 +121,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
       <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="flex flex-col">
           <label className="text-gray-400 my-1" htmlFor="address_number">
-            Numero
+            Número
           </label>
           <input
             {...register("address_number")}
@@ -147,7 +147,7 @@ const AddressInfo = ({ customer }: { customer: Customer }) => {
       <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="flex flex-col">
           <label className="text-gray-400 my-1" htmlFor="zip_code">
-            Codigo postal
+            Código postal
           </label>
             <input
               {...register("zip_code")}
