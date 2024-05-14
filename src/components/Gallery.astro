@@ -102,7 +102,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 </section>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  document?.addEventListener("astro:page-load", () => {
     //Gallery Elements
     const thumbnails = document.querySelectorAll(".thumbnails");
     const current_img = document.querySelector("#current_img") as HTMLImageElement;

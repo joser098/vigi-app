@@ -27,13 +27,13 @@ const { products } = Astro.props;
   </div>
 </section>
 <script is:inline>
-  document.addEventListener("astro:page-load", () => {
+  document?.addEventListener("astro:page-load", () => {
     //Carrousel Slider
     const prevBtn = document.getElementById("prev");
     const nextBtn = document.getElementById("next");
     const slider = document.getElementById("promotions_slider");
     const arrItems = slider?.getAttribute("data-items");
-    const slider_W = slider.offsetWidth
+    const slider_W = slider?.offsetWidth
 
     let current = 0;
     let translateXpercentage = current;
