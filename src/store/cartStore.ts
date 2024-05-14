@@ -77,12 +77,14 @@ export function addToCart(item: CartItem) {
 
   const token = getToken();
   const res = saveCartData(cartModel, token);
+  const items = formatStoreItems(cartModel.items);
 
+  Cart.set(items)
   totalItems.set(cartModel.products_total);
   return res;
 }
 
-export const removeItemCart = (product_id: string) => {
+export const removeItemCart = async (product_id: string) => {
   const itemsFormated = formatItems(Cart.get());
   const filteredItems = itemsFormated.filter((item) => item.id !== product_id);
   const totals = calulateTotals(filteredItems);
@@ -94,6 +96,10 @@ export const removeItemCart = (product_id: string) => {
 
   const token = getToken();
   const res = saveCartData(cartModel, token);
+  const items = formatStoreItems(cartModel.items);
+
+  Cart.set(items)
+  totalItems.set(cartModel.products_total);
   return res;
 };
 
@@ -102,8 +108,8 @@ export const emptyCartFn = async () => {
   const res = await emptyCart(token);
 
   if(res.success){
+    Cart.set({});
     totalItems.set(0);
   }
-  
   return res;
 } 
