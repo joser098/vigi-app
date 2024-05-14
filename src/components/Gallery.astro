@@ -116,8 +116,8 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     current_a.addEventListener("click",(e) => {
       e.preventDefault();
 
-      if ($lightbox.open && document.startViewTransition) {
-					document.startViewTransition(() => {
+      if ($lightbox.open && (document as any).startViewTransition) {
+					(document as any).startViewTransition(() => {
 						updateImg(current_a)
 					})
 					return

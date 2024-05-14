@@ -10,7 +10,7 @@ const ShipBadge = () => {
   });
 
   return (
-    <div className="my-2 flex justify-center items-center">
+    <div className="my-2 flex justify-center items-center text-center">
       <span
         id="ship_date"
         className="text-[12px] py-1 px-2 rounded-full gradient text-green_"
