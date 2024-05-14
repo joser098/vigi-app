@@ -57,7 +57,7 @@ const SearchInput = () => {
         type="text"
         placeholder="Buscar producto, marca ..."
       />
-      <section className="absolute w-full bg-white mt-1 rounded max-h-[280px] overflow-y-auto">
+      <section className="absolute w-full z-10 bg-white mt-1 rounded max-h-[280px] overflow-y-auto">
         {suggestList?.map((item: Item) => {
           return (
             <article
