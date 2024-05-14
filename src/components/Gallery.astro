@@ -22,7 +22,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
             id="current_img"
             loading="lazy"
             decoding="async"
-            class="h-full w-full rounded object-cover object-top"
+            class="h-full w-full rounded object-cover object-top cursor-zoom-in"
             alt={`Imagen de la galería de fotos de ${model}`}
             src={`${BASE_URL}/gallery/${model_trim}/0.png`}
           />
@@ -48,19 +48,170 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
       ))
     }
   </div>
+  <dialog
+  id="lightbox"
+  class="h-auto max-h-[80%] w-auto max-w-[80%] items-center justify-center overflow-hidden bg-transparent backdrop:bg-black/70 lg:max-h-[90%] lg:w-full lg:max-w-[90%]"
+>
+  <button
+    type="button"
+    class="fixed right-8 top-8 rounded bg-black/60 p-4 text-white transition hover:scale-110 hover:bg-accent"
+  >
+    <svg class="size-5" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+    </svg>
+  </button>
+  <div class="mx-auto flex h-full w-full items-center justify-center gap-5">
+    <div class="absolute h-full w-full bg-transparent" data-dialog-bg></div>
+    <button
+      data-btn-prev
+      class="group z-10 hidden transition hover:scale-125 motion-reduce:transition-none motion-reduce:hover:scale-100 lg:block"
+    >
+      <img
+        class="size-16 opacity-85 group-hover:opacity-100"
+        src="/left-arrow.svg"
+        alt="Imagen anterior"
+        title="Ir a la imagen anterior"
+      />
+    </button>
+    <img
+      loading="lazy"
+      decoding="async"
+      class="product-gallery-img z-10 h-full rounded object-contain object-center bg-white"
+      alt={`Imagen de la galería de fotos de ${model}`}
+      data-total-items={gallery_images_total}
+      src={`${BASE_URL}/gallery/${model_trim}/0.png`}
+    />
+    <button
+      data-btn-next
+      class="group z-10 hidden transition hover:scale-125 motion-reduce:transition-none motion-reduce:hover:scale-100 lg:block"
+    >
+      <img
+        class="size-16 rotate-180 opacity-85 group-hover:opacity-100"
+        src="/left-arrow.svg"
+        alt="Imagen siguiente"
+        title="Ir a la imagen siguiente"
+      />
+    </button>
+  </div>
+</dialog>
 </section>
 
 <script>
   document.addEventListener("astro:page-load", () => {
+    //Gallery Elements
     const thumbnails = document.querySelectorAll(".thumbnails");
     const current_img = document.querySelector("#current_img") as HTMLImageElement;
     const current_a = document.querySelector("#current_a") as HTMLAnchorElement;
 
+    //Modal Elements
+    const $lightbox = document.querySelector("#lightbox") as HTMLDialogElement
+    const $close = $lightbox?.querySelector("button")
 
+    //Event when click on current img to open modal
+    current_a.addEventListener("click",(e) => {
+      e.preventDefault();
+
+      if ($lightbox.open && document.startViewTransition) {
+					document.startViewTransition(() => {
+						updateImg(current_a)
+					})
+					return
+				} else {
+					updateImg(current_a)
+				}
+
+      if (!$lightbox.open) {
+					$lightbox.showModal()
+				}
+    });
+
+    //Modal gallery Handlers functions 
+    
+    const showImgHandler = (type: string) => {
+      const img = $lightbox?.querySelector(".product-gallery-img") as HTMLImageElement;
+      const filename = img.src.substring(img.src.lastIndexOf("/") + 1)
+      const current_num = parseInt(filename.split(".")[0]);
+      const gallery_images_total = img.getAttribute("data-total-items");
+      const total = gallery_images_total && parseInt(gallery_images_total);
+
+      if(type === "prev"){
+        let new_src;
+
+        if(total && current_num == 0){
+          new_src = `${img.src.split(`${current_num}.png`)[0]}${total - 1}.png`
+        } else {
+          new_src = `${img.src.split(`${current_num}.png`)[0]}${current_num - 1}.png`
+        }
+
+        img.src = new_src;
+      }
+
+      if(type === "next"){
+        let new_src;
+    
+        if(total && current_num == total - 1){
+          new_src = `${img.src.split(`${current_num}.png`)[0]}0.png`
+        } else {
+          new_src = `${img.src.split(`${current_num}.png`)[0]}${current_num + 1}.png`
+        }
+    
+        img.src = new_src;
+      }
+    };
+
+
+    const updateImg = (link: HTMLElement) => {
+			const img = $lightbox?.querySelector(".product-gallery-img") as HTMLImageElement
+			const newImg = link.querySelector("img") as HTMLImageElement
+			if (img && newImg) img.src = newImg.src
+		}
+
+		document.addEventListener("click", (event) => {
+			if (!$lightbox.open) return
+			const target = event.target as HTMLElement
+			const isPrev = target.title.includes("anterior")
+			const next = target.title.includes("siguiente")
+			if (isPrev) {
+				showImgHandler("prev")
+			}
+			if (next) {
+				showImgHandler("next")
+			}
+		})
+
+    document.addEventListener("keydown", (event) => {
+			if (!$lightbox.open) return
+
+			if (event.key === "Escape") {
+				close()
+			}
+
+			if (event.key === "ArrowRight") {
+				showImgHandler("next")
+			}
+
+			if (event.key === "ArrowLeft") {
+				showImgHandler("prev")
+			}
+		})
+
+    const close = () => {
+			$lightbox.close()
+		}
+
+
+    $close?.addEventListener("click", close)
+    
+    //Hover event to set current img
     thumbnails.forEach(t => {
       t.addEventListener("mouseenter", (e) => {
         const { url } = (e.target as HTMLElement).dataset;
-  
+        
         if(url){
           current_img.src = url;
           current_a.href = url;
