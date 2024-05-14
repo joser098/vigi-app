@@ -112,11 +112,10 @@ if (Astro.cookies.has("check")) {
 </Layout>
 
 <script>
-  import { emptyCartFn } from "@/store/cartStore";
-  import { getToken } from "@/services/scripts";
+import { emptyCartFn } from "@/store/cartStore";
 import { navigate } from "astro:transitions/client";
   
-  document.addEventListener("astro:page-load", () => {
+  document?.addEventListener("astro:page-load", () => {
     const items_contain = document.getElementById("row_contain");
     const itemsTotal = items_contain?.getAttribute("data-items");
     const total = itemsTotal && parseInt(itemsTotal);
@@ -135,11 +134,11 @@ import { navigate } from "astro:transitions/client";
     }
     
     
-    empty_btn && empty_btn.addEventListener("click", async () => {
+    empty_btn && empty_btn?.addEventListener("click", async () => {
       const response = await emptyCartFn();
 
       if(response.success){
-        navigate("/cart")
+        navigate("/cart");
       }
     });
   })
