@@ -356,3 +356,20 @@ export const searchProducts = async (keyword: string, limit: number | null = nul
     return error;
   }
 };
+
+export const emptyCart = async (token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/cart/empty`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+
+    const res = await response.json();
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

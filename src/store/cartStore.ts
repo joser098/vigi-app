@@ -6,7 +6,7 @@ import {
   formatStoreItems,
   getToken,
 } from "@/services/scripts";
-import { getCartData, saveCartData } from "@/services/fetchData";
+import { emptyCart, getCartData, saveCartData } from "@/services/fetchData";
 
 const initialItems = await getCartData();
 let initialItemsFormated;
@@ -96,3 +96,14 @@ export const removeItemCart = (product_id: string) => {
   const res = saveCartData(cartModel, token);
   return res;
 };
+
+export const emptyCartFn = async () => {
+  const token = getToken();
+  const res = await emptyCart(token);
+
+  if(res.success){
+    totalItems.set(0);
+  }
+  
+  return res;
+} 
