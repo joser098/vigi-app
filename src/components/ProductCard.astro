@@ -1,13 +1,12 @@
 ---
-import { getTime } from "@/services/scripts";
 import { type Product } from "../services/types";
 import Truck from "./Icons/Truck.astro";
+import ShipBadge from "./ShipBadge";
 
 interface Props {
   product: Product;
 }
 
-const time = getTime();
 const { product } = Astro.props;
 ---
 
@@ -48,14 +47,8 @@ const { product } = Astro.props;
               </p>
               )
             }
-      </div>
-        <div class="my-2 flex justify-center items-center">
-          <span id="ship_date" class="text-[12px] py-1 px-2 rounded-full gradient text-green_">
-            {
-              time >= 0 && time <16 ? "Llega hoy (CABA)" : "Llega mañana (CABA)"  
-            }
-          </span>
         </div>
+        <ShipBadge client:visible />
         <div class="flex justify-center items-center">
           <Truck height="15" width="15" color="#33BF5E"/>
           <span class="text-[10px] py-1 px-2 text-green_ font-bold">Envio gratis</span>
