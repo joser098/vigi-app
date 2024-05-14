@@ -95,8 +95,9 @@ if (Astro.cookies.has("check")) {
                   </tr>
                 ))}
               </table>
+              <button id="empty" class="text_primary text-end px-1 pb-2 text-xs hover:underline text-primary">Vaciar carrito</button>
             ) : (
-              <div class="p-3  flex flex-col justify-center items-center gap-2">
+              <div class="p-3 flex flex-col justify-center items-center gap-2">
                 <Sad />
                 <span class="text-center">Tu carrito está vacío por el momento.</span>
                 <a href="/" class="text-center text-primary font-bold hover:underline">¡Añade productos para comenzar tu experiencia de compra!</a>
@@ -110,21 +111,37 @@ if (Astro.cookies.has("check")) {
   </main>
 </Layout>
 
-<script is:inline>
+<script>
+  import { emptyCartFn } from "@/store/cartStore";
+  import { getToken } from "@/services/scripts";
+import { navigate } from "astro:transitions/client";
+  
   document.addEventListener("astro:page-load", () => {
     const items_contain = document.getElementById("row_contain");
     const itemsTotal = items_contain?.getAttribute("data-items");
     const total = itemsTotal && parseInt(itemsTotal);
+
+    const empty_btn = document.getElementById("empty");
   
-  
-    for(let i = 0; i < total; i++){
-      const div = document.getElementById(`selectQ_${i}`);
-      const btn = document.getElementById(`addBtn_${i}`);
-    
-      div?.addEventListener('click', () => {
-        btn?.classList.remove("hidden");
-      })
+    if(total){
+      for(let i = 0; i < total; i++){
+        const div = document.getElementById(`selectQ_${i}`);
+        const btn = document.getElementById(`addBtn_${i}`);
+      
+        div?.addEventListener('click', () => {
+          btn?.classList.remove("hidden");
+        })
+      }
     }
+    
+    
+    empty_btn && empty_btn.addEventListener("click", async () => {
+      const response = await emptyCartFn();
+
+      if(response.success){
+        navigate("/cart")
+      }
+    });
   })
 </script>
 
