@@ -73,6 +73,10 @@ const RegisterForm = () => {
                 value: true,
                 message: "Este campo es requerido",
               },
+              maxLength: {
+                value: 15,
+                message: "El campo debe tener 10 máximo caracteres ",
+              }
             })}
           />
           {errors.name && (
@@ -86,12 +90,16 @@ const RegisterForm = () => {
           <input
             className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
             type="text"
-            placeholder="Perez"
+            placeholder="Paredes"
             {...register("last_name", {
               required: {
                 value: true,
                 message: "Este campo es requerido",
               },
+              maxLength: {
+                value: 20,
+                message: "El campo debe tener 20 mximo caracteres",
+              }
             })}
           />
           {errors.last_name && (
@@ -103,7 +111,7 @@ const RegisterForm = () => {
         <div className="flex gap-1 w-full max">
           <div className="max-xs">
             <label htmlFor="cod">
-              Cod<span className="text-xs text-red-500">*</span>
+              Prefijo<span className="text-xs text-red-500">*</span>
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
@@ -114,6 +122,10 @@ const RegisterForm = () => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                maxLength: {
+                  value: 4,
+                  message: "El campo debe tener 4 máximo dígitos",
+                }
               })}
             />
             {errors.cod && (
@@ -122,7 +134,7 @@ const RegisterForm = () => {
           </div>
           <div className="w-full">
             <label htmlFor="phone">
-              Telefono<span className="text-xs text-red-500">*</span>
+              Teléfono <span className="text-xs text-red-500">*</span>
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
@@ -133,6 +145,10 @@ const RegisterForm = () => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                maxLength: {
+                  value: 10,
+                  message: "El campo debe tener 10 máximo dígitos",
+                }
               })}
             />
             {errors.phone && (
@@ -180,6 +196,10 @@ const RegisterForm = () => {
                 value: true,
                 message: "Este campo es requerido",
               },
+              maxLength: {
+                value: 10,
+                message: "El campo debe tener máximo 10 caracteres"
+              }
             })}
           />
           {errors.location && (
@@ -212,7 +232,7 @@ const RegisterForm = () => {
         <div className="grid grid-cols-2 gap-4 w-full max">
           <div>
             <label htmlFor="address_number">
-              Numero<span className="text-xs text-red-500">*</span>
+              Número <span className="text-xs text-red-500">*</span>
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
@@ -223,6 +243,10 @@ const RegisterForm = () => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                maxLength: {
+                  value: 5,
+                  message: "No puede contener mas de 5 dígitos"
+                }
               })}
             />
             {errors.address_number && (
@@ -237,7 +261,12 @@ const RegisterForm = () => {
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
               type="text"
               placeholder="8C"
-              {...register("department")}
+              {...register("department", {
+                maxLength: {
+                  value: 4,
+                  message: "No puede contener más de 4 caracteres "
+                }
+              })}
             />
             {errors.department && (
               <span className="text-xs text-red-500">
@@ -247,7 +276,7 @@ const RegisterForm = () => {
           </div>
           <div>
             <label htmlFor="zip_code">
-              Codigo postal<span className="text-xs text-red-500">*</span>
+              Código postal<span className="text-xs text-red-500">*</span>
             </label>
             <input
               className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
@@ -260,11 +289,11 @@ const RegisterForm = () => {
                 },
                 minLength: {
                   value: 4,
-                  message: "Codigo postal debe tener 4 digitos",
+                  message: "Código postal debe tener 4 dígitos",
                 },
                 maxLength: {
                   value: 4,
-                  message: "Codigo postal debe tener 4 digitos",
+                  message: "Código postal debe tener 4 dígitos",
                 },
               })}
             />
@@ -289,11 +318,11 @@ const RegisterForm = () => {
                 },
                 minLength: {
                   value: 8,
-                  message: "DNI debe tener 8 digitos",
+                  message: "DNI debe tener 8 dígitos",
                 },
                 maxLength: {
                   value: 8,
-                  message: "DNI debe tener 8 digitos",
+                  message: "DNI debe tener 8 dígitos",
                 },
               })}
             />
@@ -319,6 +348,14 @@ const RegisterForm = () => {
                   value: true,
                   message: "Este campo es requerido",
                 },
+                maxLength: {
+                  value: 15,
+                  message: "El usuario debe tener máximo 15 caracteres",
+                },
+                pattern: {
+                  value: /^\S+$/,
+                  message: "El usuario no debe contener espacios"
+                }
               })}
             />
             {errors.username && (
