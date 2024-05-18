@@ -1,8 +1,8 @@
 ---
 export const prerender = false;
-import Layout from "../../layouts/Layout.astro";
-import PayApproved from "../../components/PayApproved.astro";
-import { getPayment } from "../../services/fetchData";
+import Layout from "@/layouts/Layout.astro";
+import PayApproved from "@/components/PayApproved.astro";
+import { getPayment } from "@/services/fetchData";
 
 const { id } = Astro.params;
 
@@ -25,3 +25,10 @@ if (id) {
     </div>
   </main>
 </Layout>
+
+<script>
+  import { emptyCartFn } from "@/store/cartStore";
+  document.addEventListener("astro:page-load", () => {
+    emptyCartFn();
+  })
+</script>
