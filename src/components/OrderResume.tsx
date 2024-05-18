@@ -41,7 +41,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
       ...shipments,
       local_pickup: true,
       cost: 0,
-      free_shipping: true,
+      free_shipping: false,
     });
     if (value == "shipping" && total > 0) calulateCost();
   };
