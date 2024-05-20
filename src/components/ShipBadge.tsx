@@ -1,12 +1,13 @@
-import { getTime } from "@/services/scripts";
+import { getTime, calculateShipmentArrives } from "@/services/scripts";
 import { useEffect, useState } from "react";
 
 const ShipBadge = () => {
-    const [time, setTime] = useState(0);
+    const [shipmentArrives, setShipmentArrives] = useState("");
 
   useEffect(() => {
     const time = getTime();
-    setTime(time)
+    const shipmentArrives = calculateShipmentArrives(time);
+    setShipmentArrives(shipmentArrives)
   });
 
   return (
@@ -15,7 +16,7 @@ const ShipBadge = () => {
         id="ship_date"
         className="text-[12px] py-1 px-2 rounded-full gradient text-green_"
       >
-        {time >= 0 && time < 16 ? "Llega hoy (CABA)" : "Llega mañana (CABA)"}
+        {shipmentArrives}
       </span>
     </div>
   );
