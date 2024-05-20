@@ -35,7 +35,7 @@ switch (category) {
     break;
   case "batería":
     productsList = allProducts.filter((product: Product) =>
-      product.details?.power_type.includes("Bateria")
+      product.details?.power_type?.includes("Bateria")
     );
     break;
   case "análogas":
