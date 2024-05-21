@@ -373,3 +373,15 @@ export const emptyCart = async (token: string) => {
     return error;
   }
 }
+
+export const getCarruselImages = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/carrusel`);
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
