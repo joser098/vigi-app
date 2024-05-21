@@ -46,7 +46,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 
     <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
       <h2
-        class="text-black font-normal my-10 text-base sm:text-2xl 2xl:text-3xl"
+        class="text-black font-normal my-5 text-base sm:text-2xl 2xl:text-3xl"
       >
       <span class="sm:text-3xl text-primary font-extrabold">Destacados.</span> 
           El mejor precio por el mejor producto.
@@ -57,10 +57,11 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     <CardsCarrusel products={promotions}/>
     
     <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 mb-12">
-      <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
-      <InfoCard icon="card" title="Todos los medios de pago" description="Descuentos en efectivo" />
-      <InfoCard icon="mail" title="Seguimiento de tu compra" description="Elige cualquier medio" />
+    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center mb-12 bg-gray-100 shadow rounded-2xl">
+      <InfoCard icon="truck" title="Envíos en el dia" description="Todos los dias (CABA)" />
+      <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
+      <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
+      <InfoCard icon="shield" title="Por qué comprar en Vigi" description="" />
     </section>
   </main>
 

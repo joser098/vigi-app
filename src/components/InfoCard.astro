@@ -2,6 +2,9 @@
 import Mail from "./Icons/Mail.astro";
 import Truck from "./Icons/Truck.astro";
 import CreditCard from "./Icons/CreditCard.astro";
+import ShieldCheck from "./Icons/ShieldCheck.astro";
+import PaymentWays from "./Modals/PaymentWays.astro";
+import ShippingWays from "./Modals/ShippingWays.astro";
 
 interface Props {
   icon: string;
@@ -12,10 +15,58 @@ interface Props {
 const { icon, title, description } = Astro.props;
 ---
 
-<article class="w-full flex flex-col justify-center items-center gap-3 border-2 rounded px-3 py-10 hover:opacity-70 transition-opacity cursor-pointer">
-    {icon == "truck" && <Truck height="48" width="48" color="#3A3545"/>}
-    {icon == "mail" && <Mail />}
-    {icon == "card" && <CreditCard />}
-  <h3 class="text-primary font-bold text-center">{title}</h3>
-  <p class=" text-sm text-center">{description}</p>
+<article
+  class="w-full flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-5 rounded px-3 py-5 cursor-pointer"
+>
+  {
+    icon == "truck" && (
+      <div class="relative">
+        <span class="absolute -left-1 w-4 h-4 rounded-full gradient animate-ping" />
+        <span class="absolute -left-1 w-4 h-4 rounded-full gradient" />
+        <Truck height="48" width="48" color="#3A3545" />
+      </div>
+    )
+  }
+  {icon == "mail" && <Mail />}
+  {icon == "card" && <CreditCard />}
+  {icon == "shield" && <ShieldCheck />}
+  <div class="flex flex-col justify-start">
+    <h3
+      id={icon == "card" ? "pagos_modal_btn" : "entregas_modal_btn"}
+      class="hover:text-primary font-bold text-center sm:text-start text-sm sm:text-base text-balance"
+    >
+      {title}
+    </h3>
+    <p class="text-xs text-center sm:text-start">{description}</p>
+  </div>
 </article>
+<!-- MODALES -->
+<PaymentWays />
+<ShippingWays />
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const entregas_btn = document.getElementById("entregas_modal_btn");
+    const entregas_modal = document.getElementById("entregas_modal");
+    const pagos_btn = document.getElementById("pagos_modal_btn");
+    const pagos_modal = document.getElementById("pagos_modal");
+
+    entregas_btn?.addEventListener("click", () => {
+      entregas_modal.showModal();
+    });
+
+    pagos_btn?.addEventListener("click", () => {
+      pagos_modal.showModal();
+    });
+  });
+</script>
+
+<style>
+  .gradient {
+    background: linear-gradient(
+      120deg,
+      rgb(165, 233, 31) 0%,
+      rgb(83, 240, 16) 100%
+    );
+  }
+</style>
