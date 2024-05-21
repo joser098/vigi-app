@@ -110,17 +110,17 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           )}
         </div>
       </div>
-      <div className="w-full mb-8">
+      {/* <div className="w-full mb-8">
         <h5 className="my-2 font-semibold text-lg">Instalación</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <span className="text-xs">
             Si necesitas a un profesional para tu instalación, ¡lo tenemos!
           </span>
-          {/* <button className="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity">
+          <button className="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity">
             Calcular
-          </button> */}
+          </button>
         </div>
-      </div>
+      </div> */}
       <div className="mb-12">
         <h5 className="my-2 font-semibold text-lg">¿Tienes un cupón?</h5>
         <form>
