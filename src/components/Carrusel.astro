@@ -46,7 +46,7 @@ const carrusel = await getCarruselImages();
 <script>
   document.addEventListener("astro:page-load", () => {
     const carrusel = document.getElementById("banner_carrusel");
-    const arrItems = carrusel?.getAttribute("data-items")!;
+    const arrItems = carrusel?.children.length!;
     const carrusel_W = carrusel?.offsetWidth;
     const screen_w = window.screen.width;
 
@@ -60,7 +60,7 @@ const carrusel = await getCarruselImages();
       if (isAnimating) return;
       isAnimating = true;
 
-      const items = parseInt(arrItems) - 1;
+      const items = arrItems - 1;
       if (current !== items) {
         current += 1;
         setTranlation();
@@ -90,9 +90,11 @@ const carrusel = await getCarruselImages();
       if (carrusel_W && carrusel) {
         const sizeToMove = current * ((screen_w / carrusel_W) * 100);
 
-        initial
-          ? (carrusel.style.transform = `translateX(0%)`)
-          : (carrusel.style.transform = `translateX(-${sizeToMove}%)`);
+        if (initial) {
+          carrusel.style.transform = `translateX(0%)`;
+        } else {
+          carrusel.style.transform = `translateX(-${sizeToMove}%)`;
+        }
       }
     }
 
