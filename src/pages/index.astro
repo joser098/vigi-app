@@ -7,6 +7,7 @@ import Faq from "@/components/Faq";
 import { categories } from "@/services/const";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import SearchInput from "@/components/SearchInput";
+import Carrusel from "@/components/Carrusel.astro";
 
 const promotions = await fetchData("getProducts?promotion=true");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
@@ -15,7 +16,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 <Layout title="Bienvenido a VIGI | Tienda Online de artículos de seguridad para el hogar">
   <!-- BG FOR DESKTOP -->
   <div class="hidden w-auto sm:flex">
-    <img class="w-full object-cover" src="/carrusel1.png" alt="pricipal_banner">
+    <Carrusel />
   </div>
   <!-- BG FOR MOBILE -->
   <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">

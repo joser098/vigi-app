@@ -1,0 +1,110 @@
+---
+export const prerender = false;
+import { getCarruselImages } from "@/services/fetchData";
+
+const carrusel = await getCarruselImages();
+---
+
+<section class="relative">
+  <div
+    id="banner_carrusel"
+    data-items={carrusel.length}
+    class="flex transition-transform duration-1000"
+  >
+    {
+      carrusel.images.map((i: string, index: number) => {
+        return (
+          <img class="w-full object-cover" src={i} alt={`Banner_${index}`} />
+        );
+      })
+    }
+  </div>
+  <button
+    id="carrusel_prev_btn"
+    class="absolute top-1/2 transform -translate-y-1/2 left-10"
+  >
+    <img
+      class="size-16 opacity-10 transition-opacity hover:opacity-100"
+      src="/left-arrow.svg"
+      alt="Imagen anterior"
+      title="Ir a la imagen anterior"
+    />
+  </button>
+  <button
+    id="carrusel_next_btn"
+    class="absolute top-1/2 transform -translate-y-1/2 right-10"
+  >
+    <img
+      class="size-16 rotate-180 opacity-10 transition-opacity hover:opacity-100"
+      src="/left-arrow.svg"
+      alt="Imagen siguiente"
+      title="Ir a la imagen siguiente"
+    /></button
+  >
+</section>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const carrusel = document.getElementById("banner_carrusel");
+    const arrItems = carrusel?.getAttribute("data-items")!;
+    const carrusel_W = carrusel?.offsetWidth;
+    const screen_w = window.screen.width;
+
+    const next_btn = document.getElementById("carrusel_next_btn");
+    const prev_btn = document.getElementById("carrusel_prev_btn");
+
+    let current = 0;
+    let isAnimating = false;
+
+    function moveRight() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const items = parseInt(arrItems) - 1;
+      if (current !== items) {
+        current += 1;
+        setTranlation();
+      } else {
+        setTranlation(true);
+        current = 0;
+      }
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 1000);
+    }
+
+    function moveLeft() {
+      if (isAnimating ||  current == 0) return;
+      isAnimating = true;
+
+      current -= 1;
+      setTranlation();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 1000);
+    }
+
+    function setTranlation(initial = false) {
+      if (carrusel_W && carrusel) {
+        const sizeToMove = current * ((screen_w / carrusel_W) * 100);
+
+        initial
+          ? (carrusel.style.transform = `translateX(0%)`)
+          : (carrusel.style.transform = `translateX(-${sizeToMove}%)`);
+      }
+    }
+
+    next_btn?.addEventListener("click", () => {
+      moveRight();
+    });
+    prev_btn?.addEventListener("click", () => {
+      moveLeft();
+    });
+
+    setInterval(() => {
+      moveRight();
+    }, 5000);
+  });
+</script>
