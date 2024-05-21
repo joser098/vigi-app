@@ -34,7 +34,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     <!-- CATEGORIES -->
     <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-16 sm:mb-10">
     {
-      categories.map(c => {
+      categories?.map(c => {
         return (
           <CategoryCard
             image_path={`${BASE_URL}/categories/${c.path}.png`}
