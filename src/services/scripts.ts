@@ -165,7 +165,7 @@ export const getTime = () => {
 export const calculateShipmentArrives = (date: any): string => {
   if(date.hour < 0) return "";
 
-  if (date.hour < 16) return "Llega hoy (CABA)";
+  if (date.hour <= 16) return "Llega hoy (CABA)";
   if (date.hour > 16) return "Llega mañana (CABA)";
 
   return "";
