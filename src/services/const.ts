@@ -8,8 +8,8 @@ export const categories = [
   { name: "Batería",
     path: "bateria"
    }, 
-  { name: "DVR",
-    path: "DVR"
+  { name: "Kits",
+    path: "Kits"
    }, 
   { name: "Análogas",
     path: "analogas"
