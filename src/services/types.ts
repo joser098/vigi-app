@@ -16,11 +16,28 @@ export interface Product {
   dvr_details: DvrDetails;
   portero_details: PorteroDetails;
   alarm_details: AlarmDetails;
+  storage_details: StorageDetails;
   has_promotion: boolean;
   others: string;
   gallery: number;
   tags: string[];
   favorites: string[];
+}
+
+export interface StorageDetails {
+  Color: string,
+	Linea: string,
+	Capacidad: string,
+	"Tecnología de almacenamiento": string,
+	Interfaces: string,
+	"Caché de datos": string,
+	Alto: string,
+	Ancho: string,
+	Profundidad: string,
+	Peso: string,
+  "Velocidad de lectura": string,
+  "Velocidad de escritura": string,
+  "Incluye adaptador SD": string
 }
 
 export interface AlarmDetails {

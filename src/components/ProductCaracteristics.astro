@@ -1,5 +1,6 @@
 ---
 import { type Product } from "../services/types";
+import Details from "./Details.astro";
 
 interface Props {
   product: Product;
@@ -477,22 +478,10 @@ const { product } = Astro.props;
   )
 }
 {
-  product.category == "alarmas" && (
-    <article class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-      <div>
-        <table>
-          <h4>General</h4>
-          {Object.entries(product.alarm_details).map(([key, value], index) => (
-            <tr>
-              <td>{key}</td>
-              <td>{value}</td>
-            </tr>
-          ))}
-        </table>
-      </div>
-      <div></div>
-    </article>
-  )
+  product.category == "alarmas" && <Details details={product.alarm_details}/> 
+}
+{
+  product.category == "almacenamiento" && <Details details={product.storage_details}/> 
 }
 
 <style>
