@@ -14,11 +14,48 @@ export interface Product {
   discount: number; 
   details: CameraDetails;
   dvr_details: DvrDetails;
+  portero_details: PorteroDetails;
+  alarm_details: AlarmDetails;
   has_promotion: boolean;
   others: string;
   gallery: number;
   tags: string[];
   favorites: string[];
+}
+
+export interface AlarmDetails {
+  Color: string;
+  Piezas: number;
+  Alimentacion: string;
+  Conectividad: string;
+  Zonas: string;
+  Sensores: string;
+}
+
+export interface PorteroDetails {
+  resolution_type: string,
+  resolution: string,
+  connectivity: string, 
+  color: string, 
+  screen_dimensions: Dimensions,
+  front_dimensions: Dimensions,
+  hole_diameter_compatible: string,
+  door_diameter_compatible: string,
+  storage_type: string, 
+  storage_capacity: string, 
+  mounting: string, 
+  connection_types: string,
+  visual_field: string, 
+  lens: string, 
+  night_vision: boolean, 
+  max_temperature: string,
+  audio: string, 
+  live_stream: boolean, 
+  anti_vandal: boolean, 
+  control_types: string, 
+  screen_size: string, 
+  parts: number, 
+  power_type: string 
 }
 
 export interface CameraDetails {
