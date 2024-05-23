@@ -58,6 +58,11 @@ switch (category) {
       (product: Product) => product.category == "alarmas"
     );
     break;
+  case "almacenamiento":
+    productsList = allProducts.filter(
+      (product: Product) => product.category == "almacenamiento"
+    );
+    break;
   default:
     productsList = [];
     break;
