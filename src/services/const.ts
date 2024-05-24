@@ -17,12 +17,12 @@ export const categories = [
   { name: "Porteros",
     path: "porteros"
    }, 
+   { name: "Almacenamiento" ,
+     path: "almacenamiento"
+   },
   { name: "Alarmas",
     path: "alarmas"
    }, 
-  { name: "Almacenamiento" ,
-    path: "almacenamiento"
-  }
 ]
 
 export const quantity = [
