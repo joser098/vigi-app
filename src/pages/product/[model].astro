@@ -29,6 +29,7 @@ export async function getStaticPaths() {
   }));
 }
 
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 const { model } = Astro.params;
 
 const product = (await fetchData(`getProduct?model=${model}`)) as Product;
@@ -38,8 +39,8 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
 
 <Layout title=`${model} | VIGI`>
   <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
-    <header class="my-5">
-      <h3 class="text-primary font-bold text-2xl">{product.provider}</h3>
+    <header class="my-2">
+      <img class="h-6" src={`${BASE_URL}/logos/${product.provider}.png`} alt={`${product.provider}-logo`}>
     </header>
     <section class="w-full flex flex-col sm:flex-row-reverse">
       <!-- GALERIA -->
