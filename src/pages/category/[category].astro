@@ -1,78 +1,29 @@
 ---
+export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
-import { fetchData } from "../../services/fetchData";
+import { getProductsByCategory } from "../../services/fetchData";
 import ProductsList from "../../components/ProductsList.astro";
 import type { Product } from "src/services/types";
 
-export function getStaticPaths() {
-  return [
-    { params: { category: "interior" } },
-    { params: { category: "exterior" } },
-    { params: { category: "batería" } },
-    { params: { category: "kits" } },
-    { params: { category: "análogas" } },
-    { params: { category: "porteros" } },
-    { params: { category: "alarmas" } },
-    { params: { category: "almacenamiento" } },
-  ];
-}
+const path = Astro.url;
+const queries = Object.fromEntries(path.searchParams.entries());
+
+console.log(queries)
 
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 let { category } = Astro.params;
-const allProducts: Product[] = await fetchData("getAllProducts");
-let productsList: Product[] = [];
 
-switch (category) {
-  case "interior":
-    productsList = allProducts.filter(
-      (product: Product) => product.details?.location == "Interior"
-    );
-    break;
-  case "exterior":
-    productsList = allProducts.filter(
-      (product: Product) => product.details?.location == "Exterior"
-    );
-    break;
-  case "batería":
-    productsList = allProducts.filter((product: Product) =>
-      product.details?.power_type?.includes("Bateria")
-    );
-    break;
-  case "análogas":
-    productsList = allProducts.filter(
-      (product: Product) => product.details?.anlogue == true
-    );
-    break;
-  case "kits":
-    productsList = allProducts.filter(
-      (product: Product) => product.category == "kits"
-    );
-    break;
-  case "porteros":
-    productsList = allProducts.filter(
-      (product: Product) => product.category == "porteros"
-    );
-    break;
-  case "alarmas":
-    productsList = allProducts.filter(
-      (product: Product) => product.category == "alarmas"
-    );
-    break;
-  case "almacenamiento":
-    productsList = allProducts.filter(
-      (product: Product) => product.category == "almacenamiento"
-    );
-    break;
-  default:
-    productsList = [];
-    break;
+const productsList: Product[] = await getProductsByCategory(category!);
+
+if(!productsList){
+  return Astro.redirect("/")
 }
 ---
 
-<Layout title=`${category.toLocaleUpperCase()} | VIGI`>
+<Layout title=`${category?.toLocaleUpperCase()} | VIGI`>
   <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
     <div class="relative flex items-center">
-      <h3 class="absolute pl-14 font-bold text-center sm:text-xl lg:text-5xl  text-white">{category.toLocaleUpperCase()}</h3>
+      <h3 class="absolute pl-14 font-bold text-center sm:text-xl lg:text-5xl  text-white">{category?.toLocaleUpperCase()}</h3>
       <img class=" rounded" src=`${BASE_URL}/categories/${category}_banner.png` alt=`${category}_banner` />
     </div>
     {
