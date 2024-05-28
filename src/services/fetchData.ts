@@ -385,3 +385,15 @@ export const getCarruselImages = async () => {
     return error;
   }
 };
+
+export const getProductsByCategory = async (category: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/search/getProducts?category=${category}`);
+
+    const res = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
