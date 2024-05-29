@@ -8,12 +8,10 @@ import type { Product } from "src/services/types";
 const path = Astro.url;
 const queries = Object.fromEntries(path.searchParams.entries());
 
-console.log(queries)
-
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 let { category } = Astro.params;
 
-const productsList: Product[] = await getProductsByCategory(category!);
+const productsList: Product[] = await getProductsByCategory(category!, queries.order);
 
 if(!productsList){
   return Astro.redirect("/")
@@ -26,6 +24,18 @@ if(!productsList){
       <h3 class="absolute pl-14 font-bold text-center sm:text-xl lg:text-5xl  text-white">{category?.toLocaleUpperCase()}</h3>
       <img class=" rounded" src=`${BASE_URL}/categories/${category}_banner.png` alt=`${category}_banner` />
     </div>
+    <aside class="flex justify-end my-2">
+      <ul class="py-1 text-sm">
+        <li>
+          <label for="order" class="font-bold">Ordenar por</label>
+          <select class="p-1" name="order" id="order">
+            <option class="" id="default_option" value="rel">Más relevante</option>
+            <option class="" id="asc_option" value="asc">Menor precio</option>
+            <option class="" id="desc_option" value="desc">Mayor precio</option>
+          </select>
+        </li>
+      </ul>
+    </aside>
     {
       productsList.length == 0 ? (
         <div class="flex justify-center items-center h-96">
@@ -37,3 +47,31 @@ if(!productsList){
     }
   </main>
 </Layout>
+
+<script>
+import { navigate } from "astro:transitions/client";
+
+  document.addEventListener("astro:page-load", () => {
+    const orderSelect = document.getElementById("order") as HTMLSelectElement;
+    const _asc = document.getElementById("asc_option");
+    const _desc = document.getElementById("desc_option");
+    const params = new URL(document.location.href);
+    const search = params.searchParams;
+    const order = search.get("order");
+    
+    if(order == "asc"){
+      _asc?.setAttribute("selected", "selected");
+    }
+    if(order == "desc"){
+      _desc?.setAttribute("selected", "selected");
+    }
+  
+    orderSelect?.addEventListener("change", (e) => {
+      const { value } = e.target as HTMLSelectElement;
+      search.set("order", value);
+
+      navigate(params.href);
+    });
+
+  });
+</script>

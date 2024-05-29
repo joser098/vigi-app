@@ -386,9 +386,9 @@ export const getCarruselImages = async () => {
   }
 };
 
-export const getProductsByCategory = async (category: string) => {
+export const getProductsByCategory = async (category: string, order: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/search/getProducts?category=${category}`);
+    const response = await fetch(`${BASE_URL}/api/search/getProducts?category=${category}&order=${order}`);
 
     const res = await response.json();
 
