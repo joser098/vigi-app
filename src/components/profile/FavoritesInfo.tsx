@@ -41,22 +41,8 @@ const FavoritesInfo = () => {
                   alt={favorite.model}
                   className="object-cover max-w-16 sm:max-w-32"
                 />
-                <div className="p-4 flex flex-col justify-between">
-                  <h5>{favorite.model}</h5>
-                  {favorite.category == "camaras" && (
-                    <div className="flex gap-3">
-                      <span className="text-[12px] text-blue-200 bg-blue-600 px-2 py-[1px] rounded"> {favorite.details.wifi ? "Wifi" : "Analoga"}</span>
-                      <span className="text-[12px] text-green-200 bg-green-600 px-2 py-[1px] rounded"> {favorite.details.resolution_type}</span>
-                      <span className="text-[12px] text-orange-200 bg-orange-600 px-2 py-[1px] rounded"> {favorite.details.location}</span>
-                    </div>
-                  )}
-                  {favorite.category == "DVR" && (
-                    <div className="flex gap-3">
-                      <span className="text-[12px] text-blue-200 bg-blue-600 px-2 py-[1px] rounded"> DVR</span>
-                      <span className="text-[12px] text-green-200 bg-green-600 px-2 py-[1px] rounded"> {favorite.dvr_details.resolution_type}</span>
-                      <span className="text-[12px] text-orange-200 bg-orange-600 px-2 py-[1px] rounded">{`${favorite.dvr_details.channels} Canales`}</span>
-                    </div>
-                  )}
+                <div className="p-4 flex flex-col gap-2 justify-center">
+                  <h5 className="font-bold">{favorite.model}</h5>
                   <p>
                     {favorite.price.toLocaleString("es-AR", {
                       style: "currency",
