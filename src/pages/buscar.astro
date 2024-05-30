@@ -42,11 +42,11 @@ if (products.length > 0) {
           </div>
         </>
       ) : (
-        <div class="bg-white p-4 flex flex-col justify-center items-center rounded">
-          <h6 class="text-xl font-bold">
-            No hay publicaciones que coincidan con tu búsqueda
+        <div class=" bg-slate-100 p-4 flex flex-col justify-center items-center rounded">
+          <h6 class="text-sm text-center sm:text-xl font-bold py-2 my-2">
+            No hay productos que coincidan con tu búsqueda
           </h6>
-          <ul class="list-disc">
+          <ul class="list-disc text-xs sm:text-base">
             <li class="my-2">
               <span class="font-bold">Revisa la ortografía</span> de la palabra.
             </li>
@@ -55,8 +55,8 @@ if (products.length > 0) {
               palabras.
             </li>
             <li class="my-2">
-              <a href="/" class="text-primary hover:underline">
-                Navegá por las categorías
+              <a href="/" class="text-primary underline">
+                Navega por las categorías
               </a>{" "}
               para encontrar un producto similar
             </li>
