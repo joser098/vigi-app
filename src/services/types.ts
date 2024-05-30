@@ -17,11 +17,53 @@ export interface Product {
   portero_details: PorteroDetails;
   alarm_details: AlarmDetails;
   storage_details: StorageDetails;
+  kit_details: KitDetails;
   has_promotion: boolean;
   others: string;
   gallery: number;
   tags: string[];
   favorites: string[];
+}
+
+export interface KitDetails {
+  "Caracteristicas Principales": {
+    "Formato de venta": string;
+  };
+  "Especificaciones": {
+    "Tipo de camara": string;
+    "Calidad de resolución": string;
+    "Lugares de montaje": string;
+    "Locaciones de la cámara": string;
+    "Campo visual": string;
+    "Tipo de movimiento": string;
+    "Vision nocturna": string;
+    "Tipo de conexión": string;
+    "Motorizada": string;
+    "Temperatura minima": string;
+    "Temperatura maxima": string;
+    "Con microfono": string;
+    "Distancia focal del lente": string;
+    "Alcance de visión nocturna": string;
+  };
+  "Compatibilidad": {
+    "Sistemas operativos compatibles": string;
+  };
+  "Caracteristicas generales": {
+    "Marca": string;
+    "Linea": string;
+    "Modelo": string;
+    "Tipo de alimentacion": string;
+  };
+  "Video": {
+    "Tipo de resolución": string;
+    "Compresión de video": string;
+  };
+  "filter": {
+    "camaras": number;
+    "canales_dvr": number;
+    "disco": boolean;
+    "cam_type": string;
+  };
 }
 
 export interface StorageDetails {

@@ -219,12 +219,16 @@ const { product } = Astro.props;
   )
 }
 {
-  product.category == "DVR" && (
+  product.category == "kits" && (
     <article class="grid grid-cols-1 sm:grid-cols-2 gap-5">
       <div class="grid gap-3">
         <div>
           <table>
             <h4>General</h4>
+            <tr>
+              <td>Formato de venta</td>
+              <td>{product.kit_details["Caracteristicas Principales"]["Formato de venta"]}</td>
+            </tr>
             <tr>
               <td>Marca</td>
               <td>{product.provider}</td>
@@ -234,29 +238,33 @@ const { product } = Astro.props;
               <td>{product.model}</td>
             </tr>
             <tr>
-              <td>Tipo de DVR</td>
-              <td>{product.dvr_details.type}</td>
+              <td>Linea</td>
+              <td>{product.kit_details["Caracteristicas generales"].Linea}</td>
+            </tr>
+            <tr>
+              <td>Canales DVR</td>
+              <td>{product.kit_details.filter.canales_dvr}</td>
+            </tr>
+            <tr>
+              <td>Sistemas operativos compatibles</td>
+              <td>{product.kit_details.Compatibilidad["Sistemas operativos compatibles"]}</td>
+            </tr>
+            <tr>
+              <td>Total cámaras</td>
+              <td>{product.kit_details.filter.camaras}</td>
             </tr>
           </table>
         </div>
         <div>
-          <h4>Dimensiones</h4>
+          <h4>Video</h4>
           <table>
             <tr>
-              <td>Alto</td>
-              <td>{product.dvr_details.dimensions.height}</td>
+              <td>Compresión de video</td>
+              <td>{product.kit_details.Video["Compresión de video"]}</td>
             </tr>
             <tr>
-              <td>Ancho</td>
-              <td>{product.dvr_details.dimensions.width}</td>
-            </tr>
-            <tr>
-              <td>Profundidad</td>
-              <td>{product.dvr_details.dimensions.depth}</td>
-            </tr>
-            <tr>
-              <td>Peso</td>
-              <td>{product.dvr_details.dimensions.weight}</td>
+              <td>Tipo de resolución</td>
+              <td>{product.kit_details.Video["Tipo de resolución"]}</td>
             </tr>
           </table>
         </div>
@@ -267,58 +275,64 @@ const { product } = Astro.props;
           <table>
             <h4>Especificaciones</h4>
             <tr>
-              <td>Cantidad de canales</td>
-              <td>{product.dvr_details.channels}</td>
+              <td>Alcance de visión nocturna</td>
+              <td>{product.kit_details.Especificaciones["Alcance de visión nocturna"]}</td>
             </tr>
             <tr>
-              <td>Resolución maxima de video</td>
-              <td>{product.dvr_details.resolution_type}</td>
+              <td>Calidad de resolución</td>
+              <td>{product.kit_details.Especificaciones["Calidad de resolución"]}</td>
             </tr>
             <tr>
-              <td>Tipo de resolución</td>
-              <td>{product.dvr_details.resolution}</td>
+              <td>Campo visual</td>
+              <td>{product.kit_details.Especificaciones["Campo visual"]}</td>
             </tr>
             <tr>
-              <td>Conectores de salida</td>
-              <td>{product.dvr_details.output_connectors.join(", ")}</td>
+              <td>Con microfono</td>
+              <td>{product.kit_details.Especificaciones["Con microfono"]}</td>
             </tr>
             <tr>
-              <td>Conectores de entrada</td>
-              <td>{product.dvr_details.input_connectors}</td>
+              <td>Distancia focal del lente</td>
+              <td>{product.kit_details.Especificaciones["Distancia focal del lente"]}</td>
             </tr>
             <tr>
-              <td>Capacidad de almacenamiento</td>
-              <td>{product.dvr_details.storage_capacity}</td>
+              <td>Locaciones de la cámara</td>
+              <td>{product.kit_details.Especificaciones["Locaciones de la cámara"]}</td>
             </tr>
             <tr>
-              <td>Tipo de almacenamiento</td>
-              <td>{product.dvr_details.storage_type.join(", ")}</td>
+              <td>Lugares de montaje</td>
+              <td>{product.kit_details.Especificaciones["Lugares de montaje"]}</td>
             </tr>
             <tr>
-              <td>Tipo de control</td>
-              <td>{product.dvr_details.control_types}</td>
+              <td>Motorizada</td>
+              <td>{product.kit_details.Especificaciones.Motorizada}</td>
             </tr>
             <tr>
-              <td>Sistema operativo compatibles</td>
+              <td>Temperatura maxima soportada</td>
               <td>
-                {product.dvr_details.supported_operating_systems.join(", ")}
+                {product.kit_details.Especificaciones["Temperatura maxima"]}
               </td>
             </tr>
             <tr>
-              <td>Con vídeo en vivo</td>
-              <td>{product.dvr_details.live_stream ? "Sí" : "No"}</td>
+              <td>Temperatura minima soportada</td>
+              <td>
+                {product.kit_details.Especificaciones["Temperatura minima"]}
+              </td>
             </tr>
             <tr>
-              <td>Con sensor de movimiento</td>
-              <td>{product.dvr_details.motion_sensor ? "Sí" : "No"}</td>
+              <td>Tipo de camara</td>
+              <td>{product.kit_details.Especificaciones["Tipo de camara"]}</td>
             </tr>
             <tr>
-              <td>Formatos de compresión de video</td>
-              <td>{product.dvr_details.video_compression}</td>
+              <td>Tipo de conexión</td>
+              <td>{product.kit_details.Especificaciones["Tipo de conexión"]}</td>
             </tr>
             <tr>
-              <td>Modos de grabación</td>
-              <td>{product.dvr_details.recording_modes}</td>
+              <td>Tipo de movimiento</td>
+              <td>{product.kit_details.Especificaciones["Tipo de movimiento"]}</td>
+            </tr>
+            <tr>
+              <td>Vision nocturna</td>
+              <td>{product.kit_details.Especificaciones["Vision nocturna"]}</td>
             </tr>
           </table>
         </div>
@@ -478,10 +492,10 @@ const { product } = Astro.props;
   )
 }
 {
-  product.category == "alarmas" && <Details details={product.alarm_details}/> 
+  product.category == "alarmas" && <Details details={product.alarm_details}/>
 }
 {
-  product.category == "almacenamiento" && <Details details={product.storage_details}/> 
+  product.category == "almacenamiento" && <Details details={product.storage_details}/>
 }
 
 <style>
