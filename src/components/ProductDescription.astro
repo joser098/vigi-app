@@ -1,5 +1,7 @@
 ---
 const { description } = Astro.props;
+
+const splitDescription = description.split(".");
 ---
 
 <h5 class="font-bold text-2xl">Información del producto</h5>
@@ -8,8 +10,12 @@ const { description } = Astro.props;
     <h6 class="font-bold text-lg uppercase text-gray-600">Descripción</h6>
   </div>
   <div>
-    <p class="sm:text-lg text-balance text-gray-600">
-      {description}
-    </p>
+    {
+      splitDescription.map((p:string) => (
+      <p class="mb-1 text-gray-600">
+        {p}.
+      </p>
+      ))
+    }
   </div>
 </article>
