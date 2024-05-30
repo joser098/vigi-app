@@ -30,9 +30,16 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
         >
       </h1>
     </div>
+    <!-- INFORMATIVES CARDS -->
+    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center my-2 bg-gray-100 shadow rounded-t-2xl">
+      <InfoCard icon="truck" title="Envíos en el dia" description="Todos los dias (CABA)" />
+      <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
+      <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
+      <InfoCard icon="shield" title="Por qué comprar en Vigi" description="" />
+    </section>
     
     <!-- CATEGORIES -->
-    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-16 sm:mb-10">
+    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-4 sm:mb-10 bg-gray-100 shadow rounded-b-2xl">
     {
       categories?.map(c => {
         return (
@@ -54,14 +61,6 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 
     <!-- CARRUSEL -->
     <CardsCarrusel products={promotions}/>
-    
-    <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center mb-12 bg-gray-100 shadow rounded-2xl">
-      <InfoCard icon="truck" title="Envíos en el dia" description="Todos los dias (CABA)" />
-      <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
-      <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
-      <InfoCard icon="shield" title="Por qué comprar en Vigi" description="" />
-    </section>
   </main>
 
   <!-- BANNER -->
