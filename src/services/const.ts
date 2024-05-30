@@ -8,8 +8,8 @@ export const categories = [
   { name: "Batería",
     path: "bateria"
    }, 
-  { name: "DVR",
-    path: "DVR"
+  { name: "Kits",
+    path: "Kits"
    }, 
   { name: "Análogas",
     path: "analogas"
@@ -17,12 +17,12 @@ export const categories = [
   { name: "Porteros",
     path: "porteros"
    }, 
+   { name: "Almacenamiento" ,
+     path: "almacenamiento"
+   },
   { name: "Alarmas",
     path: "alarmas"
    }, 
-  { name: "Almacenamiento" ,
-    path: "almacenamiento"
-  }
 ]
 
 export const quantity = [

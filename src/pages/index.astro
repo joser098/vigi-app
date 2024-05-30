@@ -7,6 +7,7 @@ import Faq from "@/components/Faq";
 import { categories } from "@/services/const";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import SearchInput from "@/components/SearchInput";
+import Carrusel from "@/components/Carrusel.astro";
 
 const promotions = await fetchData("getProducts?promotion=true");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
@@ -15,7 +16,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 <Layout title="Bienvenido a VIGI | Tienda Online de artículos de seguridad para el hogar">
   <!-- BG FOR DESKTOP -->
   <div class="hidden w-auto sm:flex">
-    <img class="w-full object-cover" src="/carrusel1.png" alt="pricipal_banner">
+    <Carrusel />
   </div>
   <!-- BG FOR MOBILE -->
   <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
@@ -29,11 +30,18 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
         >
       </h1>
     </div>
+    <!-- INFORMATIVES CARDS -->
+    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center my-2 bg-gray-100 shadow rounded-t-2xl">
+      <InfoCard icon="truck" title="Envíos en el dia" description="Todos los dias (CABA)" />
+      <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
+      <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
+      <InfoCard icon="shield" title="Por qué comprar en Vigi" description="" />
+    </section>
     
     <!-- CATEGORIES -->
-    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-16 sm:mb-10">
+    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-4 sm:mb-10 bg-gray-100 shadow rounded-b-2xl">
     {
-      categories.map(c => {
+      categories?.map(c => {
         return (
           <CategoryCard
             image_path={`${BASE_URL}/categories/${c.path}.png`}
@@ -44,31 +52,21 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     }
     </section>
 
-    <div class="my-2 sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
-      <h2
-        class="text-primary font-bold my-10 text-base sm:text-2xl 2xl:text-3xl"
-      >
-        Destacados. <span class="text-black font-normal">
-          El mejor precio por el mejor producto.</span
-        >
+    <div class="mt-20">
+      <h2 class="text-black font-normal text-base sm:text-2xl">
+      <span class="text-lg sm:text-3xl text-primary font-extrabold">Destacados.</span> 
+          El mejor precio por el mejor producto.
       </h2>
     </div>
 
     <!-- CARRUSEL -->
     <CardsCarrusel products={promotions}/>
-    
-    <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-1 sm:grid-cols-3 place-items-center gap-x-2 mb-12">
-      <InfoCard icon="truck" title="Envíos a todo el país" description="Gratis a partir de 200,000" />
-      <InfoCard icon="card" title="Todos los medios de pago" description="Descuentos en efectivo" />
-      <InfoCard icon="mail" title="Seguimiento de tu compra" description="Elige cualquier medio" />
-    </section>
   </main>
 
   <!-- BANNER -->
   <div class="banner flex flex-col justify-center items-start">
     <div class="w-full flex justify-between p-4 sm:p-8 max-w-[1180px] m-auto">
-      <h5 class="text-white sm:text-2xl text-balance">Hoy, tu seguridad al alcance de tus manos.</h5>
+      <h5 class="text-white sm:text-3xl text-balance"> <span class="font-bold underline">Tu seguridad</span>, <br>al alcance de tus manos.</h5>
     </div>
   </div>
 

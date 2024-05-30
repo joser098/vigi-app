@@ -1,0 +1,76 @@
+---
+import Cross from "../Icons/Cross.astro";
+import ShieldCheck from "../Icons/ShieldCheck.astro";
+---
+
+<dialog id="why_vigi_modal" class="px-3 py-2 rounded">
+  <header class="flex justify-between py-2 border-b my-2">
+    <div class="flex justify-center items-center gap-2">
+      <ShieldCheck width="max-h-6"/>
+      <h5 class="text-lg text-gray-500">Por qué comprar en Vigi</h5>
+    </div>
+    <button class="close_btn">
+      <Cross />
+    </button>
+  </header>
+  <main class="max-w-[500px] p-4">
+    <article>
+      <div class="banner bg-primary"></div>
+    </article>
+    <article>
+      <p class="text-xs my-2">En Vigi, nos enorgullecemos de ofrecerte una experiencia de compra única y satisfactoria. Aquí te presentamos algunas razones por las que nuestros clientes eligen comprar con nosotros:</p>
+      <ul class="list-decimal text-xs flex flex-col gap-4">
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Productos de Alta Calidad:</span> Seleccionamos cuidadosamente todos nuestros productos para asegurarnos de que cumplan con los más altos estándares de calidad. Trabajamos con proveedores confiables y marcas reconocidas para ofrecerte lo mejor.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Atención Personalizada:</span> Nos importa cada cliente y nos esforzamos por ofrecer una atención personalizada y amable. Nuestro equipo está siempre disponible para ayudarte a encontrar lo que necesitas y responder cualquier pregunta.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Precios Competitivos:</span> Ofrecemos precios justos y competitivos en todos nuestros productos. Además, contamos con ofertas y promociones exclusivas para que puedas obtener el máximo valor por tu dinero.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Variedad y Exclusividad:</span> En Vigi, encontrarás una amplia gama de productos que se adaptan a todos los gustos y necesidades. Desde artículos básicos hasta productos exclusivos que no encontrarás en ningún otro lugar.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Compra Fácil y Segura:</span> Nuestro sitio web está diseñado para ofrecerte una experiencia de compra fácil y segura. Desde la navegación hasta el pago, nos aseguramos de que cada paso sea intuitivo y sin complicaciones.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Entrega Rápida y Confiable:</span> Nos comprometemos a entregarte tus pedidos de manera rápida y confiable. Trabajamos con las mejores compañías de envío para asegurarnos de que tus compras lleguen a tiempo y en perfectas condiciones.</p>
+        </li>
+        <li>
+          <p><span class="font-bold text-primary underline uppercase">Innovación Constante:</span> Nos mantenemos al día con las últimas tendencias y tecnologías para ofrecerte siempre lo mejor. Estamos en constante innovación para mejorar nuestra oferta y tu experiencia de compra.</p>
+        </li>
+      </ul>
+    </article>
+  </main>
+  <footer class="border-t-2 py-2 mt-2 flex justify-end items-center">
+    <button class="close_btn text-white bg-primary px-8 py-2 rounded text-sm">
+      Cerrar
+    </button>
+  </footer>
+</dialog>
+
+<style>
+  .banner {
+    background-image: url("/2.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px;
+    width: 100%;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const close_btns = document.querySelectorAll(".close_btn");
+    const pagos_modal = document.getElementById("why_vigi_modal");
+
+    close_btns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        pagos_modal.close();
+      });
+    });
+  });
+</script>

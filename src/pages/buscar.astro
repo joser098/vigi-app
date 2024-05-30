@@ -25,8 +25,21 @@ if (products.length > 0) {
     {
       products.length > 0 ? (
         <>
+          <div>
+            <span>Resultados para: {urlParams}</span>
+          </div>
           <ProductsList productsList={products} />
-          <CardsCarrusel products={similarProducts} />
+          <div class="my-5">
+            <div class="sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
+              <h2 class="text-primary font-bold mt-16 text-base sm:text-2xl 2xl:text-3xl">
+                Otras opciones similares.{" "}
+                <span class="text-black font-normal">
+                  Encuentra la que más se ajuste a tus necesidades.
+                </span>
+              </h2>
+            </div>
+            <CardsCarrusel products={similarProducts} />
+          </div>
         </>
       ) : (
         <div class="bg-white p-4 flex flex-col justify-center items-center rounded">

@@ -7,10 +7,10 @@ const { products } = Astro.props;
 ---
 
 <section class="relative">
-  <div class="flex gap-5 mb-8 overflow-x-hidden">
+  <div class="flex gap-5 overflow-x-hidden">
     <div
       id="promotions_slider"
-      class="flex gap-5 mb-16 py-4 transition-transform duration-1000 ease-out translate-x-0"
+      class="flex gap-5 mb-10 py-4 transition-transform duration-1000 ease-out translate-x-0"
       data-items={products.length}>
       {products.map((product: Product) => <ProductCard product={product} />)}
     </div>

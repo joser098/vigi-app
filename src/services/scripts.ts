@@ -137,8 +137,36 @@ export const formatDate = (date: string) => {
 
 export const getTime = () => {
   const date = new Date();
-  const time_arg = date.toLocaleTimeString("es-AR", { timeZone: "America/Argentina/Buenos_Aires"});
+  
+  //Get Day
+  const weekDays = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+  const day = date.getDay();
+
+  //Get Time
+  const time_arg = date.toLocaleTimeString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", hour12: false});
   const time = parseInt(time_arg.slice(0, 2));
 
-  return time;
+  //Get Month
+  const allMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const month = date.getMonth();
+
+  const obj = {
+    day: day,
+    dayName: weekDays[day],
+    month: month,
+    monthName: allMonths[month],
+    hour: time,
+    minute: parseInt(time_arg.slice(3, 5)),
+  }
+
+  return obj;
 }
+
+export const calculateShipmentArrives = (date: any): string => {
+  if(date.hour < 0) return "";
+
+  if (date.hour <= 16) return "Llega hoy (CABA)";
+  if (date.hour > 16) return "Llega mañana (CABA)";
+
+  return "";
+};

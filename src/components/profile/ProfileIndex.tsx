@@ -4,7 +4,7 @@ import InfoIcon from "../Icons/InfoIcon";
 import Bag from "../Icons/Bag";
 import Favorite from "../Icons/Favorites";
 import Location from "../Icons/Location";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 import AddressInfo from "./AddressInfo";
 import FavoritesInfo from "./FavoritesInfo";
@@ -16,8 +16,38 @@ const ProfileIndex = ({ customer }: { customer: Customer }) => {
   const [currentTab, setCurrentTab] = useState<Tab>("info");
 
   const changeTab = (tab: Tab): void => {
+    // Change the URL hash based on the selected tab
+    switch (tab) {
+      case "info":
+        window.location.hash = "";
+        break;
+      case "purchasesInfo":
+        window.location.hash = "purchases";
+        break;
+      case "favoritesInfo":
+        window.location.hash = "favorites";
+        break;
+      case "addressInfo":
+        window.location.hash = "address";
+        break;
+    }
+    // Update the current tab
     setCurrentTab(tab);
   };
+
+  useEffect(() => {
+    // Change the current tab based on the URL hash
+    if (window.location.hash === "#purchases") {
+      setCurrentTab("purchasesInfo");
+    }
+    if (window.location.hash === "#favorites") {
+      setCurrentTab("favoritesInfo");
+    }
+    if (window.location.hash === "#address") {
+      setCurrentTab("addressInfo");
+    }
+    // If the URL hash is not related to tabs, keep the current tab
+  }, [])
 
   return (
     <section className="my-5 flex flex-col sm:flex-row gap-6">

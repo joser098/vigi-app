@@ -14,11 +14,107 @@ export interface Product {
   discount: number; 
   details: CameraDetails;
   dvr_details: DvrDetails;
+  portero_details: PorteroDetails;
+  alarm_details: AlarmDetails;
+  storage_details: StorageDetails;
+  kit_details: KitDetails;
   has_promotion: boolean;
   others: string;
   gallery: number;
   tags: string[];
   favorites: string[];
+}
+
+export interface KitDetails {
+  "Caracteristicas Principales": {
+    "Formato de venta": string;
+  };
+  "Especificaciones": {
+    "Tipo de camara": string;
+    "Calidad de resolución": string;
+    "Lugares de montaje": string;
+    "Locaciones de la cámara": string;
+    "Campo visual": string;
+    "Tipo de movimiento": string;
+    "Vision nocturna": string;
+    "Tipo de conexión": string;
+    "Motorizada": string;
+    "Temperatura minima": string;
+    "Temperatura maxima": string;
+    "Con microfono": string;
+    "Distancia focal del lente": string;
+    "Alcance de visión nocturna": string;
+  };
+  "Compatibilidad": {
+    "Sistemas operativos compatibles": string;
+  };
+  "Caracteristicas generales": {
+    "Marca": string;
+    "Linea": string;
+    "Modelo": string;
+    "Tipo de alimentacion": string;
+  };
+  "Video": {
+    "Tipo de resolución": string;
+    "Compresión de video": string;
+  };
+  "filter": {
+    "camaras": number;
+    "canales_dvr": number;
+    "disco": boolean;
+    "cam_type": string;
+  };
+}
+
+export interface StorageDetails {
+  Color: string,
+	Linea: string,
+	Capacidad: string,
+	"Tecnología de almacenamiento": string,
+	Interfaces: string,
+	"Caché de datos": string,
+	Alto: string,
+	Ancho: string,
+	Profundidad: string,
+	Peso: string,
+  "Velocidad de lectura": string,
+  "Velocidad de escritura": string,
+  "Incluye adaptador SD": string
+}
+
+export interface AlarmDetails {
+  Color: string;
+  Piezas: number;
+  Alimentacion: string;
+  Conectividad: string;
+  Zonas: string;
+  Sensores: string;
+}
+
+export interface PorteroDetails {
+  resolution_type: string,
+  resolution: string,
+  connectivity: string, 
+  color: string, 
+  screen_dimensions: Dimensions,
+  front_dimensions: Dimensions,
+  hole_diameter_compatible: string,
+  door_diameter_compatible: string,
+  storage_type: string, 
+  storage_capacity: string, 
+  mounting: string, 
+  connection_types: string,
+  visual_field: string, 
+  lens: string, 
+  night_vision: boolean, 
+  max_temperature: string,
+  audio: string, 
+  live_stream: boolean, 
+  anti_vandal: boolean, 
+  control_types: string, 
+  screen_size: string, 
+  parts: number, 
+  power_type: string 
 }
 
 export interface CameraDetails {
