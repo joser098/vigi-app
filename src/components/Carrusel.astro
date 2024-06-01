@@ -41,6 +41,18 @@ const carrusel = await getCarruselImages();
       title="Ir a la imagen siguiente"
     /></button
   >
+  <div class="absolute w-full bottom-0 flex justify-center">
+    {
+      carrusel.images.map((_: string, index: number) => {
+        return (
+          <span
+            id={`banner_${index}`}
+            class={`banners h-1 w-6 bg-gray-300 ${index == 0 ? "opacity-100" : "opacity-40"} transition-opacity m-1`}
+          />
+        );
+      })
+    }
+  </div>
 </section>
 
 <script>
@@ -56,15 +68,38 @@ const carrusel = await getCarruselImages();
     let current = 0;
     let isAnimating = false;
 
+    //EVENTE LISTENER TO CLICK AND SET NEW CURRENT BANNER
+    // const banners = document.querySelectorAll(".banners");
+    // banners.forEach((elem, index) => {
+    //   elem.addEventListener("click", () => {
+    //     if (isAnimating) return;
+    //     isAnimating = true;
+    //     setCurrentItem(current, index);
+    //     current = index;
+    //     setTranlation();
+    //     isAnimating = false;
+    //   });
+    // });
+
+    function setCurrentItem(current: number, next: number) {
+      const current_elem = document.getElementById(`banner_${current}`);
+      const elem_to_set = document.getElementById(`banner_${next}`);
+
+      current_elem?.classList.replace("opacity-100", "opacity-40");
+      elem_to_set?.classList.replace("opacity-40", "opacity-100");
+    }
+
     function moveRight() {
       if (isAnimating) return;
       isAnimating = true;
 
       const items = arrItems - 1;
       if (current !== items) {
+        setCurrentItem(current, current + 1);
         current += 1;
         setTranlation();
       } else {
+        setCurrentItem(current, 0);
         setTranlation(true);
         current = 0;
       }
@@ -75,9 +110,10 @@ const carrusel = await getCarruselImages();
     }
 
     function moveLeft() {
-      if (isAnimating ||  current == 0) return;
+      if (isAnimating || current == 0) return;
       isAnimating = true;
 
+      setCurrentItem(current, current - 1);
       current -= 1;
       setTranlation();
 
@@ -107,6 +143,6 @@ const carrusel = await getCarruselImages();
 
     setInterval(() => {
       moveRight();
-    }, 5000);
+    }, 6500);
   });
 </script>
