@@ -8,6 +8,8 @@ const session = Astro.cookies.get("check");
 if (session) {
   return Astro.redirect("/profile");
 }
+
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
 <Layout title="Iniciar sesión | VIGI">
@@ -29,7 +31,7 @@ if (session) {
       <LoginForm client:visible/>
     </article>
     <article>
-      <img class="rounded-lg" src="/login_banner.png" alt="login Banner">
+      <img class="rounded-lg" src={`${BASE_URL}/assets/login_banner.png`} alt="login Banner">
     </article>
   </section>
 </Layout>
