@@ -33,7 +33,7 @@ const avatar = `${BASE_URL}/assets/avatar.png`
               id="profilePicture"
               class="h-20 w-20 sm:h-28 sm:w-28 object-cover rounded-full"
               title=`Imagen de perfil de ${customer.user_data.name}`
-              src=`${customer.profile_image ?? avatar }`
+              src=`${customer.profile_image || avatar }`
               alt=`Imagen de perfil de ${customer.user_data.name}`
             />
           </label>
