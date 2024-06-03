@@ -85,11 +85,13 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
   </section>
 
   <script>
-    import { check } from "@/store/cartStore";
+    import { check, totalItems } from "@/store/cartStore";
     const token = document.cookie.split('=');
 
     if(token != null){
       check.set(token[1])
+    } else {
+      totalItems.set(0)
     }
   </script>
 </Layout>
