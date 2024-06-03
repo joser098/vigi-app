@@ -3,9 +3,11 @@ export const prerender = false;
 import { getCarruselImages } from "@/services/fetchData";
 
 const carrusel = await getCarruselImages();
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+
 ---
 
-<section class="relative">
+<section class="relative overflow-hidden">
   <div
     id="banner_carrusel"
     data-items={carrusel.length}
@@ -25,7 +27,7 @@ const carrusel = await getCarruselImages();
   >
     <img
       class="size-16 opacity-10 transition-opacity hover:opacity-100"
-      src="/left-arrow.svg"
+      src=`${BASE_URL}/assets/left-arrow.svg`
       alt="Imagen anterior"
       title="Ir a la imagen anterior"
     />
@@ -36,7 +38,7 @@ const carrusel = await getCarruselImages();
   >
     <img
       class="size-16 rotate-180 opacity-10 transition-opacity hover:opacity-100"
-      src="/left-arrow.svg"
+      src=`${BASE_URL}/assets/left-arrow.svg`
       alt="Imagen siguiente"
       title="Ir a la imagen siguiente"
     /></button

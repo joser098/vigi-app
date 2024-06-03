@@ -13,6 +13,8 @@ if (session == undefined) {
 }
 
 const customer: Customer = await getCustomerData(session.value);
+const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+const avatar = `${BASE_URL}/assets/avatar.png`
 ---
 
 <Layout title="Perfil | VIGI">
@@ -31,7 +33,7 @@ const customer: Customer = await getCustomerData(session.value);
               id="profilePicture"
               class="h-20 w-20 sm:h-28 sm:w-28 object-cover rounded-full"
               title=`Imagen de perfil de ${customer.user_data.name}`
-              src=`${customer.profile_image || "/avatar.png"}`
+              src=`${customer.profile_image ?? avatar }`
               alt=`Imagen de perfil de ${customer.user_data.name}`
             />
           </label>
