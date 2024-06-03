@@ -57,10 +57,10 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
   </div>
 </section>
 
-<script>
+<script is:inline>
   document.addEventListener("astro:page-load", () => {
     const carrusel = document.getElementById("banner_carrusel");
-    const arrItems = carrusel?.children.length!;
+    const arrItems = carrusel?.children.length;
     const carrusel_W = carrusel?.offsetWidth;
     const screen_w = window.screen.width;
 
@@ -83,7 +83,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     //   });
     // });
 
-    function setCurrentItem(current: number, next: number) {
+    function setCurrentItem(current, next) {
       const current_elem = document.getElementById(`banner_${current}`);
       const elem_to_set = document.getElementById(`banner_${next}`);
 
