@@ -1,5 +1,6 @@
 ---
 import { footerData } from "../services/const";
+import DataFiscal from "./DataFiscal.astro";
 import Logo from "./Logo.astro";
 ---
 
@@ -26,9 +27,12 @@ import Logo from "./Logo.astro";
       }
     </section>
     <section class="flex justify-between mt-5">
-        <div>
+        <div class="flex items-center gap-2">
+          <DataFiscal/>
+          <div class="border-l-2 pl-2">
             <span class="block text-xs text-gray-400">Copyright © 2024 Vigi</span>
             <span class="block text-xs text-gray-400">Caballito, Capital Federal. Argentina</span>
+          </div>
         </div>
         <Logo />
     </section>

@@ -1,14 +1,14 @@
 ---
 import { ViewTransitions } from "astro:transitions";
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import BackButton from "@/components/Buttons/BackButton";
-import '@fontsource/poppins';
-import  SpeedInsights  from "@vercel/speed-insights/astro"
+import "@fontsource/poppins";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import Marquee from "@/components/Marquee.astro";
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -18,64 +18,83 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 
 <!doctype html>
 <html lang="es-AR">
-	<head>
-		<link rel="icon" type="image/svg" href={`${BASE_URL}/assets/vigi_white.svg`} />
-		<meta charset="UTF-8" />
-		<meta name="theme-color" content="#1E053F" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
-		<meta name="keywords" content="seguridad, camaras,cámaras, alarmas, vigilancia, argentina, vision"/>
-		<meta name="author" content="Jose Jaramillo" />
+  <head>
+    <link rel="icon" type="image/svg" href={`${BASE_URL}/assets/vigi_white.svg`} />
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#1E053F" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
+    <meta name="keywords" content="seguridad, camaras,cámaras, alarmas, vigilancia, argentina, vision"/>
+    <meta name="author" content="Jose Jaramillo" />
 
-		<meta name="robots" content="index, follow"/>
-		<meta name="googlebot" content="index, follow" />
-		<meta name="google-site-verification" content="kgvRTZHibC8c4TD_HTW9cPCX3xR34UdwQDF5SpnQswU" />
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow" />
+    <meta name="google-site-verification" content="kgvRTZHibC8c4TD_HTW9cPCX3xR34UdwQDF5SpnQswU" />
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-MQJGMW6G");
+    </script>
+    <!-- End Google Tag Manager -->
 
-		<meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
-		<meta name="og:title" content={title} />
-		<meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
-		<meta name="og:url" content={Astro.url} />
-		<meta name="og:site_name" content="Vigi | Tienda online" />
-		<meta name="og:type" content="website" />
-		<meta name="og:locale" content="es_AR" />
+    <meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
+    <meta name="og:title" content={title} />
+    <meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
+    <meta name="og:url" content={Astro.url} />
+    <meta name="og:site_name" content="Vigi | Tienda online" />
+    <meta name="og:type" content="website" />
+    <meta name="og:locale" content="es_AR" />
 
-		<title>{title}</title>
-		<ViewTransitions />
-		<SpeedInsights />
-	</head>
-	<body>
-		{
-			url.pathname == "/" && <Marquee/>
-		}
-		<Header render={url.pathname != '/login' && url.pathname !== '/register' && true}/>
-		{(url.pathname !== '/' && url.pathname !== '/login' && !url.pathname.includes('payment')) && <BackButton client:visible/>}
-		<slot />
-		<Footer />
-	</body>
+    <title>{title}</title>
+    <ViewTransitions />
+    <SpeedInsights />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQJGMW6G" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {
+		url.pathname == "/" && <Marquee />
+	}
+    <Header render={url.pathname != "/login" && url.pathname !== "/register" && true} />
+    {
+		url.pathname !== "/" && url.pathname !== "/login" && !url.pathname.includes("payment") && <BackButton client:visible />
+    }
+    <slot />
+    <Footer />
+</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 30, 5, 63;
-		--mid: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--mid)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family:  'Poppins',system-ui, sans-serif;
-		background: #f5f5f7;
-		background-size: 224px;
-	}
-	body {
-		height: 100vh;
-		width: 100vw;
-		margin: 0;
-		overflow-x: hidden;
-	}
-</style>
+  <style is:global>
+    :root {
+      --accent: 30, 5, 63;
+      --mid: 136, 58, 234;
+      --accent-light: 224, 204, 250;
+      --accent-dark: 49, 10, 101;
+      --accent-gradient: linear-gradient(
+        45deg,
+        rgb(var(--accent)),
+        rgb(var(--mid)),
+        rgb(var(--accent-light)) 30%,
+        white 60%
+      );
+    }
+    html {
+      font-family: "Poppins", system-ui, sans-serif;
+      background: #f5f5f7;
+      background-size: 224px;
+    }
+    body {
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      overflow-x: hidden;
+    }
+  </style>

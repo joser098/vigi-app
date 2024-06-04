@@ -8,6 +8,7 @@ import { categories } from "@/services/const";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import SearchInput from "@/components/SearchInput";
 import Carrusel from "@/components/Carrusel.astro";
+import WhatsAppBtn from "@/components/WhatsAppBtn.astro";
 
 const promotions = await fetchData("getProducts?promotion=true");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
@@ -83,6 +84,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     </div>
     <Faq client:visible />
   </section>
+  <WhatsAppBtn/>
 
   <script>
     import { check, totalItems } from "@/store/cartStore";
