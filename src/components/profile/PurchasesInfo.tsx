@@ -12,7 +12,7 @@ const PurchasesInfo = () => {
       setIsloading(true);
       const token = getToken();
       const response = await getCustomerOrders(token);
-      setPurchases(response);
+      setPurchases(response.reverse());
       setIsloading(false);
     };
     fetchPurchases();
@@ -39,10 +39,10 @@ const PurchasesInfo = () => {
                     <span
                     className={purchase.status == "Entregado" ? "text-green-700" : "text-orange-400"}
                     >{purchase.status}</span>
-                    <span>Llega el X </span>
+                    {/* <span>Llega el X </span> */}
                   </div>
                   <div className="w-full flex flex-col gap-3">
-                    <a href={`/compra/${purchase.payment_id}`} className="block w-full bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-75 transition-opacity text-center">Ver compra</a>
+                    {/* <a href={`/compra/${purchase.payment_id}`} className="block w-full bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-75 transition-opacity text-center">Ver compra</a> */}
                     {/* <a href="#" className="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-2 rounded-md hover:opacity-75 transition-opacity text-center">Volver a comprar</a> */}
                   </div>
                 </article>
