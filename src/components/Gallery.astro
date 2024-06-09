@@ -5,7 +5,8 @@ interface Props {
 }
 
 const { model, gallery_images_total } = Astro.props;
-const model_trim = model.split(" ").join("+");
+const model_trim = encodeURIComponent(model).replace(/%20/g, "+");
+// const model_trim = model.replace("+","%2B").replace(" ","+");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
