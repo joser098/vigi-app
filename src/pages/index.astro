@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CategoryCard from "../components/CategoryCard.astro";
-import { fetchData } from "../services/fetchData";
 import InfoCard from "@/components/InfoCard.astro";
 import Faq from "@/components/Faq";
 import { categories } from "@/services/const";
@@ -10,7 +9,6 @@ import SearchInput from "@/components/SearchInput";
 import Carrusel from "@/components/Carrusel.astro";
 import WhatsAppBtn from "@/components/WhatsAppBtn.astro";
 
-const promotions = await fetchData("getProducts?promotion=true");
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
 ---
 
@@ -61,7 +59,7 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     </div>
 
     <!-- CARRUSEL -->
-    <CardsCarrusel products={promotions}/>
+    <CardsCarrusel/>
   </main>
 
   <!-- BANNER -->
