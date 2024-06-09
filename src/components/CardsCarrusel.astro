@@ -1,9 +1,18 @@
 ---
+export const prerender = false;
 import type { Product } from "@/services/types";
 import Chevron from "./Icons/Chevron.astro";
 import ProductCard from "./ProductCard.astro";
+import { fetchData } from "@/services/fetchData";
 
+let cards;
 const { products } = Astro.props;
+
+if(products){
+  cards = products;
+} else {
+  cards = await fetchData("getProducts?promotion=true");
+}
 ---
 
 <section class="relative">
@@ -11,8 +20,8 @@ const { products } = Astro.props;
     <div
       id="promotions_slider"
       class="flex gap-5 mb-10 py-4 transition-transform duration-1000 ease-out translate-x-0"
-      data-items={products.length}>
-      {products.map((product: Product) => <ProductCard product={product} />)}
+      data-items={cards.length}>
+      {cards.map((product: Product) => <ProductCard product={product} />)}
     </div>
     <button
       id="prev"
