@@ -4,7 +4,6 @@ import { getCarruselImages } from "@/services/fetchData";
 
 const carrusel = await getCarruselImages();
 const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
-
 ---
 
 <section class="relative overflow-hidden">
@@ -14,9 +13,9 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
     class="flex transition-transform duration-1000"
   >
     {
-      carrusel?.images?.map((i: string, index: number) => {
+      carrusel?.images?.map((i: any, index: number) => {
         return (
-          <img class="w-full object-cover" src={i} alt={`Banner_${index}`} />
+          <img class="w-full object-cover" src={`${BASE_URL}/carrusel/${i.banner_url}`} alt={`Banner_${index}`} />
         );
       })
     }
