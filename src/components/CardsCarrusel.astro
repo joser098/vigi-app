@@ -21,7 +21,7 @@ if(products){
       id="promotions_slider"
       class="flex gap-5 mb-10 py-4 transition-transform duration-1000 ease-out translate-x-0"
       data-items={cards.length}>
-      {cards.map((product: Product) => <ProductCard product={product} />)}
+      {cards?.map((product: Product) => <ProductCard product={product} />)}
     </div>
     <button
       id="prev"
