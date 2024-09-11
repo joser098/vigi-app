@@ -3,6 +3,7 @@ import { createPaymentOrder } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { CartModel } from "@/services/types";
 import { useEffect, useState } from "react";
+import Loader from "./Icons/Loader";
 
 interface Shipments {
   local_pickup: boolean,
@@ -13,16 +14,19 @@ interface Shipments {
   }
 }
 
-const PayCartButton = ({ cart, finalTotal, shipments }: {cart: CartModel, finalTotal: number, shipments: Shipments}) => {
+const PayCartButton = ({ cart, finalTotal, shipments, method }: {cart: CartModel, finalTotal: number, shipments: Shipments, method: string}) => {
    const [isEnable, setIsEnable] = useState(true);
+   const [isLoading, setIsLoading] = useState(false);
 
   const onPayCartClick = async () => {
+    setIsLoading(true)
     if(cart.items.length > 0){
       const cartModel = {
         items: cart.items,
         products_total:cart.products_total,
         amount_to_pay: finalTotal,
-        shipments: shipments
+        shipments: shipments,
+        method
       }
       
       const token = getToken()
@@ -42,8 +46,10 @@ const PayCartButton = ({ cart, finalTotal, shipments }: {cart: CartModel, finalT
   }, [])
 
   return (
-    <button onClick={onPayCartClick} disabled={isEnable} className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3">
-      Finalizar compra
+    <button onClick={onPayCartClick} disabled={isEnable} className={`w-full flex items-center justify-center text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3 ${method == "mp" ? "bg-[#00B1EA]" : "bg-primary border-2 border-primary"}`}>
+      {
+        isLoading ? <Loader/> : method === 'mp' ? 'Pagar con mercadopago' : 'Pagar con promociones'
+      }
     </button>
   );
 };

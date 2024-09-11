@@ -201,7 +201,8 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           </span>
         </div>
       </div>
-      <PayCartButton cart={cart} finalTotal={total} shipments={shipments}/>
+      <PayCartButton cart={cart} finalTotal={total} shipments={shipments} method="nv"/>
+      <PayCartButton cart={cart} finalTotal={total} shipments={shipments} method="mp"/>
     </article>
   );
 };
