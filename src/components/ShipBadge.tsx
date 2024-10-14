@@ -2,13 +2,13 @@ import { getTime, calculateShipmentArrives } from "@/services/scripts";
 import { useEffect, useState } from "react";
 
 const ShipBadge = () => {
-    const [shipmentArrives, setShipmentArrives] = useState("");
+    const [shipmentArrives, setShipmentArrives] = useState("Llega mañana (CABA)");
 
-  useEffect(() => {
-    const time = getTime();
-    const shipmentArrives = calculateShipmentArrives(time);
-    setShipmentArrives(shipmentArrives)
-  });
+  // useEffect(() => {
+  //   const time = getTime();
+  //   const shipmentArrives = calculateShipmentArrives(time);
+  //   setShipmentArrives(shipmentArrives)
+  // });
 
   return (
     <div className="my-2 flex justify-center items-center text-center">
