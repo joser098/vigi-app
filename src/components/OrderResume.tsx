@@ -17,11 +17,13 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [discount, setDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [codeResult, setCodeResult] = useState("");
+  const [disablePay, setDisablePay] = useState(true);
 
   // const [install, setInstall] = useState(0);
   const [total, setTotal] = useState(cart.amount_to_pay);
 
   const calulateCost = async () => {
+    setDisablePay(true);
     const token = getToken();
     const shipping = await getShippingCost(token);
     setShipments({
@@ -32,6 +34,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         street_name: shipping.address
       }
     });
+    setDisablePay(false);
   };
 
   const onShipTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -105,7 +108,11 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             </span>
           ) : (
             total > 0 && <span className="text-xs">
-              Envío a: <strong>{`${shipments.receiver_address.street_name}`}</strong>
+              Envío a: {
+                shipments.receiver_address.street_name 
+                ? <strong>{shipments.receiver_address.street_name}</strong>
+                : <strong className=" text-orange-500">cargando dirección. . .</strong>
+              }
             </span>
           )}
         </div>
@@ -201,8 +208,8 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           </span>
         </div>
       </div>
-      <PayCartButton cart={cart} finalTotal={total} shipments={shipments} method="nv"/>
-      <PayCartButton cart={cart} finalTotal={total} shipments={shipments} method="mp"/>
+      <PayCartButton disablePay={disablePay} cart={cart} finalTotal={total} shipments={shipments} method="nv"/>
+      <PayCartButton disablePay={disablePay} cart={cart} finalTotal={total} shipments={shipments} method="mp"/>
     </article>
   );
 };

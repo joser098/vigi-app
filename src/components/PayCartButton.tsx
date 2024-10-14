@@ -14,11 +14,12 @@ interface Shipments {
   }
 }
 
-const PayCartButton = ({ cart, finalTotal, shipments, method }: {cart: CartModel, finalTotal: number, shipments: Shipments, method: string}) => {
+const PayCartButton = ({ cart, finalTotal, shipments, method, disablePay }: {cart: CartModel, finalTotal: number, shipments: Shipments, method: string, disablePay: boolean}) => {
    const [isEnable, setIsEnable] = useState(true);
    const [isLoading, setIsLoading] = useState(false);
 
   const onPayCartClick = async () => {
+    if(disablePay) return;
     setIsLoading(true)
     if(cart.items.length > 0){
       const cartModel = {
