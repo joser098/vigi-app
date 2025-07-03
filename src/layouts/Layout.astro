@@ -45,6 +45,16 @@ const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
       })(window, document, "script", "dataLayer", "GTM-MQJGMW6G");
     </script>
     <!-- End Google Tag Manager -->
+     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17302456620">
+    </script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-17302456620');
+    </script>
 
     <meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
     <meta name="og:title" content={title} />
