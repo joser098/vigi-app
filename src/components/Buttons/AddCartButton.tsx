@@ -29,7 +29,7 @@ const AddCartButton = ({
 
     setIsLoading(true);
     //Verify quantity is valid
-    const id = product._id || product.id;
+    const id = product.id;
     const quantity = getQuantity(id);
     if (!quantity) {
       setIsLoading(false);
@@ -37,7 +37,7 @@ const AddCartButton = ({
     }
 
     const item = {
-      id: product._id || product.id,
+      id: product.id,
       picture_url: product.thumbnail || product.picture_url,
       title: product.model || product.title,
       quantity,

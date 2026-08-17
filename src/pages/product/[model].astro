@@ -30,7 +30,7 @@ import ShipBadge from "@/components/ShipBadge";
 //   }));
 // }
 
-const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 const { model } = Astro.params;
 
 const product = (await fetchData(`getProduct?model=${model}`)) as Product;
@@ -97,7 +97,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
-          <QuantitySelect client:visible id={product._id} inherit_value={0} padding="p-3"/>
+          <QuantitySelect client:visible id={product.id} inherit_value={0} padding="p-3"/>
           <div class="mt-3 flex items-center gap-2">
             <Truck height="18" width="18" color="#3A3545"/>
             <span class="font-bold text-sm"> Envíos a todo el país</span>
@@ -132,7 +132,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
     </section>
     <section class="bg-gray-100 p-4 shadow-xl rounded-2xl my-10">
       <details>
-        <ProductCaracteristics product={product} />
+        <!-- <ProductCaracteristics product={product} /> -->
       </details>
     </section>
     <section class="bg-gray-100 p-4 shadow-xl rounded-2xl py-4">

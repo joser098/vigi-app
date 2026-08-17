@@ -11,7 +11,7 @@ const BuyButton = ({ product }: { product: Product }) => {
   const cartModel = {
     items: [
       {
-        id: product._id,
+        id: product.id,
         title: product.model,
         picture_url: product.thumbnail,
         quantity,
@@ -26,7 +26,7 @@ const BuyButton = ({ product }: { product: Product }) => {
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
         <button
-          onClick={() => setQuantity(getQuantity(product._id))}
+          onClick={() => setQuantity(getQuantity(product.id))}
           className="block w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity"
         >
           Comprar

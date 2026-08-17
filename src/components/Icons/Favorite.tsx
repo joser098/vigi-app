@@ -1,46 +1,63 @@
 import { navigate } from "astro:transitions/client"
-import { getCustomerData, updateFavorite } from "@/services/fetchData";
+import { getFavorites, updateFavorite } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 import type { Product } from "@/services/types";
-import { customer_id } from "@/store/cartStore";
+import { favoriteIds } from "@/store/cartStore";
 import { useStore } from '@nanostores/react';
 import { useEffect, useState } from "react";
 
 const Favorite = ({ product }: { product: Product }) => {
   const [status, setStatus] = useState(false);
-  const $customer_id = useStore(customer_id)
+  const $favoriteIds = useStore(favoriteIds);
 
   const handleFavClick = async () => {
     const token = getToken();
-    if(token === "null") return (navigate('/login'));
-    if (status) {
-      const res = await updateFavorite (token, product._id, "remove");
+    if (token === "null") return (navigate('/login'));
 
-      res.success && setStatus(false);
+    if (status) {
+      const res = await updateFavorite(token, product.id, "remove");
+
+      if (res.success) {
+        setStatus(false);
+        favoriteIds.set(favoriteIds.get().filter((id) => id !== product.id));
+      }
     } else {
-      const res = await updateFavorite(token, product._id!, "add");
-      res.success && setStatus(true);
+      const res = await updateFavorite(token, product.id, "add");
+
+      if (res.success) {
+        setStatus(true);
+        favoriteIds.set([...favoriteIds.get(), product.id]);
+      }
     }
   };
 
+  // El producto ya no trae la lista de clientes que lo marcaron: los favoritos
+  // pasaron a su propia tabla. El cliente pide los suyos una vez y el resultado
+  // queda en el store, así todas las tarjetas de la página lo comparten en vez
+  // de pedirlo cada una.
   useEffect(() => {
-    const setInitianState = async () => {
-      if($customer_id){
-        const isFavorite = product.favorites.includes($customer_id);
-        setStatus(isFavorite);
-      } else {
-        const token = getToken();
-        if(token === "null") return;
+    const setInitialState = async () => {
+      const token = getToken();
+      if (token === "null") return;
 
-        const customer = await getCustomerData(token);
-        const $$customer_id = customer._id;
-        const isFavorite = product.favorites.includes($$customer_id);
-        setStatus(isFavorite);
-        customer_id.set($$customer_id);
+      if (favoriteIds.get().length > 0) {
+        setStatus(favoriteIds.get().includes(product.id));
+        return;
       }
+
+      const favorites = await getFavorites(token);
+      if (!Array.isArray(favorites)) return;
+
+      const ids = favorites.map((f: Product) => f.id);
+      favoriteIds.set(ids);
+      setStatus(ids.includes(product.id));
     };
-    setInitianState();
+    setInitialState();
   }, [])
+
+  useEffect(() => {
+    setStatus($favoriteIds.includes(product.id));
+  }, [$favoriteIds])
 
 
   return (
@@ -48,7 +65,7 @@ const Favorite = ({ product }: { product: Product }) => {
       <svg
       onClick={handleFavClick}
         id="favorite"
-        data-id={product._id}
+        data-id={product.id}
         data-testid="geist-icon"
         height="24"
         strokeLinejoin="round"

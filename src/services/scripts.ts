@@ -91,48 +91,17 @@ export const getToken = (): string => {
 };
 
 
-export const addCartAsInvited = (item: any, price:number) => {
-  const cart = window.localStorage.getItem("IC_LOCAL");
-  
-  const invitedCart = {
-    _id: null,
-    customer_id: null,
-    items: [item],
-    products_total: price,
-    amount_to_pay: price,
-  };
-  
-  if (cart == null) {
-    window.localStorage.setItem("IC_LOCAL", JSON.stringify(invitedCart));
-  } else {
-    const cartObj = JSON.parse(cart);
-    const itemFound = cartObj.items.findIndex((i:any) => i.id == item.id);
-    console.log(itemFound)
-
-    if(itemFound > -1){
-      cartObj.items[itemFound].quantity = item.quantity;
-    } else {
-      cartObj.items.push(item);
-    }
-
-    const totals = calulateTotals(cartObj.items);
-
-    const model = {
-      ...cartObj,
-      ...totals,
-    }
-
-    window.localStorage.setItem("IC_LOCAL", JSON.stringify(model));
-  }
-};
-
+// La API devuelve timestamps ISO. Esto cortaba el string asumiendo
+// "17/12/2024, 15:10:30", el formato es-AR que el backend armaba a mano.
 export const formatDate = (date: string) => {
-  const allMonths = [null, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-  const day = date.slice(0, 2);
-  const month = allMonths[parseInt(date.slice(3, 5))];
-  const year = date.slice(6, 10);
+  if (!date) return "";
 
-  return `${day} de ${month} ${year}`;
+  const parsed = new Date(date);
+  if (isNaN(parsed.getTime())) return "";
+
+  const allMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  return `${parsed.getDate()} de ${allMonths[parsed.getMonth()]} ${parsed.getFullYear()}`;
 }
 
 export const getTime = () => {

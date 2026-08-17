@@ -13,7 +13,7 @@ if (session == undefined) {
 }
 
 const customer: Customer = await getCustomerData(session.value);
-const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 const avatar = `${BASE_URL}/assets/avatar.png`
 ---
 

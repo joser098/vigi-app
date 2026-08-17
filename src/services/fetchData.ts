@@ -58,24 +58,6 @@ export const getCartData = async (token_: string = "null") => {
   }
 };
 
-export const deleteItem = async (id: string, product_id: string) => {
-  try {
-    const response = await fetch(`${BASE_URL}/api/cart/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ product_id }),
-    });
-
-    const res = await response.json();
-
-    return res;
-  } catch (error) {
-    return error;
-  }
-};
-
 export const createPaymentOrder = async (cart: CartModel, token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/payment/create`, {
@@ -206,18 +188,6 @@ export const uploadFile = async (token: string, file: any) => {
     const res = await response.json();
 
     return res;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getProvincesForDropdown = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/api/search/provinces`);
-
-    const res = await response.json();
-
-    return res.data[0].provinces;
   } catch (error) {
     return error;
   }

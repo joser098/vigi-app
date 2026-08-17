@@ -1,17 +1,23 @@
 // type ProductDetails = CameraDetails | DvrDetails;
 
 export interface Product {
-  _id: string;
+  id: string;
   thumbnail: string;
   provider: string;
   model: string;
   title: string;
   description: string;
   category: string;
+  // price ya viene con el descuento aplicado. price_original y price_diferred
+  // llegan en null cuando el producto no está en promoción.
   price: number;
-  price_original: number;
-  price_diferred: number;
-  discount: number; 
+  price_original: number | null;
+  price_diferred: number | null;
+  discount: number;
+  // Facets: salieron de details y ahora son columnas propias.
+  location: "interior" | "exterior" | null;
+  power_type: string | null;
+  is_analogue: boolean;
   details: CameraDetails;
   dvr_details: DvrDetails;
   portero_details: PorteroDetails;
@@ -22,7 +28,6 @@ export interface Product {
   others: string;
   gallery: number;
   tags: string[];
-  favorites: string[];
 }
 
 export interface KitDetails {
@@ -242,10 +247,10 @@ export interface RegisterIForm {
 }
 
 export interface Customer {
-  _id: string;
+  id: string;
   username: string;
   email: string;
-  password: string;
+  // La API ya no devuelve el hash de la contraseña.
   profile_image: string;
   user_data: {
     name: string;
@@ -291,8 +296,10 @@ export interface IFormNewPass {
 
 // PAYMENT TYPES
 export interface Payment {
-  _id: string;
-  id: number;
+  id: string;
+  // El id que devuelve la pasarela. Antes era `id` a secas.
+  gateway_payment_id: string;
+  gateway: "mercadopago" | "nave";
   additional_info: AdditionalInfo;
   authorization_code: string;
   card: Card;

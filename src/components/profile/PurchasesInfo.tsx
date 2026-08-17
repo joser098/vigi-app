@@ -23,7 +23,7 @@ const PurchasesInfo = () => {
         {purchases.length > 0 ? (
           <ul>
             {purchases.map((purchase: any) => (
-              <li className="border-2 p-3 my-2 rounded-sm" key={purchase._id}>
+              <li className="border-2 p-3 my-2 rounded-sm" key={purchase.id}>
                 <span className="block border-b-[1.5px] border-b-gray-200">{formatDate(purchase.date)}</span>
                 <article className="flex flex-col gap-2 sm:flex-row justify-center items-center my-3"> 
                   <div className="w-full">
@@ -36,9 +36,10 @@ const PurchasesInfo = () => {
                     </div>
                   </div>
                   <div className="w-full flex flex-col justify-center items-center">
+                    {/* status es el código (entregado), status_label el texto */}
                     <span
-                    className={purchase.status == "Entregado" ? "text-green-700" : "text-orange-400"}
-                    >{purchase.status}</span>
+                    className={purchase.status === "entregado" ? "text-green-700" : "text-orange-400"}
+                    >{purchase.status_label}</span>
                     {/* <span>Llega el X </span> */}
                   </div>
                   <div className="w-full flex flex-col gap-3">

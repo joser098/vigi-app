@@ -9,7 +9,7 @@ if (session) {
   return Astro.redirect("/profile");
 }
 
-const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 ---
 
 <Layout title="Iniciar sesión | VIGI">

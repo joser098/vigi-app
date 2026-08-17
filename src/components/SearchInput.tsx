@@ -3,7 +3,7 @@ import { navigate } from "astro/virtual-modules/transitions-router.js";
 import React, { useState, type ChangeEvent } from "react";
 
 interface Item {
-  _id: string;
+  id: string;
   thumbnail: string;
   provider: string;
   model: string;
@@ -61,7 +61,7 @@ const SearchInput = () => {
         {suggestList?.map((item: Item) => {
           return (
             <article
-              key={item._id}
+              key={item.id}
               className="relative hover:bg-gray-100 rounded py-2"
             >
               {item.has_promotion && (

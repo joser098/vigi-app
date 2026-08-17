@@ -18,6 +18,11 @@ if (initialItems?.items) {
 export const check = atom("null");
 export const customer_id = atom("");
 
+// Ids de los productos marcados como favoritos por el cliente logueado.
+// Se pide una vez por sesión y lo comparten todas las tarjetas de la página:
+// el producto ya no viene con la lista de quiénes lo marcaron.
+export const favoriteIds = atom<string[]>([]);
+
 export const totalItems = atom(0);
 if (initialItems) {
   totalItems.set(initialItems.products_total);
@@ -26,6 +31,7 @@ if (initialItems) {
 export const setItemsAfterLog = async (out: boolean) => {
   if(out){
     totalItems.set(0);
+    favoriteIds.set([]);
     return;
   }
 

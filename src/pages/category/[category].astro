@@ -8,8 +8,14 @@ import type { Product } from "src/services/types";
 const path = Astro.url;
 const queries = Object.fromEntries(path.searchParams.entries());
 
-const BASE_URL = import.meta.env.AWS_CLOUDFRONT_URL;
+const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 let { category } = Astro.params;
+
+// Los banners están subidos como /categories/Analogas.png: capitalizados, sin
+// acento y sin sufijo. La ruta viene en minúscula, así que se deriva el nombre.
+const bannerName = category
+  ? category.toLowerCase()
+  : "";
 
 const productsList: Product[] = await getProductsByCategory(category!, queries.order);
 
@@ -22,7 +28,7 @@ if(!productsList){
   <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
     <div class="relative flex items-center">
       <h3 class="absolute pl-14 font-bold text-center sm:text-xl lg:text-5xl  text-white">{category?.toLocaleUpperCase()}</h3>
-      <img class=" rounded" src=`${BASE_URL}/categories/${category}_banner.png` alt=`${category}_banner` />
+      <img class=" rounded" src=`${BASE_URL}/categories/${bannerName}_banner.png` alt=`Banner ${bannerName}` />
     </div>
     <aside class="flex justify-end my-2">
       <ul class="py-1 text-sm">

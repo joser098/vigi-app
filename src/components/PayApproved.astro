@@ -19,7 +19,8 @@ const hour = payment.date_approved.split("T")[1].split(".")[0];
   <table>
     <tr class="h-10 border-b-[1px] border-gray-500">
       <td class="font-semibold"> Nro de pago:</td>
-      <td class="text-end"> {payment.id}</td>
+      {/* El id de la pasarela, no el uuid interno */}
+      <td class="text-end"> {payment.gateway_payment_id}</td>
     </tr>
     <tr class="h-10 border-b-[1px] border-gray-500">
       <td class="font-semibold">Fecha:</td>

@@ -9,7 +9,7 @@ export const categories = [
     path: "bateria"
    }, 
   { name: "Kits",
-    path: "Kits"
+    path: "kits"
    }, 
   { name: "Análogas",
     path: "analogas"

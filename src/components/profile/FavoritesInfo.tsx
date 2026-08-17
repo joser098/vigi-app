@@ -24,7 +24,7 @@ const FavoritesInfo = () => {
     const res = await updateFavorite(token, id, "remove");
     if (res.success) {
       const newFavorites = favorites.filter(
-        (favorite: Product) => favorite._id !== id
+        (favorite: Product) => favorite.id !== id
       );
       setFavorites(newFavorites);
     }
@@ -34,7 +34,7 @@ const FavoritesInfo = () => {
       {favorites.length > 0 ? (
         favorites.map((favorite: Product) => {
           return (
-            <article key={favorite._id} className="flex flex-col sm:flex-row sm:justify-between bg-white gap-3 max-h-80 p-2 border-b-2">
+            <article key={favorite.id} className="flex flex-col sm:flex-row sm:justify-between bg-white gap-3 max-h-80 p-2 border-b-2">
               <a href={`/product/${favorite.model}`} className="flex">
                 <img
                   src={favorite.thumbnail}
@@ -52,7 +52,7 @@ const FavoritesInfo = () => {
                   </p>
                 </div>
               </a>
-              <button onClick={() => removeFavorite(favorite._id)} className="bg-red-400 text-white rounded p-1 sm:text-red-600 sm:bg-transparent hover:underline sm:p-5">Eliminar</button>
+              <button onClick={() => removeFavorite(favorite.id)} className="bg-red-400 text-white rounded p-1 sm:text-red-600 sm:bg-transparent hover:underline sm:p-5">Eliminar</button>
             </article> 
           );
         })
