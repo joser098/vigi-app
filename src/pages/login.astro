@@ -28,7 +28,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2 gap-32 sm:gap-0"
   >
     <article>
-      <LoginForm client:visible/>
+      <LoginForm client:load/>
     </article>
     <article>
       <img class="rounded-lg" src={`${BASE_URL}/assets/login_banner.png`} alt="login Banner">

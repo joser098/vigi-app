@@ -14,7 +14,7 @@ const { render } = Astro.props;
     </a>
 
     <div class={`${!render ? "hidden" : "hidden sm:inline"}`}>
-      <SearchInput client:visible/>
+      <SearchInput client:idle/>
     </div>
 
     <nav class={`flex gap-5 ${!render && "hidden" }`}>

@@ -18,14 +18,25 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [codeResult, setCodeResult] = useState("");
   const [disablePay, setDisablePay] = useState(true);
+  const [shipmentError, setShipmentError] = useState("");
 
   // const [install, setInstall] = useState(0);
   const [total, setTotal] = useState(cart.amount_to_pay);
 
+  // Si la cotización falla (sesión vencida, Andreani caído), el costo se deja
+  // en 0 y el pago deshabilitado. Antes guardaba undefined y el render moría en
+  // toLocaleString, desmontando toda la pantalla de compra.
   const calulateCost = async () => {
     setDisablePay(true);
+    setShipmentError("");
     const token = getToken();
     const shipping = await getShippingCost(token);
+
+    if (typeof shipping?.shippingCost !== "number") {
+      setShipmentError("No pudimos calcular el costo de envío. Intentá de nuevo.");
+      return;
+    }
+
     setShipments({
       ...shipments,
       local_pickup: false,
@@ -187,8 +198,10 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         </div>
         <div className="flex justify-between">
           <span>Envío</span>
-          <span className={`${shipments.cost == 0 && "text-green-500 font-bold"}`}>
-            {shipments.cost == 0
+          <span className={`${!shipments.cost && "text-green-500 font-bold"}`}>
+            {shipmentError
+              ? "—"
+              : !shipments.cost
               ? "GRATIS"
               : shipments.cost.toLocaleString("es-AR", {
                   style: "currency",
@@ -197,6 +210,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
                 })}
           </span>
         </div>
+        {shipmentError && (
+          <p className="text-xs text-red-500">{shipmentError}</p>
+        )}
         <div className="flex justify-between my-6">
           <span className="font-bold">Total:</span>
           <span className="font-bold">

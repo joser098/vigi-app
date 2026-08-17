@@ -77,7 +77,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 	}
     <Header render={url.pathname != "/login" && url.pathname !== "/register" && true} />
     {
-		url.pathname !== "/" && url.pathname !== "/login" && !url.pathname.includes("payment") && <BackButton client:visible />
+		url.pathname !== "/" && url.pathname !== "/login" && !url.pathname.includes("payment") && <BackButton client:idle />
     }
     <slot />
     <Footer />

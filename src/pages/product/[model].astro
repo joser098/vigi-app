@@ -65,7 +65,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         <div>
           <div class="flex justify-between items-center mb-3">
             <h4 class="text-4xl font-bold">{product.model}</h4>
-            <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:visible product={product} /></span>
+            <span class="right-1 hover:scale-110 transition-transform hover:cursor-pointer"><Favorite client:idle product={product} /></span>
           </div>
           <div class="flex justify-between flex-col gap-2">
             <div class="flex items-center gap-2">
@@ -97,11 +97,11 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
         </div>
         <!-- CANTIDAD Y ENVIO -->
         <div>
-          <QuantitySelect client:visible id={product.id} inherit_value={0} padding="p-3"/>
+          <QuantitySelect client:load id={product.id} inherit_value={0} padding="p-3"/>
           <div class="mt-3 flex items-center gap-2">
             <Truck height="18" width="18" color="#3A3545"/>
             <span class="font-bold text-sm"> Envíos a todo el país</span>
-            <ShipBadge client:visible />
+            <ShipBadge client:idle />
           </div>
           <menu>
             <button id="entregas_modal_btn" class="text-primary text-xs hover:underline">Formas de entrega</button>
@@ -125,8 +125,8 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
       </div>
         <!-- BOTONES -->
         <div class="grid gap-3">
-          <BuyButton client:visible product={product}/>
-          <AddCartButton client:visible product={product} buttonLabel="Agregar al carrito" padding="p-3"/>
+          <BuyButton client:load product={product}/>
+          <AddCartButton client:load product={product} buttonLabel="Agregar al carrito" padding="p-3"/>
         </div>
       </article>
     </section>

@@ -42,9 +42,9 @@ const avatar = `${BASE_URL}/assets/avatar.png`
           >¡Hola {customer.user_data.name}!</span
         >
       </div>
-      <LogOutButton client:visible />
+      <LogOutButton client:idle />
     </article>
-    <ProfileIndex client:visible customer={customer} />
+    <ProfileIndex client:idle customer={customer} />
   </section>
 </Layout>
 

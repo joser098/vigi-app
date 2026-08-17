@@ -70,10 +70,10 @@ if (Astro.cookies.has("check")) {
                     </td>
                     <td class="max-w-12 ">
                       <div id={`selectQ_${index}`}>
-                        <QuantitySelect client:visible id={product.id} inherit_value={product.quantity} padding="p-1"/>
+                        <QuantitySelect client:load id={product.id} inherit_value={product.quantity} padding="p-1"/>
                       </div>
                       <div id={`addBtn_${index}`} class="hidden mt-2">
-                        <AddCartButton client:visible product={product} buttonLabel="Actualizar" padding="p-1"/>
+                        <AddCartButton client:load product={product} buttonLabel="Actualizar" padding="p-1"/>
                       </div>
                     </td>
                     <td class="text-center text-xs sm:text-lg">
@@ -88,7 +88,7 @@ if (Astro.cookies.has("check")) {
                     </td>
                     <td>
                       <DeleteItemButton
-                        client:visible
+                        client:load
                         product_id={product.id}
                       />
                     </td>
@@ -106,7 +106,7 @@ if (Astro.cookies.has("check")) {
           }
         </div>
       </article>
-      <OrderResume client:visible cart={cart} />
+      <OrderResume client:load cart={cart} />
     </section>
   </main>
 </Layout>
