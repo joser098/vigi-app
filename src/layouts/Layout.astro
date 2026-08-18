@@ -85,18 +85,26 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     }
     <slot />
     <Footer />
-  <script data-modal-close-handler>
+  <script>
+    // Sin atributos extra: cualquier atributo propio hace que Astro trate el
+    // script como inline y lo copie sin transpilar, y los genéricos de TS
+    // rompen la sintaxis en el navegador.
     const initModals = () => {
-      document.querySelectorAll<HTMLButtonElement>(".close_btn").forEach((btn) => {
-        btn.addEventListener("click", () => btn.closest("dialog")?.close());
-      });
-      // Clic en el fondo: <dialog> no lo cierra solo.
-      document.querySelectorAll<HTMLDialogElement>("dialog").forEach((d) => {
-        d.addEventListener("click", (e) => {
-          if (e.target === d) d.close();
+      document.querySelectorAll("dialog").forEach((dialog) => {
+        if (dialog.dataset.modalReady) return;
+        dialog.dataset.modalReady = "1";
+
+        dialog.querySelectorAll(".close_btn").forEach((btn) => {
+          btn.addEventListener("click", () => dialog.close());
+        });
+
+        // Clic en el fondo: <dialog> no lo cierra solo.
+        dialog.addEventListener("click", (e) => {
+          if (e.target === dialog) dialog.close();
         });
       });
     };
+
     initModals();
     document.addEventListener("astro:page-load", initModals);
   </script>

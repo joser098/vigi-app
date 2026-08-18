@@ -426,37 +426,6 @@ export const provinces = [
   ]
 // --- Rediseño e-commerce -----------------------------------------------------
 
-/**
- * Campañas del carrusel del home. Hoy viven acá; la idea es que terminen
- * saliendo del admin para poder publicar Hot Sale o Navidad sin deploy.
- * `art` es opcional: cuando haya arte subido, reemplaza al bloque de texto.
- */
-export interface Campaign {
-  id: string;
-  tag: string;
-  title: string;
-  subtitle: string;
-  href: string;
-  art?: string;
-  active: boolean;
-}
-
-export const campaigns: Campaign[] = [
-  {
-    id: "hot-sale",
-    tag: "HOT SALE",
-    title: "Hasta 30% en cámaras WiFi",
-    subtitle: "Con envío gratis en CABA",
-    href: "/category/promociones",
-    active: true,
-  },
-];
-
-/**
- * Modelo que se destaca en el hero del home. Si queda vacío o no aparece entre
- * las promociones, se usa la primera promoción activa. La idea es que esto lo
- * termine eligiendo el admin.
- */
 export const FEATURED_MODEL = "";
 
 export const brands = [
