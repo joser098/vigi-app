@@ -1,4 +1,5 @@
 import { type Cart, type CartItem, type RegisterIForm } from "@/services/types";
+import { SHIPPING_CUTOFF_HOUR } from "@/services/const";
 
 export const formatItems = (items: Cart) => {
   const arr = Object.entries(items);
@@ -134,8 +135,7 @@ export const getTime = () => {
 export const calculateShipmentArrives = (date: any): string => {
   if(date.hour < 0) return "";
 
-  if (date.hour <= 16) return "Llega hoy (CABA)";
-  if (date.hour > 16) return "Llega mañana (CABA)";
-
-  return "";
+  return date.hour < SHIPPING_CUTOFF_HOUR
+    ? "Llega hoy (CABA)"
+    : "Llega mañana (CABA)";
 };

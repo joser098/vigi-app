@@ -426,6 +426,13 @@ export const provinces = [
   ]
 // --- Rediseño e-commerce -----------------------------------------------------
 
+/**
+ * Hora de corte para el despacho del mismo día. Estaba en tres lugares con dos
+ * valores distintos: el modal de envíos decía 14:00 y el cálculo del badge
+ * usaba 17:00. Ahora sale de acá.
+ */
+export const SHIPPING_CUTOFF_HOUR = 17;
+
 export const FEATURED_MODEL = "";
 
 export const brands = [

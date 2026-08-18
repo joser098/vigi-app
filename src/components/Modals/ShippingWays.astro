@@ -1,12 +1,16 @@
 ---
+import { SHIPPING_CUTOFF_HOUR } from "@/services/const";
+
+const cutoff = `${SHIPPING_CUTOFF_HOUR}:00`;
+
 const modalities = [
   {
     title: "AMBA · entrega rápida",
-    body: "Si finalizás la compra y el pago se aprueba antes de las 14:00, despachamos el pedido el mismo día. Después de esa hora, sale al siguiente día hábil. Lo recibís en un máximo de 4 días hábiles.",
+    body: `Si finalizás la compra y el pago se aprueba antes de las ${cutoff}, despachamos el pedido el mismo día. Después de esa hora, sale al siguiente día hábil. Lo recibís en un máximo de 4 días hábiles.`,
   },
   {
     title: "Todo el país · entrega eficiente",
-    body: "Mismo corte de las 14:00 para el despacho. El plazo de entrega al resto del país es de 8 a 12 días hábiles desde la confirmación de la compra.",
+    body: `Mismo corte de las ${cutoff} para el despacho. El plazo de entrega al resto del país es de 8 a 12 días hábiles desde la confirmación de la compra.`,
   },
   {
     title: "Retiro en oficina",
