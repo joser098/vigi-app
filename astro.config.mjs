@@ -16,6 +16,23 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: {
       enabled: true
+    },
+    // Home, categorías y fichas se sirven desde el cache del edge y se
+    // regeneran cada 5 minutos: velocidad de página estática sin dejar los
+    // precios congelados hasta el próximo deploy.
+    isr: {
+      expiration: 60 * 5,
+      // Todo lo que depende de quién esté mirando no se puede cachear.
+      exclude: [
+        "/cart",
+        "/profile",
+        "/login",
+        "/register",
+        "/forgot-password",
+        "/buscar",
+        /^\/payment\/.+/,
+        /^\/new-password\/.+/,
+      ]
     }
   })
 });

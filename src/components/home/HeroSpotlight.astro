@@ -1,0 +1,188 @@
+---
+import type { Product } from "@/services/types";
+
+interface Props {
+  product: Product | undefined;
+}
+
+const { product } = Astro.props;
+
+const money = (n: number) =>
+  n.toLocaleString("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  });
+---
+
+<section
+  class="grid gap-10 lg:grid-cols-[1.05fr_468px] lg:items-center lg:gap-16"
+>
+  <div>
+    <p
+      class="mb-6 inline-flex items-center gap-2 rounded-full border border-urgency-line bg-urgency-soft px-4 py-2 text-xs font-semibold text-urgency"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 7.5V12l3 2"></path>
+      </svg>
+      Pedí antes de las 17:00 y llega mañana en CABA
+    </p>
+
+    <h1
+      class="text-pretty text-4xl font-bold leading-[1.12] tracking-tight text-primary sm:text-5xl"
+    >
+      Mirá tu casa desde donde estés.
+    </h1>
+    <p
+      class="mt-5 max-w-[470px] text-pretty text-base leading-relaxed text-muted"
+    >
+      Cámaras, alarmas y kits de las marcas que realmente andan. Te ayudamos a
+      elegir la que necesitás antes de que gastes de más.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a
+        href="/category/promociones"
+        class="inline-flex h-[54px] items-center justify-center gap-2.5 rounded-full bg-primary px-8 text-[15px] font-semibold text-white transition-transform hover:scale-[1.02]"
+      >
+        Ver promociones
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h13M12.5 6l6 6-6 6"></path>
+        </svg>
+      </a>
+      <a
+        href="https://wa.me/541126039243"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex h-[54px] items-center justify-center gap-2.5 rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary transition-colors hover:border-primary"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#33bf5e"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 11.5a8.4 8.4 0 01-12.6 7.3L3 20.5l1.8-5.2A8.4 8.4 0 1121 11.5z"
+          ></path>
+        </svg>
+        No sé cuál elegir
+      </a>
+    </div>
+
+    <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 border-t border-line pt-7">
+      {
+        [
+          "Envío gratis en CABA",
+          "Garantía oficial 6 a 24 meses",
+          "Pagás con Mercado Pago",
+        ].map((item) => (
+          <li class="flex items-center gap-2 text-[12.5px] text-muted">
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#33bf5e"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  {
+    product && (
+      <a
+        href={`/product/${product.model}`}
+        class="group rounded-3xl border border-line bg-white p-6 shadow-[0_18px_44px_rgba(30,5,63,0.07)] transition-shadow hover:shadow-[0_22px_54px_rgba(30,5,63,0.12)]"
+      >
+        <div class="relative flex aspect-square items-center justify-center rounded-2xl bg-panel p-10">
+          {product.price_diferred && (
+            <div class="gradient_violet absolute left-4 top-4 flex flex-col items-center rounded-xl px-3.5 py-2">
+              <span class="text-[10px] leading-tight text-white">Ahorrás</span>
+              <span class="text-[15px] font-bold leading-tight text-white">
+                {money(product.price_diferred)}
+              </span>
+            </div>
+          )}
+          {product.discount > 0 && (
+            <span class="absolute right-4 top-4 inline-flex h-[30px] items-center rounded-full bg-green_ px-3 text-xs font-bold text-[#10331d]">
+              {product.discount}% OFF
+            </span>
+          )}
+          <img
+            class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            src={product.thumbnail}
+            alt={`${product.provider} ${product.model}`}
+            width="420"
+            height="420"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+
+        <div class="mt-6">
+          <span class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-gray-400">
+            {product.provider}
+          </span>
+          <h2 class="mt-1.5 text-[22px] font-bold text-primary">
+            {product.model}
+          </h2>
+          <p class="mt-1.5 line-clamp-2 text-[13px] text-muted">
+            {product.title}
+          </p>
+
+          <div class="mt-4 flex items-baseline gap-3">
+            <span class="text-[32px] font-bold tracking-tight text-ink">
+              {money(product.price)}
+            </span>
+            {product.price_original && (
+              <span class="text-sm text-gray-400 line-through">
+                {money(product.price_original)}
+              </span>
+            )}
+          </div>
+          <p class="mt-1.5 text-[13px] font-semibold text-green_">
+            3 cuotas sin interés de {money(Math.round(product.price / 3))}
+          </p>
+
+          <span class="mt-5 flex h-[54px] items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white">
+            Comprar ahora
+          </span>
+        </div>
+      </a>
+    )
+  }
+</section>

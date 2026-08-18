@@ -5,6 +5,19 @@
   --color-back: #f5f5f7;
   --color-green_: #33bf5e;
 
+  /* Tokens del rediseño. El ámbar sale del amarillo que ya usaban el
+     starburst de descuento y el botón del hero; queda reservado para
+     urgencia, para no competir con el verde de logística. */
+  --color-ink: #241a33;
+  --color-muted: #6b6478;
+  --color-line: #e7e4ed;
+  --color-panel: #f4f2f8;
+  --color-urgency: #b9711a;
+  --color-urgency-soft: #fdf3e3;
+  --color-urgency-line: #f3e0c0;
+  --color-green-soft: #e9f9ef;
+  --color-green-ink: #1f8f45;
+
   --animate-slideDown: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
   --animate-slideUp: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
   --animate-hide: hide 100ms ease-in;
