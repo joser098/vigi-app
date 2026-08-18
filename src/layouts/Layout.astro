@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BackButton from "@/components/Buttons/BackButton";
@@ -65,7 +65,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     <meta name="og:locale" content="es_AR" />
 
     <title>{title}</title>
-    <ViewTransitions />
+    <ClientRouter />
     <SpeedInsights />
   </head>
   <body>
