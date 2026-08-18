@@ -19,6 +19,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [codeResult, setCodeResult] = useState("");
   const [disablePay, setDisablePay] = useState(true);
   const [shipmentError, setShipmentError] = useState("");
+  // Sin esto no se puede distinguir "envío gratis" de "todavía no lo
+  // calculamos": ambos dejaban cost en 0 y la fila decía GRATIS.
+  const [costLoaded, setCostLoaded] = useState(false);
 
   // const [install, setInstall] = useState(0);
   const [total, setTotal] = useState(cart.amount_to_pay);
@@ -29,6 +32,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const calulateCost = async () => {
     setDisablePay(true);
     setShipmentError("");
+    setCostLoaded(false);
     const token = getToken();
     const shipping = await getShippingCost(token);
 
@@ -45,18 +49,23 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         street_name: shipping.address
       }
     });
+    setCostLoaded(true);
     setDisablePay(false);
   };
 
   const onShipTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     
-    if (value == "local_pickup") setShipments({
-      ...shipments,
-      local_pickup: true,
-      cost: 0,
-      free_shipping: false,
-    });
+    if (value == "local_pickup") {
+      setShipments({
+        ...shipments,
+        local_pickup: true,
+        cost: 0,
+        free_shipping: true,
+      });
+      setCostLoaded(true);
+      setDisablePay(false);
+    }
     if (value == "shipping" && total > 0) calulateCost();
   };
 
@@ -200,9 +209,11 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         </div>
         <div className="flex justify-between py-1.5 text-sm">
           <span className="text-muted">Envío</span>
-          <span className={!shipments.cost ? "font-bold text-green_" : "text-ink"}>
+          <span className={costLoaded && !shipments.cost ? "font-bold text-green_" : "text-ink"}>
             {shipmentError
               ? "—"
+              : !costLoaded
+              ? "A calcular"
               : !shipments.cost
               ? "GRATIS"
               : shipments.cost.toLocaleString("es-AR", {
@@ -225,14 +236,6 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             })}
           </span>
         </div>
-        <p className="mt-1.5 text-right text-[13px] font-semibold text-green_">
-          3 cuotas sin interés de{" "}
-          {Math.round(total / 3).toLocaleString("es-AR", {
-            style: "currency",
-            currency: "ARS",
-            minimumFractionDigits: 0,
-          })}
-        </p>
       </div>
 
       <div className="mt-7 border-t border-line pt-6">
