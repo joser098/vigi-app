@@ -8,7 +8,7 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.vigi.cam',
-  integrations: [tailwind(), react(), sitemap()],
+  integrations: [tailwind({ applyBaseStyles: false }), react(), sitemap()],
   output: "static",
   adapter: vercel({
     webAnalytics: {
