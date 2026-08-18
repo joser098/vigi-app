@@ -67,7 +67,7 @@ const AddCartButton = ({
     <>
       <button
         onClick={onAddCartClick}
-        className={`block w-full ${padding} ${buttonLabel == "Actualizar" && "text-[10px] lg:text-base"} bg-violet-100 border-2 border-violet-100 text-primary rounded-md hover:opacity-75 transition-opacity`}
+        className={`flex w-full items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white text-[15px] font-semibold text-primary transition-colors hover:border-primary ${padding.includes("p-1") ? "h-9 text-xs" : "h-13"} ${buttonLabel == "Actualizar" && "text-[10px] lg:text-sm"}`}
       >
         {isLoading ? (
           <span className="flex justify-center">

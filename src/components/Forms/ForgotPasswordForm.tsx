@@ -32,12 +32,12 @@ const ForgotPasswordForm = () => {
     <form
       method="post"
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-[400px] flex flex-col gap-5 bg-gray-100 px-12 py-8 shadow-sm rounded-sm"
+      className="flex w-full max-w-[400px] flex-col gap-5"
     >
       <fieldset className="w-full flex flex-col">
         <label htmlFor="email">Correo electrónico:</label>
         <input
-          className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
+          className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white max-w-96"
           id="email"
           placeholder="correo@email.com"
           type="email"
@@ -61,7 +61,7 @@ const ForgotPasswordForm = () => {
       <fieldset className="w-full flex flex-col">
         <label htmlFor="email_confirm">Confirmar correo electrónico:</label>
         <input
-          className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
+          className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white max-w-96"
           id="email_confirm"
           placeholder="correo@email.com"
           type="email"
@@ -84,7 +84,7 @@ const ForgotPasswordForm = () => {
         )}
       </fieldset>
       <fieldset className="flex flex-col">
-        <button className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3 max-w-96">
+        <button className="flex h-12 w-full items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40 my-3 max-w-96">
           {isLoading ? (
             <span className="flex justify-center">
               <Loader />
@@ -94,7 +94,7 @@ const ForgotPasswordForm = () => {
           )}
         </button>
         {showToast && (
-          <span className="py-2 px-4 rounded-md text-center border-2 text-sm border-yellow-400 bg-yellow-200">
+          <span className="rounded-xl border border-urgency-line bg-urgency-soft px-4 py-2.5 text-center text-sm text-urgency">
             {message}
           </span>
         )}

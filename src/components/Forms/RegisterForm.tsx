@@ -54,7 +54,7 @@ const RegisterForm = () => {
   };
   return (
     <form
-      className="gap-10 bg-white m-auto shadow-xl p-4 rounded-lg grid grid-cols-1 md:grid-cols-2 max-w-[1100px]"
+      className="m-auto grid max-w-[1100px] grid-cols-1 gap-8 md:grid-cols-2"
       method="post"
       onSubmit={handleSubmit(onSubmitRegister)}
     >
@@ -65,7 +65,7 @@ const RegisterForm = () => {
             Nombre<span className="text-xs text-red-500">*</span>
           </label>
           <input
-            className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+            className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
             type="text"
             placeholder="Juan"
             {...register("name", {
@@ -88,7 +88,7 @@ const RegisterForm = () => {
             Apellido<span className="text-xs text-red-500">*</span>
           </label>
           <input
-            className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+            className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
             type="text"
             placeholder="Paredes"
             {...register("last_name", {
@@ -114,7 +114,7 @@ const RegisterForm = () => {
               Prefijo<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="number"
               placeholder="11"
               {...register("cod", {
@@ -137,7 +137,7 @@ const RegisterForm = () => {
               Teléfono <span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="number"
               placeholder="12344321"
               {...register("phone", {
@@ -163,7 +163,7 @@ const RegisterForm = () => {
             Provincia<span className="text-xs text-red-500">*</span>
           </label>
           <select
-            className="w-full p-2 border-[.5px] border-black rounded-md"
+            className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
             {...register("province", {
               required: {
                 value: true,
@@ -190,7 +190,7 @@ const RegisterForm = () => {
           <input
             type="text"
             placeholder="Caballito"
-            className="w-full p-2 border-[.5px] border-black rounded-md"
+            className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
             {...register("location", {
               required: {
                 value: true,
@@ -213,7 +213,7 @@ const RegisterForm = () => {
             Dirección<span className="text-xs text-red-500">*</span>
           </label>
           <input
-            className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+            className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
             type="text"
             placeholder="Av Rivadavia"
             {...register("address", {
@@ -235,7 +235,7 @@ const RegisterForm = () => {
               Número <span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="number"
               placeholder="1324"
               {...register("address_number", {
@@ -258,7 +258,7 @@ const RegisterForm = () => {
           <div>
             <label htmlFor="department">Departamento</label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="text"
               placeholder="8C"
               {...register("department", {
@@ -279,7 +279,7 @@ const RegisterForm = () => {
               Código postal<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="number"
               placeholder="1723"
               {...register("zip_code", {
@@ -308,7 +308,7 @@ const RegisterForm = () => {
               DNI<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="text"
               placeholder="12345678"
               {...register("DNI", {
@@ -340,7 +340,7 @@ const RegisterForm = () => {
               Usuario<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="text"
               placeholder="usuario123"
               {...register("username", {
@@ -369,7 +369,7 @@ const RegisterForm = () => {
               Correo<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="email"
               placeholder="correo@email.com"
               {...register("email", {
@@ -394,7 +394,7 @@ const RegisterForm = () => {
               Contraseña<span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="password"
               placeholder="*******"
               {...register("password", {
@@ -420,7 +420,7 @@ const RegisterForm = () => {
               <span className="text-xs text-red-500">*</span>
             </label>
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md"
+              className="h-12 w-full rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
               type="password"
               placeholder="*******"
               {...register("confirm_password", {
@@ -471,7 +471,7 @@ const RegisterForm = () => {
               {errors.conditions.message}
             </span>
           )}
-          <button className="w-full bg-primary border-2 border-primary text-white h-1o p-2 rounded-md hover:opacity-70 transition-opacity max">
+          <button className="flex h-12 w-full items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40">
             {isLoading ? (
               <span className="flex justify-center">
                 <Loader />

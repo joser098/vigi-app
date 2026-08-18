@@ -46,7 +46,7 @@ const QuantitySelect = ({ id, inherit_value, padding }: { id: string, inherit_va
         <select
           value={value}
           onChange={onSelectChange}
-          className={`w-full ${padding} border-primary border-2 rounded-md hover:bg-violet-100 transition-all cursor-pointer`}
+          className={`w-full ${padding} cursor-pointer rounded-xl border-[1.5px] border-line bg-white text-sm text-ink transition-colors hover:border-primary`}
           name="unidades"
           id="quantity"
         >
@@ -59,7 +59,7 @@ const QuantitySelect = ({ id, inherit_value, padding }: { id: string, inherit_va
       ) : (
           <input
             type="number"
-            className={`w-full ${padding} border-primary border-2 rounded-md hover:bg-violet-100 transition-all cursor-pointer`}
+            className={`w-full ${padding} cursor-pointer rounded-xl border-[1.5px] border-line bg-white text-sm text-ink transition-colors hover:border-primary`}
             // value={value}
             onChange={onInputChange}
             name="unidades"

@@ -43,7 +43,7 @@ const PurchasesInfo = () => {
                     {/* <span>Llega el X </span> */}
                   </div>
                   <div className="w-full flex flex-col gap-3">
-                    {/* <a href={`/compra/${purchase.payment_id}`} className="block w-full bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-75 transition-opacity text-center">Ver compra</a> */}
+                    {/* <a href={`/compra/${purchase.payment_id}`} className="flex h-12 w-full items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40">Ver compra</a> */}
                     {/* <a href="#" className="block w-full bg-violet-100 border-2 border-violet-100 text-primary p-2 rounded-md hover:opacity-75 transition-opacity text-center">Volver a comprar</a> */}
                   </div>
                 </article>

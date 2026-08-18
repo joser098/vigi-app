@@ -1,66 +1,79 @@
 ---
-import Cross from "@/components/Icons/Cross.astro";
-import Truck from "../Icons/Truck.astro";
+const modalities = [
+  {
+    title: "AMBA · entrega rápida",
+    body: "Si finalizás la compra y el pago se aprueba antes de las 14:00, despachamos el pedido el mismo día. Después de esa hora, sale al siguiente día hábil. Lo recibís en un máximo de 4 días hábiles.",
+  },
+  {
+    title: "Todo el país · entrega eficiente",
+    body: "Mismo corte de las 14:00 para el despacho. El plazo de entrega al resto del país es de 8 a 12 días hábiles desde la confirmación de la compra.",
+  },
+  {
+    title: "Retiro en oficina",
+    body: "Podés retirar en nuestra oficina de Caballito (CABA) a partir de las 24 h hábiles de aprobado el pago. Lo retira únicamente el titular de la compra con DNI. Te avisamos por mail cuando esté listo.",
+  },
+];
+
+const tips = [
+  "Sumá todos los artículos al mismo carrito para recibirlos en un solo envío.",
+  "Tené el DNI a mano al momento de la entrega o el retiro.",
+  "Revisá el estado y que el pedido coincida antes de firmar el remito.",
+];
 ---
 
-<dialog id="entregas_modal" class="px-8 py-6 rounded-sm">
-    <header class="flex justify-between border-b py-2 mb-2">
-        <div class="flex justify-center items-center gap-2">
-            <Truck width="24" height='24' color="#3A3545"/> 
-            <h5 class="text-lg text-gray-500">Envíos</h5>
-        </div>
-        <button class="close_btn">
-            <Cross/>
-        </button>
-    </header>
-    <main class="flex flex-col justify-center items-center gap-3 max-w-[500px]">
-        <ul class="flex flex-col gap-3">
-            <div class="my-2">
-                <span class="font-bold text-start text-sm block">Contamos con las siguientes modalidades de envíos*:</span>
-                <span class="text-[10px] sm:text-xs italic">*Los costos de envío están sujetos a la región.</span>
-            </div>
-            <li>
-                <p><strong>Entrega en 24 horas:</strong>Recibe tu compra sin costo adicional el día siguiente posterior a la confirmación de tu compra.</p>
-            </li>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·AMBA: Entrega Rápida </span><br><strong>Compras antes de las 14:00:</strong> Si finalizas tu compra y se aprueba el pago antes de las 14:00, despachamos tu pedido el mismo día. Si la aprobación del pago se realiza después de las 14:00, despachamos tu pedido al siguiente día hábil.<br>Recibe tu compra en un plazo máximo de 4 días hábiles tras la confirmación de tu compra.</p>
-            </li>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·Todo el país: Entrega Eficiente </span><br><strong>Compras antes de las 14:00:</strong> Si finalizas tu compra y se aprueba el pago antes de las 14:00, despachamos tu pedido el mismo día. Si la aprobación del pago se realiza después de las 14:00, despachamos tu pedido al siguiente día hábil.<br>El envío a cualquier parte del país tiene un plazo de entrega de 8 a 12 días hábiles después de la confirmación de la compra.</p>
-            </li>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500"><span class="text-primary font-bold underline">·Retiro en oficina: </span>Contas con la opción de retirar en nuestra oficina en caballito (CABA), a partir de las 24Hs hábiles de la aprobación de pago. El retiro lo puede realizar únicamente el titular de la compra presentando DNI. Vas a recibir un correo electrónico cuando tu pedido esté disponible para retiro.</p>
-            </li>
-        </ul>
-        <ul class="flex flex-col list-decimal">
-            <span class="text-primary font-bold underline text-sm uppercase">Recomendaciones:</span>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500">Te aconsejamos que sumes todos los artículos elegidos en el mismo carrito de compra para recibirlos en un mismo envío.</p>
-            </li>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500">Tené a mano tu DNI al momento de la entrega/retiro.</p>
-            </li>
-            <li>
-                <p class="text-xs sm:text-sm text-gray-500">Revisa el estado y la coincidencia de tu pedido previo a firmar el remito de entrega</p>
-            </li>
-        </ul>
-    </main>
-    <footer class="border-t-2 py-2 mt-2 flex justify-end items-center">
-        <button class="close_btn text-white bg-primary px-8 py-2 rounded-sm text-sm">
-            Cerrar           
-        </button>
-    </footer>
-  </dialog>
+<dialog
+  id="entregas_modal"
+  class="w-[min(600px,calc(100vw-2rem))] rounded-3xl p-0 backdrop:bg-primary/40 backdrop:backdrop-blur-sm"
+>
+  <header class="flex items-center justify-between gap-4 border-b border-line px-6 py-5">
+    <h2 class="text-lg font-bold text-primary">Formas de entrega</h2>
+    <button class="close_btn flex size-9 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-panel hover:text-primary" aria-label="Cerrar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"></path>
+      </svg>
+    </button>
+  </header>
 
-  <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-      const close_btns = document.querySelectorAll(".close_btn");
-      const entrega_modal = document.getElementById("entregas_modal");
+  <div class="max-h-[70vh] overflow-y-auto px-6 py-6">
+    <div class="mb-5 flex items-center gap-3 rounded-2xl border border-[#c6ecd5] bg-green-soft px-5 py-4">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1f8f45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"></path>
+        <circle cx="7" cy="18.5" r="1.6"></circle>
+        <circle cx="17.5" cy="18.5" r="1.6"></circle>
+      </svg>
+      <span class="text-sm font-semibold text-green-ink">Entrega en 24 h sin costo adicional en CABA.</span>
+    </div>
 
-      close_btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            entrega_modal.close();
-        })
-      });
-    });
-  </script>
+    <ul class="flex flex-col gap-4">
+      {
+        modalities.map((m) => (
+          <li class="rounded-2xl border border-line p-5">
+            <h3 class="text-sm font-bold text-primary">{m.title}</h3>
+            <p class="mt-2 text-[13px] leading-relaxed text-muted">{m.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-6 border-t border-line pt-5">
+      <h3 class="text-xs font-bold uppercase tracking-[0.1em] text-gray-400">Recomendaciones</h3>
+      <ul class="mt-4 flex flex-col gap-2.5">
+        {
+          tips.map((tip) => (
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-0.5 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#33bf5e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              <span class="text-[13px] leading-relaxed text-muted">{tip}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-5 text-[12px] italic text-gray-400">Los costos de envío están sujetos a la región.</p>
+    </div>
+  </div>
+
+  <footer class="flex justify-end border-t border-line px-6 py-4">
+    <button class="close_btn h-11 rounded-full bg-primary px-7 text-sm font-semibold text-white">Cerrar</button>
+  </footer>
+</dialog>
