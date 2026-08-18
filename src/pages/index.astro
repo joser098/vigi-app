@@ -30,7 +30,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
       </h1>
     </div>
     <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center my-2 bg-gray-100 shadow rounded-t-2xl">
+    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center my-2 bg-gray-100 shadow-sm rounded-t-2xl">
       <InfoCard icon="truck" title="Envíos en 24h" description="Todos los días (CABA)" />
       <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
       <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
@@ -38,7 +38,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     </section>
     
     <!-- CATEGORIES -->
-    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-4 sm:mb-10 bg-gray-100 shadow rounded-b-2xl">
+    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-4 sm:mb-10 bg-gray-100 shadow-sm rounded-b-2xl">
     {
       categories?.map(c => {
         return (

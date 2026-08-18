@@ -47,8 +47,8 @@ const BuyButton = ({ product }: { product: Product }) => {
         Comprar
       </button>
       <AlertDialog.Portal>
-        <AlertDialog.Overlay className="backdrop-blur-sm inset-0 fixed flex justify-center items-center p-4">
-          <AlertDialog.Content aria-describedby={undefined} className=" bg-white rounded p-4 flex flex-col gap-5 shadow-lg sm:min-w-[500px] max-h-screen overflow-y-scroll">
+        <AlertDialog.Overlay className="backdrop-blur-xs inset-0 fixed flex justify-center items-center p-4">
+          <AlertDialog.Content aria-describedby={undefined} className=" bg-white rounded-sm p-4 flex flex-col gap-5 shadow-lg sm:min-w-[500px] max-h-screen overflow-y-scroll">
             <AlertDialog.Title className="text-primary font-semibold text-xl">
               Verifica tu compra
             </AlertDialog.Title>
@@ -87,7 +87,7 @@ const BuyButton = ({ product }: { product: Product }) => {
                   padding="p-3"
                 />
               <AlertDialog.Close asChild>
-                <button className="bg-red-400 text-white p-3 rounded hover:opacity-75 transition-opacity my-3 w-full">
+                <button className="bg-red-400 text-white p-3 rounded-sm hover:opacity-75 transition-opacity my-3 w-full">
                   Cancelar
                 </button>
               </AlertDialog.Close>

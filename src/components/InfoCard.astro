@@ -18,7 +18,7 @@ const { icon, title, description } = Astro.props;
 
 <article
   id={icon == "card" ? "pagos_modal_btn" : icon == "truck" ? "entregas_modal_btn" : icon == "shield" ? "why_vigi_btn" : ""}
-  class="w-full flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-5 rounded px-3 py-5 cursor-pointer"
+  class="w-full flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-5 rounded-sm px-3 py-5 cursor-pointer"
 >
   {
     icon == "truck" && (

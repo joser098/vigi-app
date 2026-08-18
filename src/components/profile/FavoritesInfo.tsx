@@ -52,7 +52,7 @@ const FavoritesInfo = () => {
                   </p>
                 </div>
               </a>
-              <button onClick={() => removeFavorite(favorite.id)} className="bg-red-400 text-white rounded p-1 sm:text-red-600 sm:bg-transparent hover:underline sm:p-5">Eliminar</button>
+              <button onClick={() => removeFavorite(favorite.id)} className="bg-red-400 text-white rounded-sm p-1 sm:text-red-600 sm:bg-transparent hover:underline sm:p-5">Eliminar</button>
             </article> 
           );
         })

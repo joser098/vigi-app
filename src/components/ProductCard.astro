@@ -11,13 +11,13 @@ const { product } = Astro.props;
 ---
 
   <a href=`/product/${product.model}` class="transition-transform duration-500 hover:scale-105">
-    <article class="relative flex flex-col justify-end items-center p-3 rounded bg-white shadow-md hover:shadow-lg w-60 h-[440px]">
+    <article class="relative flex flex-col justify-end items-center p-3 rounded-sm bg-white shadow-md hover:shadow-lg w-60 h-[440px]">
       {
         /* Se gatilla con price_diferred y no con has_promotion: si el descuento
            quedó fuera del rango válido, la API manda price_diferred en null y
            la placa saldría vacía. */
         product.price_diferred && (
-        <div class="absolute w-1/2 flex flex-col  justify-center items-center top-4 left-0 rounded-r gradient_violet bg-gradient-to-tr">
+        <div class="absolute w-1/2 flex flex-col  justify-center items-center top-4 left-0 rounded-r gradient_violet bg-linear-to-tr">
           <span class="text-white text-[10px]">Ahorras</span>
           <span class="text-white text-sm font-bold">{product.price_diferred?.toLocaleString("es-AR", {
             style:"currency",

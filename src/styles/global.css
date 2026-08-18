@@ -1,3 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #1e053f;
+  --color-back: #f5f5f7;
+  --color-green_: #33bf5e;
+
+  --animate-slideDown: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  --animate-slideUp: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  --animate-hide: hide 100ms ease-in;
+  --animate-slideIn: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-swipeOut: swipeOut 100ms ease-out;
+
+  @keyframes slideDown {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes slideUp {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes hide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes slideIn {
+    from {
+      transform: translateX(calc(100% + var(--viewport-padding)));
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes swipeOut {
+    from {
+      transform: translateX(var(--radix-toast-swipe-end-x));
+    }
+    to {
+      transform: translateX(calc(100% + var(--viewport-padding)));
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}

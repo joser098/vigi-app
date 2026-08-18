@@ -48,7 +48,7 @@ const similarProducts = await fetchData(`getSimilarProducts?provider=${product.p
       <article class="relative w-full flex justify-center mb-3 sm:mb-3">
         {
           product.has_promotion && (
-          <div class="absolute w-1/4 flex flex-col justify-center items-center top-0  rounded-b gradient_violet bg-gradient-to-tr py-1">
+          <div class="absolute w-1/4 flex flex-col justify-center items-center top-0  rounded-b gradient_violet bg-linear-to-tr py-1">
             <span class="text-white text-[10px] sm:text:xs">Ahorras</span>
             <span class="text-white text-xs sm:text-sm font-bold">{product.price_diferred?.toLocaleString("es-AR", {
               style:"currency",

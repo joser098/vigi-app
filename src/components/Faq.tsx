@@ -10,12 +10,12 @@ interface FaqItem {
 
 const Faq = () => {
     return (
-    <Accordion.Root type="single" className="bg-white border-2 shadow rounded-md" defaultValue="item-1" collapsible>
+    <Accordion.Root type="single" className="bg-white border-2 shadow-sm rounded-md" defaultValue="item-1" collapsible>
         {
             faq.map((faq: FaqItem) => {
                 return (
                     <Accordion.Item value={`item-${faq.id}`} key={faq.id} className="odd:bg-gray-100 p-1 focus-within:shadow-primary mt-px overflow-hidden first:mt-0 first:rounded-t last:rounded-b focus-within:relative focus-within:z-10 focus-within:shadow-[0_0_0_2px]">
-                        <Accordion.AccordionTrigger className="w-full text-primary group flex h-[45px] flex-1 cursor-default items-center justify-between px-5 text-[15px] leading-none outline-none'">
+                        <Accordion.AccordionTrigger className="w-full text-primary group flex h-[45px] flex-1 cursor-default items-center justify-between px-5 text-[15px] leading-none outline-hidden'">
                             <h2 >{faq.question}</h2>
                             {/*TODO: Rotate only when click */}
                             <div className="transform transition-transform duration-500 group-hover:rotate-180">

@@ -7,8 +7,8 @@ interface Props {
 const { image_path, title } = Astro.props;
 ---
 
-<a class="w-full p-2 rounded flex flex-col justify-center items-center" href=`/category/${title.toLocaleLowerCase()}`>
-    <img class="sm:max-w-24 max-w-20 rounded transition-transform" src={image_path} alt={title} />
+<a class="w-full p-2 rounded-sm flex flex-col justify-center items-center" href=`/category/${title.toLocaleLowerCase()}`>
+    <img class="sm:max-w-24 max-w-20 rounded-sm transition-transform" src={image_path} alt={title} />
     <h6 class="my-3">{title}</h6>
 </a>
 

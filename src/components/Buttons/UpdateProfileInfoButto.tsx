@@ -14,7 +14,7 @@ const UpdateProfileInfoButton = ({isAnyFieldDirty, isLoading}: {isAnyFieldDirty:
       </button>
       <p
         id="message"
-        className="text-center bg-green-300 w-full py-2 rounded-sm hidden"
+        className="text-center bg-green-300 w-full py-2 rounded-xs hidden"
       >
         Datos actualizados ✅
       </p>

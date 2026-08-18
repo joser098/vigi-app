@@ -53,19 +53,19 @@ const SearchInput = () => {
         onKeyDown={onKeyDown}
         onChange={onChangeSearch}
         onBlur={onBlurHandler}
-        className="w-full sm:w-96 border-b-2 py-4 sm:border-[1px] border-primary rounded-b sm:rounded sm:py-[10px] pl-1 pr-6"
+        className="w-full sm:w-96 border-b-2 py-4 sm:border border-primary rounded-b sm:rounded-sm sm:py-[10px] pl-1 pr-6"
         type="text"
         placeholder="Buscar producto, marca ..."
       />
-      <section className="absolute w-full z-10 bg-white mt-1 rounded max-h-[280px] overflow-y-auto">
+      <section className="absolute w-full z-10 bg-white mt-1 rounded-sm max-h-[280px] overflow-y-auto">
         {suggestList?.map((item: Item) => {
           return (
             <article
               key={item.id}
-              className="relative hover:bg-gray-100 rounded py-2"
+              className="relative hover:bg-gray-100 rounded-sm py-2"
             >
               {item.has_promotion && (
-                <div className="absolute w-1/3 flex flex-col  justify-center items-center top-6 right-0 rounded-l gradient_violet bg-gradient-to-tr">
+                <div className="absolute w-1/3 flex flex-col  justify-center items-center top-6 right-0 rounded-l gradient_violet bg-linear-to-tr">
                   <span className="text-white text-[10px]">Ahorras</span>
                   <span className="text-white text-sm font-bold">
                     {item.price_diferred?.toLocaleString("es-AR", {
@@ -76,7 +76,7 @@ const SearchInput = () => {
                   </span>
                 </div>
               )}
-              <a href={`/product/${item.model}`} className="flex rounded">
+              <a href={`/product/${item.model}`} className="flex rounded-sm">
                 <img
                   src={item.thumbnail}
                   alt={item.model}
