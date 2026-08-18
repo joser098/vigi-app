@@ -8,30 +8,60 @@ const session = Astro.cookies.get("check");
 if (session) {
   return Astro.redirect("/profile");
 }
-
-const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 ---
 
 <Layout title="Iniciar sesión | VIGI">
-  <section class="p-4 sm:px-8 max-w-[1180px] m-auto">
-    <div class="my-2 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
-      <h2
-        class="text-primary font-bold my-2 text-base sm:text-2xl 2xl:text-3xl"
-      >
-        Iniciar sesión. <span class="text-black font-normal">
-          Con una sesión iniciada, todo es más rápido.</span
-        >
-      </h2>
+  <main class="m-auto max-w-[1180px] px-4 py-10 sm:px-8 sm:py-16">
+    <div class="mx-auto max-w-lg text-center">
+      <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+        Entrá a tu cuenta
+      </h1>
+      <p class="mt-3 text-[15px] text-muted">
+        Con la sesión iniciada seguís tus pedidos y la próxima compra te lleva
+        dos clics.
+      </p>
     </div>
-  </section>
-  <section
-    class="p-4 sm:p-8 max-w-[1180px] m-auto grid grid-cols-1 sm:grid-cols-2 gap-32 sm:gap-0"
-  >
-    <article>
-      <LoginForm client:load/>
-    </article>
-    <article>
-      <img class="rounded-lg" src={`${BASE_URL}/assets/login_banner.png`} alt="login Banner">
-    </article>
-  </section>
+
+    <div class="mx-auto mt-10 max-w-md">
+      <div
+        class="rounded-3xl border border-line bg-white p-8 shadow-[0_14px_34px_rgba(30,5,63,0.06)] sm:p-10"
+      >
+        <LoginForm client:load />
+      </div>
+
+      <p class="mt-6 text-center text-sm text-muted">
+        ¿Todavía no tenés cuenta?
+        <a href="/register" class="font-semibold text-primary hover:underline"
+          >Creá una</a
+        >
+      </p>
+
+      <ul class="mt-8 flex flex-col gap-3 border-t border-line pt-6">
+        {
+          [
+            "Seguís tus pedidos y tus compras anteriores",
+            "Guardás favoritos y tu dirección",
+            "Tus datos viajan cifrados",
+          ].map((item) => (
+            <li class="flex items-center gap-2.5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#33bf5e"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              <span class="text-[13px] text-muted">{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
 </Layout>

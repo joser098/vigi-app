@@ -18,10 +18,26 @@ if (id) {
 ---
 
 <Layout title="Tu compra | VIGI">
-  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+  <main class="m-auto max-w-[1180px] px-4 py-12 sm:px-8 sm:py-16">
     <PayApproved payment={payment} />
-    <div class="flex justify-center items-center my-3">
-      <a href="/" class="py-2 px-5 bg-primary rounded-md hover:opacity-70 transition-opacity text-white">Ir al inicio</a>
+
+    <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+      <a
+        href="/profile"
+        class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
+        >Ver mis compras</a
+      >
+      <a
+        href="/"
+        class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary"
+        >Seguir comprando</a
+      >
     </div>
+
+    <p class="mx-auto mt-8 max-w-xl text-center text-[13px] leading-relaxed text-muted">
+      ¿Algo no cierra con tu pedido? Escribinos al
+      <a href="https://wa.me/541126039243" target="_blank" rel="noopener" class="font-semibold text-primary underline">11 2603 9243</a>
+      con el número de pago.
+    </p>
   </main>
 </Layout>

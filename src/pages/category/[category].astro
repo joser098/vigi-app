@@ -13,71 +13,194 @@ let { category } = Astro.params;
 
 // Los banners están subidos como /categories/Analogas.png: capitalizados, sin
 // acento y sin sufijo. La ruta viene en minúscula, así que se deriva el nombre.
-const bannerName = category
-  ? category.toLowerCase()
-  : "";
+const bannerName = category ? category.toLowerCase() : "";
 
-const productsList: Product[] = await getProductsByCategory(category!, queries.order);
+const productsList: Product[] = await getProductsByCategory(
+  category!,
+  queries.order,
+);
 
-if(!productsList){
-  return Astro.redirect("/")
+if (!productsList) {
+  return Astro.redirect("/");
 }
+
+// La API devuelve la categoría entera: exterior son 301 productos en un solo
+// HTML, con sus 301 imágenes. Paginamos acá para no mandar todo de una.
+const PER_PAGE = 24;
+const totalPages = Math.max(1, Math.ceil(productsList.length / PER_PAGE));
+const page = Math.min(
+  Math.max(1, Number.parseInt(queries.page ?? "1", 10) || 1),
+  totalPages,
+);
+const visible = productsList.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+const pageHref = (n: number) => {
+  const params = new URLSearchParams(path.searchParams);
+  if (n === 1) params.delete("page");
+  else params.set("page", String(n));
+  const qs = params.toString();
+  return qs ? `${path.pathname}?${qs}` : path.pathname;
+};
+
+// Ventana corta de páginas alrededor de la actual.
+const from = Math.max(1, Math.min(page - 2, totalPages - 4));
+const to = Math.min(totalPages, from + 4);
+const pages = Array.from({ length: to - from + 1 }, (_, i) => from + i);
 ---
 
-<Layout title=`${category?.toLocaleUpperCase()} | VIGI`>
-  <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
-    <div class="relative flex items-center">
-      <h3 class="absolute pl-14 font-bold text-center sm:text-xl lg:text-5xl  text-white">{category?.toLocaleUpperCase()}</h3>
-      <img class=" rounded-sm" src=`${BASE_URL}/categories/${bannerName}_banner.png` alt=`Banner ${bannerName}` />
+<Layout title={`${category?.toLocaleUpperCase()} | VIGI`}>
+  <main class="m-auto max-w-[1180px] px-4 pb-8 sm:px-8">
+    <nav class="flex items-center gap-2 py-3 text-xs text-gray-400">
+      <a href="/" class="hover:underline">Inicio</a>
+      <span>/</span>
+      <span class="capitalize text-ink">{category}</span>
+    </nav>
+
+    <div class="relative flex items-center overflow-hidden rounded-2xl">
+      <h1
+        class="absolute pl-8 text-2xl font-bold tracking-tight text-white sm:pl-14 sm:text-4xl lg:text-5xl"
+      >
+        {category?.toLocaleUpperCase()}
+      </h1>
+      <img
+        class="w-full object-cover"
+        src={`${BASE_URL}/categories/${bannerName}_banner.png`}
+        alt={`Banner ${bannerName}`}
+        fetchpriority="high"
+        decoding="async"
+      />
     </div>
-    <aside class="flex justify-end my-2">
-      <ul class="py-1 text-sm">
-        <li>
-          <label for="order" class="font-bold">Ordenar por</label>
-          <select class="p-1" name="order" id="order">
-            <option class="" id="default_option" value="rel">Más relevante</option>
-            <option class="" id="asc_option" value="asc">Menor precio</option>
-            <option class="" id="desc_option" value="desc">Mayor precio</option>
-          </select>
-        </li>
-      </ul>
-    </aside>
+
+    <div class="my-6 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-sm text-muted">
+        <strong class="font-semibold text-ink">{productsList.length}</strong>
+        {productsList.length === 1 ? " producto" : " productos"}
+        {totalPages > 1 && ` · página ${page} de ${totalPages}`}
+      </p>
+      <div class="flex items-center gap-2.5">
+        <label for="order" class="text-sm text-muted">Ordenar por</label>
+        <select
+          class="h-11 rounded-full border-[1.5px] border-line bg-white px-4 text-sm font-semibold text-ink"
+          name="order"
+          id="order"
+        >
+          <option id="default_option" value="rel">Más relevante</option>
+          <option id="asc_option" value="asc">Menor precio</option>
+          <option id="desc_option" value="desc">Mayor precio</option>
+        </select>
+      </div>
+    </div>
+
     {
       productsList.length == 0 ? (
-        <div class="flex justify-center items-center h-96">
-          <h3 class="text-cente">No hay productos en esta categoría</h3>
+        <div class="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-white p-16">
+          <h2 class="text-lg font-semibold text-ink">
+            No hay productos en esta categoría
+          </h2>
+          <p class="text-sm text-muted">Probá con otra o contanos qué buscás.</p>
+          <div class="mt-2 flex flex-wrap justify-center gap-3">
+            <a
+              href="/"
+              class="rounded-full bg-primary px-7 py-3 text-sm font-semibold text-white"
+            >
+              Ver el catálogo
+            </a>
+            <a
+              href="https://wa.me/541126039243"
+              target="_blank"
+              rel="noopener"
+              class="rounded-full border-[1.5px] border-gray-300 bg-white px-7 py-3 text-sm font-semibold text-primary"
+            >
+              Preguntanos
+            </a>
+          </div>
         </div>
       ) : (
-        <ProductsList productsList={productsList} />
+        <>
+          <ProductsList productsList={visible} />
+
+          {totalPages > 1 && (
+            <nav class="mt-10 flex items-center justify-center gap-2">
+              {page > 1 && (
+                <a
+                  href={pageHref(page - 1)}
+                  rel="prev"
+                  aria-label="Página anterior"
+                  class="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line bg-white text-primary"
+                >
+                  ‹
+                </a>
+              )}
+              {pages.map((n) => (
+                <a
+                  href={pageHref(n)}
+                  aria-current={n === page ? "page" : undefined}
+                  class:list={[
+                    "flex size-11 items-center justify-center rounded-full text-sm",
+                    n === page
+                      ? "bg-primary font-bold text-white"
+                      : "border-[1.5px] border-line bg-white text-ink",
+                  ]}
+                >
+                  {n}
+                </a>
+              ))}
+              {page < totalPages && (
+                <a
+                  href={pageHref(page + 1)}
+                  rel="next"
+                  aria-label="Página siguiente"
+                  class="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line bg-white text-primary"
+                >
+                  ›
+                </a>
+              )}
+            </nav>
+          )}
+        </>
       )
     }
+
+    <!-- RESCATE -->
+    <section
+      class="mt-14 flex flex-col items-start justify-between gap-6 rounded-3xl bg-primary px-7 py-8 sm:flex-row sm:items-center sm:px-12"
+    >
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-white sm:text-2xl">
+          ¿Te perdiste entre tantas?
+        </h2>
+        <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-violet-200">
+          Respondé tres preguntas y te dejamos solo las que sirven para tu caso.
+        </p>
+      </div>
+      <a
+        href="/#asistente"
+        class="inline-flex h-[52px] shrink-0 items-center justify-center rounded-full bg-green_ px-8 text-sm font-bold text-[#10331d]"
+        >Encontrá la tuya</a
+      >
+    </section>
   </main>
 </Layout>
 
 <script>
-import { navigate } from "astro:transitions/client";
+  import { navigate } from "astro:transitions/client";
 
   document.addEventListener("astro:page-load", () => {
     const orderSelect = document.getElementById("order") as HTMLSelectElement;
-    const _asc = document.getElementById("asc_option");
-    const _desc = document.getElementById("desc_option");
     const params = new URL(document.location.href);
     const search = params.searchParams;
     const order = search.get("order");
-    
-    if(order == "asc"){
-      _asc?.setAttribute("selected", "selected");
-    }
-    if(order == "desc"){
-      _desc?.setAttribute("selected", "selected");
-    }
-  
+
+    if (order) orderSelect.value = order;
+
     orderSelect?.addEventListener("change", (e) => {
       const { value } = e.target as HTMLSelectElement;
       search.set("order", value);
+      // Al reordenar volvemos a la primera página: quedarse en la 7 con otro
+      // criterio deja al cliente en el medio de la nada.
+      search.delete("page");
 
       navigate(params.href);
     });
-
   });
 </script>

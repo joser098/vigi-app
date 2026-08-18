@@ -47,10 +47,20 @@ const PayCartButton = ({ cart, finalTotal, shipments, method, disablePay }: {car
   }, [])
 
   return (
-    <button onClick={onPayCartClick} disabled={isEnable} className={`w-full flex items-center justify-center text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3 ${method == "mp" ? "bg-[#00B1EA]" : "bg-primary border-2 border-primary"}`}>
-      {
-        isLoading ? <Loader/> : method === 'mp' ? 'Pagar con mercadopago' : 'Pagar con promociones'
-      }
+    <button
+      onClick={onPayCartClick}
+      disabled={isEnable}
+      className={`flex h-14 w-full items-center justify-center rounded-full text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${
+        method == "mp" ? "bg-[#00B1EA]" : "bg-primary"
+      }`}
+    >
+      {isLoading ? (
+        <Loader />
+      ) : method === "mp" ? (
+        "Pagar con Mercado Pago"
+      ) : (
+        "Pagar con Promociones"
+      )}
     </button>
   );
 };
