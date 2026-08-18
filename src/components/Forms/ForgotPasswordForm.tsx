@@ -32,7 +32,7 @@ const ForgotPasswordForm = () => {
     <form
       method="post"
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-[400px] flex flex-col gap-5 bg-gray-100 px-12 py-8 shadow rounded"
+      className="w-full max-w-[400px] flex flex-col gap-5 bg-gray-100 px-12 py-8 shadow-sm rounded-sm"
     >
       <fieldset className="w-full flex flex-col">
         <label htmlFor="email">Correo electrónico:</label>

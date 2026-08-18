@@ -17,29 +17,29 @@ const hour = payment.date_approved.split("T")[1].split(".")[0];
   </div>
 
   <table>
-    <tr class="h-10 border-b-[1px] border-gray-500">
+    <tr class="h-10 border-b border-gray-500">
       <td class="font-semibold"> Nro de pago:</td>
       {/* El id de la pasarela, no el uuid interno */}
       <td class="text-end"> {payment.gateway_payment_id}</td>
     </tr>
-    <tr class="h-10 border-b-[1px] border-gray-500">
+    <tr class="h-10 border-b border-gray-500">
       <td class="font-semibold">Fecha:</td>
       <td class="text-end">{date}</td>
     </tr>
-    <tr class="h-10 border-b-[1px] border-gray-500">
+    <tr class="h-10 border-b border-gray-500">
       <td class="font-semibold">Hora:</td>
       <td class="text-end">{hour}</td>
     </tr>
-    <tr class="h-10 border-b-[1px] border-gray-500">
+    <tr class="h-10 border-b border-gray-500">
       <td class="font-semibold">Metodo de pago:</td>
       <td class="text-end">{payment.payment_method.type.includes("debit") ? "Tarjeta de débito" : payment.payment_method.type.includes("credit") ? "Tarjeta de crédito" : "Dinero en cuenta"}</td>
     </tr>
-    { payment.payment_method.type.includes("card") && (<tr class="h-10 border-b-[1px] border-gray-500">
+    { payment.payment_method.type.includes("card") && (<tr class="h-10 border-b border-gray-500">
       <td class="font-semibold">Tarjeta:</td>
       <td class="text-end">{`**** **** **** ${payment.card.last_four_digits}`}</td>
     </tr>)
     }
-    <tr class="h-10 border-b-[1px] border-gray-500">
+    <tr class="h-10 border-b border-gray-500">
       <td class="font-semibold">Monto:</td>
       <td class="text-end"
         >{

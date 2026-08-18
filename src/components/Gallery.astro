@@ -23,7 +23,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
             id="current_img"
             loading="lazy"
             decoding="async"
-            class="h-full w-full rounded object-cover object-top cursor-zoom-in"
+            class="h-full w-full rounded-sm object-cover object-top cursor-zoom-in"
             alt={`Imagen de la galería de fotos de ${model}`}
             src={`${BASE_URL}/gallery/${model_trim}/0.png`}
           />
@@ -39,7 +39,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
             <img
               loading="lazy"
               decoding="async"
-              class={`thumbnails h-full w-full rounded object-cover object-top max-h-20 max-w-20 hover:border-[1.5px] hover:border-primary`}
+              class={`thumbnails h-full w-full rounded-sm object-cover object-top max-h-20 max-w-20 hover:border-[1.5px] hover:border-primary`}
               alt={`Imagen de la galería de fotos de ${model}`}
               src={`${BASE_URL}/gallery/${model_trim}/${index}.png`}
               data-url={`${BASE_URL}/gallery/${model_trim}/${index}.png`};
@@ -55,7 +55,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 >
   <button
     type="button"
-    class="fixed right-8 top-8 rounded bg-black/60 p-4 text-white transition hover:scale-110 hover:bg-accent"
+    class="fixed right-8 top-8 rounded-sm bg-black/60 p-4 text-white transition hover:scale-110 hover:bg-accent"
   >
     <svg class="size-5" aria-hidden="true" fill="none" viewBox="0 0 14 14">
       <path
@@ -82,7 +82,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     <img
       loading="lazy"
       decoding="async"
-      class="product-gallery-img z-10 h-full rounded object-contain object-center bg-white"
+      class="product-gallery-img z-10 h-full rounded-sm object-contain object-center bg-white"
       alt={`Imagen de la galería de fotos de ${model}`}
       data-total-items={gallery_images_total}
       src={`${BASE_URL}/gallery/${model_trim}/0.png`}

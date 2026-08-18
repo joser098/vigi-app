@@ -23,7 +23,7 @@ const PurchasesInfo = () => {
         {purchases.length > 0 ? (
           <ul>
             {purchases.map((purchase: any) => (
-              <li className="border-2 p-3 my-2 rounded-sm" key={purchase.id}>
+              <li className="border-2 p-3 my-2 rounded-xs" key={purchase.id}>
                 <span className="block border-b-[1.5px] border-b-gray-200">{formatDate(purchase.date)}</span>
                 <article className="flex flex-col gap-2 sm:flex-row justify-center items-center my-3"> 
                   <div className="w-full">
