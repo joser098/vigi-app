@@ -1,108 +1,140 @@
 ---
+// El home ahora se renderiza on-demand y se cachea con ISR (ver astro.config).
+// Antes se construía estático y los precios quedaban congelados hasta el
+// siguiente deploy: el `prerender = false` de CardsCarrusel no hacía nada,
+// porque esa marca solo la respetan las páginas.
+export const prerender = false;
+
 import Layout from "../layouts/Layout.astro";
 import CategoryCard from "../components/CategoryCard.astro";
-import InfoCard from "@/components/InfoCard.astro";
-import Faq from "@/components/Faq";
-import { categories } from "@/services/const";
+import Faq from "@/components/Faq.astro";
+import { categories, FEATURED_MODEL } from "@/services/const";
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import SearchInput from "@/components/SearchInput";
-import Carrusel from "@/components/Carrusel.astro";
 import WhatsAppBtn from "@/components/WhatsAppBtn.astro";
+import HeroSpotlight from "@/components/home/HeroSpotlight.astro";
+import CampaignCarousel from "@/components/home/CampaignCarousel.astro";
+import TrustStrip from "@/components/home/TrustStrip.astro";
+import Assistant from "@/components/home/Assistant.astro";
+import BrandGrid from "@/components/home/BrandGrid.astro";
+import { fetchData } from "@/services/fetchData";
+import type { Product } from "@/services/types";
 
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
+
+// Una sola llamada para el hero y para los destacados.
+const promos: Product[] = (await fetchData("getProducts?promotion=true")) ?? [];
+const featured =
+  promos.find((p) => p.model === FEATURED_MODEL) ?? promos[0];
 ---
 
-<Layout title="Bienvenido a VIGI | Tienda Online de artículos de seguridad para el hogar">
-  <!-- BG FOR DESKTOP -->
-  <div class="hidden w-auto sm:flex">
-    <Carrusel />
-  </div>
-  <!-- BG FOR MOBILE -->
-  <main class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto">
-    <div class="sm:hidden">
-      <SearchInput client:idle/>
+<Layout
+  title="Bienvenido a VIGI | Tienda Online de artículos de seguridad para el hogar"
+>
+  <main class="m-auto max-w-[1180px] px-4 pb-16 sm:px-8">
+    <div class="pt-4 sm:hidden">
+      <SearchInput client:idle />
     </div>
-    <div class="my-10 sm:py-5 sm:hidden sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
-      <h1 class="text-primary font-bold my-1 text-xl sm:text-4xl 2xl:text-5xl">
-        Tienda online. <span class="text-black font-normal"
-        >Compra seguro tus artículos de seguridad.</span
-        >
-      </h1>
-    </div>
-    <!-- INFORMATIVES CARDS -->
-    <section class="w-full grid grid-cols-2 sm:grid-cols-4 place-items-center my-2 bg-gray-100 shadow-sm rounded-t-2xl">
-      <InfoCard icon="truck" title="Envíos en 24h" description="Todos los días (CABA)" />
-      <InfoCard icon="card" title="Medios de pago" description="Descuentos en efectivo" />
-      <InfoCard icon="mail" title="Seguimiento de tu compra" description="" />
-      <InfoCard icon="shield" title="Por qué comprar en Vigi" description="" />
-    </section>
-    
-    <!-- CATEGORIES -->
-    <section class="grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8 sm:mt-4 sm:mb-10 bg-gray-100 shadow-sm rounded-b-2xl">
-    {
-      categories?.map(c => {
-        return (
-          <CategoryCard
-            image_path={`${BASE_URL}/categories/${c.path}.png`}
-            title={c.name}
-          />
-        )
-      })
-    }
-    </section>
 
-    <div class="mt-20 flex items-center justify-between">
-      <h2 class="text-black font-normal text-base sm:text-2xl">
-      <span class="text-lg sm:text-3xl text-primary font-extrabold">Destacados.</span> 
-          El mejor precio por el mejor producto.
+    <div class="pt-8 sm:pt-14">
+      <HeroSpotlight product={featured} />
+    </div>
+
+    <div class="mt-12 sm:mt-16">
+      <CampaignCarousel />
+    </div>
+
+    <div class="mt-16 sm:mt-22">
+      <TrustStrip />
+    </div>
+
+    <div class="mt-16 sm:mt-22">
+      <Assistant />
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <section class="mt-16 sm:mt-22">
+      <h2 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+        Buscá por categoría
       </h2>
-      <div>
-        <a href="/category/promociones" class="hover:underline text-sm">Ver más</a>
+      <div
+        class="mt-8 grid grid-cols-2 place-items-center gap-5 sm:grid-cols-4 xl:grid-cols-8"
+      >
+        {
+          categories?.map((c) => (
+            <CategoryCard
+              image_path={`${BASE_URL}/categories/${c.path}.png`}
+              title={c.name}
+            />
+          ))
+        }
       </div>
-    </div>
+    </section>
 
-    <!-- CARRUSEL -->
-    <CardsCarrusel/>
+    <!-- DESTACADOS -->
+    <section class="mt-16 sm:mt-22">
+      <div class="mb-8 flex items-end justify-between gap-6">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+            Destacados
+          </h2>
+          <p class="mt-2.5 text-sm text-muted sm:text-[15px]">
+            El mejor precio por el mejor producto.
+          </p>
+        </div>
+        <a
+          href="/category/promociones"
+          class="shrink-0 text-sm font-semibold text-primary hover:underline"
+          >Ver todo</a
+        >
+      </div>
+      <CardsCarrusel products={promos} />
+    </section>
+
+    <div class="mt-16 sm:mt-22">
+      <BrandGrid />
+    </div>
   </main>
 
   <!-- BANNER -->
-  <div class="banner flex flex-col justify-center items-start">
-    <div class="w-full flex justify-between p-4 sm:p-8 max-w-[1180px] m-auto">
-      <h5 class="text-white sm:text-3xl text-balance max-w-44 sm:max-w-none"> <span class="font-bold underline">Tu seguridad</span>, <br>al alcance de tus manos.</h5>
+  <div class="banner flex flex-col items-start justify-center">
+    <div class="m-auto flex w-full max-w-[1180px] justify-between p-4 sm:p-8">
+      <h2 class="max-w-44 text-balance text-white sm:max-w-none sm:text-3xl">
+        <span class="font-bold underline">Tu seguridad</span>,<br />al alcance de
+        tus manos.
+      </h2>
     </div>
   </div>
 
   <!-- FAQ -->
-  <section id="faq" class="p-4 sm:p-8 max-w-[1180px] m-auto">
+  <section id="faq" class="m-auto max-w-[1180px] p-4 sm:p-8">
     <div class="my-2 sm:py-2 lg:w-[700px]">
-      <h2
-        class="text-primary font-bold mt-5 text-base sm:text-2xl 2xl:text-3xl"
-      >
-       Preguntas frecuentes. <span class="text-black font-normal">
-        Si necesitas ayuda adicional, puedes ponerte en contacto con soporte.</span
+      <h2 class="mt-5 text-base font-bold text-primary sm:text-2xl 2xl:text-3xl">
+        Preguntas frecuentes. <span class="font-normal text-black">
+          Si necesitás ayuda adicional, podés ponerte en contacto con soporte.</span
         >
       </h2>
     </div>
-    <Faq client:idle />
+    <Faq />
   </section>
-  <WhatsAppBtn/>
+
+  <WhatsAppBtn />
 
   <script>
     import { check, totalItems } from "@/store/cartStore";
-    const token = document.cookie.split('=');
+    const token = document.cookie.split("=");
 
-    if(token != null){
-      check.set(token[1])
+    if (token != null) {
+      check.set(token[1]);
     } else {
-      totalItems.set(0)
+      totalItems.set(0);
     }
   </script>
 </Layout>
 
-
 <style>
   .banner {
-    background-image: url('https://d1256qxyebmnhq.cloudfront.net/assets/banner1.webp');
+    background-image: url("https://d1256qxyebmnhq.cloudfront.net/assets/banner1.webp");
     background-size: cover;
     background-position: center;
     height: 300px;

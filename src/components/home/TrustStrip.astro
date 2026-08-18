@@ -1,0 +1,87 @@
+---
+import Mail from "../Icons/Mail.astro";
+import Truck from "../Icons/Truck.astro";
+import CreditCard from "../Icons/CreditCard.astro";
+import ShieldCheck from "../Icons/ShieldCheck.astro";
+import PaymentWays from "../Modals/PaymentWays.astro";
+import ShippingWays from "../Modals/ShippingWays.astro";
+import WhyVigi from "../Modals/WhyVigi.astro";
+
+// Antes cada InfoCard renderizaba los tres modales, así que en el home había
+// cuatro copias de cada uno con el mismo id. Ahora salen una sola vez, acá.
+const items = [
+  {
+    icon: "truck",
+    modal: "entregas_modal",
+    title: "Envío en 24 h",
+    description: "Gratis en CABA, todos los días.",
+  },
+  {
+    icon: "card",
+    modal: "pagos_modal",
+    title: "3 cuotas sin interés",
+    description: "Con Mercado Pago. Descuento por transferencia.",
+  },
+  {
+    icon: "shield",
+    modal: "why_vigi_modal",
+    title: "Garantía oficial",
+    description: "De 6 a 24 meses según la marca.",
+  },
+  {
+    icon: "mail",
+    modal: null,
+    title: "Te asesoramos",
+    description: "Por WhatsApp al 11 2603 9243.",
+  },
+];
+---
+
+<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  {
+    items.map((item) => (
+      <article
+        data-modal-target={item.modal}
+        class:list={[
+          "flex items-start gap-4 rounded-2xl border border-line bg-white p-6",
+          item.modal && "cursor-pointer transition-shadow hover:shadow-[0_10px_26px_rgba(30,5,63,0.08)]",
+        ]}
+      >
+        <span class="shrink-0">
+          {item.icon === "truck" && <Truck height="26" width="26" color="#1e053f" />}
+          {item.icon === "card" && <CreditCard />}
+          {item.icon === "shield" && <ShieldCheck />}
+          {item.icon === "mail" && <Mail />}
+        </span>
+        <div>
+          <h3 class="text-sm font-semibold text-ink">{item.title}</h3>
+          <p class="mt-1.5 text-xs leading-relaxed text-muted">
+            {item.description}
+          </p>
+        </div>
+      </article>
+    ))
+  }
+</section>
+
+<PaymentWays />
+<ShippingWays />
+<WhyVigi />
+
+<script>
+  const init = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-modal-target]")
+      .forEach((card) => {
+        const id = card.dataset.modalTarget;
+        if (!id) return;
+        card.addEventListener("click", () => {
+          const modal = document.getElementById(id);
+          if (modal instanceof HTMLDialogElement) modal.showModal();
+        });
+      });
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

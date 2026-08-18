@@ -1,0 +1,17 @@
+---
+import { getTime, calculateShipmentArrives } from "@/services/scripts";
+
+// Se resuelve en el servidor: antes esto era una isla de React que se hidrataba
+// una vez por tarjeta solo para pintar un texto fijo.
+const label = calculateShipmentArrives(getTime());
+---
+
+{
+  label && (
+    <div class="my-2 flex justify-center items-center text-center">
+      <span class="text-[12px] py-1 px-2 rounded-full gradient text-green_">
+        {label}
+      </span>
+    </div>
+  )
+}

@@ -424,3 +424,84 @@ export const provinces = [
       "iso_id": "AR-V"
     }
   ]
+// --- Rediseño e-commerce -----------------------------------------------------
+
+/**
+ * Campañas del carrusel del home. Hoy viven acá; la idea es que terminen
+ * saliendo del admin para poder publicar Hot Sale o Navidad sin deploy.
+ * `art` es opcional: cuando haya arte subido, reemplaza al bloque de texto.
+ */
+export interface Campaign {
+  id: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  href: string;
+  art?: string;
+  active: boolean;
+}
+
+export const campaigns: Campaign[] = [
+  {
+    id: "hot-sale",
+    tag: "HOT SALE",
+    title: "Hasta 30% en cámaras WiFi",
+    subtitle: "Con envío gratis en CABA",
+    href: "/category/promociones",
+    active: true,
+  },
+];
+
+/**
+ * Modelo que se destaca en el hero del home. Si queda vacío o no aparece entre
+ * las promociones, se usa la primera promoción activa. La idea es que esto lo
+ * termine eligiendo el admin.
+ */
+export const FEATURED_MODEL = "";
+
+export const brands = [
+  { name: "Hikvision", slug: "hikvision" },
+  { name: "Dahua", slug: "dahua" },
+  { name: "Ezviz", slug: "ezviz" },
+  { name: "Intelbras", slug: "intelbras" },
+  { name: "Commax", slug: "commax" },
+  { name: "Hilook", slug: "hilook" },
+  { name: "TP-Link", slug: "tp-link" },
+  { name: "Imou", slug: "imou" },
+];
+
+/**
+ * Preguntas del asistente, en el idioma del cliente y no en el del catálogo.
+ * Cada opción lleva a la categoría que mejor la representa hoy; cuando la API
+ * acepte filtros por faceta (location, power_type, tags) esto puede pasar a
+ * armar una query real en vez de elegir una categoría.
+ */
+export const assistantSteps = [
+  {
+    id: "cuidar",
+    question: "¿Qué querés cuidar?",
+    options: [
+      { value: "casa", label: "Mi casa" },
+      { value: "mascota", label: "A mi mascota" },
+      { value: "mayor", label: "A un adulto mayor" },
+      { value: "local", label: "Mi local" },
+    ],
+  },
+  {
+    id: "donde",
+    question: "¿Dónde la vas a poner?",
+    options: [
+      { value: "adentro", label: "Adentro" },
+      { value: "afuera", label: "Afuera" },
+      { value: "ambas", label: "En las dos" },
+    ],
+  },
+  {
+    id: "energia",
+    question: "¿Tenés un enchufe cerca?",
+    options: [
+      { value: "enchufe", label: "Sí, hay toma" },
+      { value: "bateria", label: "No, mejor a batería" },
+    ],
+  },
+];
