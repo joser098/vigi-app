@@ -18,8 +18,8 @@ const avatar = `${BASE_URL}/assets/avatar.png`
 ---
 
 <Layout title="Perfil | VIGI">
-  <section class="p-4 sm:p-8 max-w-[1180px] m-auto">
-    <article class="flex justify-between">
+  <main class="m-auto max-w-[1180px] px-4 py-8 sm:px-8">
+    <article class="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-8">
       <div class="flex items-center gap-5">
         <div class="relative inline-block">
           <input
@@ -31,21 +31,30 @@ const avatar = `${BASE_URL}/assets/avatar.png`
           <label id="profilePictureLabel" for="fileInput">
             <img
               id="profilePicture"
-              class="h-20 w-20 sm:h-28 sm:w-28 object-cover rounded-full"
+              class="size-20 rounded-full object-cover sm:size-28"
+              width="112"
+              height="112"
+              loading="lazy"
+              decoding="async"
               title=`Imagen de perfil de ${customer.user_data.name}`
               src=`${customer.profile_image || avatar }`
               alt=`Imagen de perfil de ${customer.user_data.name}`
             />
           </label>
         </div>
-        <span class="text-primary font-bold text-lg"
-          >¡Hola {customer.user_data.name}!</span
-        >
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-primary">
+            ¡Hola {customer.user_data.name}!
+          </h1>
+          <p class="mt-1.5 text-sm text-muted">{customer.user_data.email}</p>
+        </div>
       </div>
       <LogOutButton client:idle />
     </article>
-    <ProfileIndex client:idle customer={customer} />
-  </section>
+    <div class="mt-8">
+      <ProfileIndex client:idle customer={customer} />
+    </div>
+  </main>
 </Layout>
 
 <style>

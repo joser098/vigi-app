@@ -5,6 +5,7 @@ import ProductsList from "@/components/ProductsList.astro";
 import Layout from "@/layouts/Layout.astro";
 import { fetchData } from "@/services/fetchData";
 import { searchProducts } from "@/services/fetchData";
+import { categories } from "@/services/const";
 
 const path = Astro.url;
 const urlParams = path.searchParams.get("search");
@@ -15,53 +16,134 @@ let similarProducts;
 
 if (products.length > 0) {
   similarProducts = await fetchData(
-    `getSimilarProducts?provider=${products[0].provider}&category=${products[0].category}`
+    `getSimilarProducts?provider=${products[0].provider}&category=${products[0].category}`,
   );
 }
+
+// Con pocos resultados el rescate importa más que la grilla: es el momento
+// donde la gente se va.
+const scarce = products.length > 0 && products.length <= 4;
 ---
 
 <Layout title={`Buscar ${urlParams} | VIGI`}>
-  <main class="p-4 sm:px-8 max-w-[1180px] m-auto">
+  <main class="m-auto max-w-[1180px] p-4 sm:px-8">
     {
       products.length > 0 ? (
         <>
-          <div>
-            <span>Resultados para: {urlParams}</span>
+          <div class="py-4">
+            <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+              {products.length}
+              {products.length === 1 ? " resultado" : " resultados"} para “
+              {urlParams}”
+            </h1>
+            {scarce && (
+              <p class="mt-2.5 text-sm text-muted">
+                Poco. Buscar por palabras sueltas no siempre da con lo que
+                necesitás.
+              </p>
+            )}
           </div>
-          <ProductsList productsList={products} />
-          <div class="my-5">
-            <div class="sm:py-5 sm:w-[550px] lg:w-[600px] 2xl:w-[750px]">
-              <h2 class="text-primary font-bold mt-16 text-base sm:text-2xl 2xl:text-3xl">
-                Otras opciones similares.{" "}
-                <span class="text-black font-normal">
-                  Encuentra la que más se ajuste a tus necesidades.
+
+          {scarce && (
+            <section class="mb-10 flex flex-col items-start justify-between gap-6 rounded-3xl bg-primary px-7 py-8 sm:flex-row sm:items-center sm:px-12">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-[0.11em] text-green_">
+                  Mejor probá así
                 </span>
+                <h2 class="mt-3 text-xl font-bold tracking-tight text-white sm:text-2xl">
+                  Decinos qué querés cuidar y elegimos por vos
+                </h2>
+                <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-violet-200">
+                  Si es tu mascota, lo que importa es que se vea de noche, que
+                  escuches y que le hables. Eso lo sabemos filtrar nosotros.
+                </p>
+              </div>
+              <div class="flex shrink-0 flex-col gap-3">
+                <a
+                  href="/#asistente"
+                  class="inline-flex h-[50px] items-center justify-center rounded-full bg-green_ px-7 text-sm font-bold text-[#10331d]"
+                >
+                  Encontrá la tuya
+                </a>
+                <a
+                  href="https://wa.me/541126039243"
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
+                >
+                  Preguntanos
+                </a>
+              </div>
+            </section>
+          )}
+
+          <ProductsList productsList={products} />
+
+          {similarProducts && (
+            <section class="mt-16">
+              <h2 class="text-2xl font-bold tracking-tight text-primary">
+                Otras opciones similares
               </h2>
-            </div>
-            <CardsCarrusel products={similarProducts} />
-          </div>
+              <p class="mt-2.5 text-sm text-muted">
+                Encontrá la que más se ajuste a lo que necesitás.
+              </p>
+              <div class="mt-8">
+                <CardsCarrusel products={similarProducts} />
+              </div>
+            </section>
+          )}
         </>
       ) : (
-        <div class=" bg-slate-100 p-4 flex flex-col justify-center items-center rounded-sm">
-          <h6 class="text-sm text-center sm:text-xl font-bold py-2 my-2">
-            No hay productos que coincidan con tu búsqueda
-          </h6>
-          <ul class="list-disc text-xs sm:text-base">
-            <li class="my-2">
-              <span class="font-bold">Revisa la ortografía</span> de la palabra.
-            </li>
-            <li class="my-2">
-              Usa <span class="font-bold">palabras más genéricas</span> o menos
-              palabras.
-            </li>
-            <li class="my-2">
-              <a href="/" class="text-primary underline">
-                Navega por las categorías
-              </a>{" "}
-              para encontrar un producto similar
-            </li>
-          </ul>
-        </div>
+        <section class="py-10">
+          <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+            No encontramos nada para “{urlParams}”
+          </h1>
+          <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
+            Puede ser un error de tipeo, o que lo estés buscando por un nombre
+            distinto al del catálogo.
+          </p>
+
+          <div class="mt-8 flex flex-col items-start justify-between gap-6 rounded-3xl bg-primary px-7 py-8 sm:flex-row sm:items-center sm:px-12">
+            <div>
+              <h2 class="text-xl font-bold tracking-tight text-white sm:text-2xl">
+                Decinos qué querés cuidar
+              </h2>
+              <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-violet-200">
+                Tres preguntas y te mostramos solo lo que sirve para tu caso.
+              </p>
+            </div>
+            <div class="flex shrink-0 flex-col gap-3">
+              <a
+                href="/#asistente"
+                class="inline-flex h-[50px] items-center justify-center rounded-full bg-green_ px-7 text-sm font-bold text-[#10331d]"
+              >
+                Encontrá la tuya
+              </a>
+              <a
+                href="https://wa.me/541126039243"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
+              >
+                Preguntanos
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <p class="text-sm font-semibold text-ink">O mirá por categoría</p>
+            <div class="mt-4 flex flex-wrap gap-2.5">
+              {categories.map((c) => (
+                <a
+                  href={`/category/${c.path}`}
+                  class="inline-flex h-10 items-center rounded-full border-[1.5px] border-line bg-white px-4 text-[13px] text-ink transition-colors hover:border-primary"
+                >
+                  {c.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
       )
     }
   </main>

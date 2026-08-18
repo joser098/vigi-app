@@ -51,14 +51,14 @@ const LoginForm = () => {
       method="post"
       onSubmit={handleSubmit(onSubmitLogin)}
     >
-      <h5 className="text-gray-600 text-xl">Ingresar a mi cuenta</h5>
+      
       <fieldset className="w-full flex flex-col items-center gap-6">
         <div className="flex flex-col gap-1 w-full max-w-96">
           <label htmlFor="email" id="email">
             Correo<span className="text-xs text-red-500">*</span>
           </label>
           <input
-            className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
+            className="h-12 w-full max-w-96 rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary"
             type="email"
             placeholder="correo@email.com"
             {...register("email", {
@@ -86,7 +86,7 @@ const LoginForm = () => {
           </label>
           <div className="relative">
             <input
-              className="w-full h-10 p-3 border-[.5px] border-black rounded-md max-w-96"
+              className="h-12 w-full max-w-96 rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary"
               type={showPassword ? "text" : "password"}
               placeholder="*******"
               {...register("password", {

@@ -63,7 +63,7 @@ export const faq = [
     {
         id: 1,
         question: '¿Cuáles son los métodos de pago aceptados?',
-        answer: 'Nuestra tienda procesa los pagos de manera segura con Mercado Pago y acepta los siguientes métodos de pago: tarjetas de crédito (Visa, Mastercard, American Express), tarjetas de débito. Tambien mediante transferencia bancaria.'
+        answer: 'Procesamos los pagos de manera segura y aceptamos tarjetas de crédito (Visa, Mastercard, American Express) y tarjetas de débito. En el carrito vas a ver dos botones, uno por cada procesador: elegí el que prefieras y completás el pago en su pantalla.'
     },
     {
         id: 2,

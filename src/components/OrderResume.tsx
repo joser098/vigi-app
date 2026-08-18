@@ -92,16 +92,16 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   }, [discount, shipments.cost]);
 
   return (
-    <article className="w-full md:max-w-sm bg-gray-200 px-10 py-5 rounded-tl-md rounded-tr-md">
+    <article className="h-fit w-full rounded-2xl border border-line bg-white p-6 shadow-[0_14px_34px_rgba(30,5,63,0.06)] md:max-w-sm md:sticky md:top-4">
       <div className="w-full mb-8">
-        <h5 className="my-2 font-semibold text-lg">Entrega</h5>
+        <h5 className="mb-3 text-lg font-bold text-primary">Entrega</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <span className="text-xs">
             Conoce las opciones de envío, incluyendo plazos y costos
           </span>
           <select
             onChange={onShipTypeChange}
-            className="max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
+            className="h-11 rounded-xl border-[1.5px] border-line bg-white px-3 text-sm text-ink"
           >
             {/* <option className="text-xs">Selecciona uno</option> */}
             <option className="text-xs" value="shipping">
@@ -139,8 +139,8 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           </button>
         </div>
       </div> */}
-      <div className="mb-12">
-        <h5 className="my-2 font-semibold text-lg">¿Tienes un cupón?</h5>
+      <div className="mt-7 border-t border-line pt-6">
+        <h5 className="mb-3 text-base font-semibold text-primary">¿Tenés un cupón?</h5>
         <form>
           <label className="text-xs"> Código del cupón</label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -149,11 +149,11 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
               value={discountCode}
               placeholder="XXXX XXXX"
               type="text"
-              className="bg-gray-200 border-b-2 border-gray-300 focus:border-none"
+              className="h-11 rounded-xl border-[1.5px] border-line bg-panel px-4 text-sm text-ink placeholder:text-gray-400"
             />
             <button
               onClick={calculateDiscount}
-              className="w-full max-h-11 bg-primary border-2 border-primary text-white p-2 rounded-md hover:opacity-70 transition-opacity"
+              className="h-11 w-full rounded-full border-[1.5px] border-gray-300 bg-white text-sm font-semibold text-primary transition-colors hover:border-primary"
             >
               Agregar
             </button>
@@ -173,11 +173,13 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           </div>
         </form>
       </div>
-      <div>
-        <h5 className="my-2 text-lg text-center">Resumen de la compra</h5>
-        <div className="flex justify-between">
-          <span>Subtotal</span>
-          <span>
+      <div className="mt-7 border-t border-line pt-6">
+        <h5 className="mb-4 text-lg font-bold text-primary">
+          Resumen de la compra
+        </h5>
+        <div className="flex justify-between py-1.5 text-sm">
+          <span className="text-muted">Subtotal</span>
+          <span className="text-ink">
             {cart.amount_to_pay.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
@@ -185,9 +187,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             })}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span>Descuento</span>
-          <span className={`${discount > 0 && "text-red-500"}`}>
+        <div className="flex justify-between py-1.5 text-sm">
+          <span className="text-muted">Descuento</span>
+          <span className={discount > 0 ? "font-semibold text-green_" : "text-ink"}>
             -{" "}
             {discount.toLocaleString("es-AR", {
               style: "currency",
@@ -196,9 +198,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             })}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span>Envío</span>
-          <span className={`${!shipments.cost && "text-green-500 font-bold"}`}>
+        <div className="flex justify-between py-1.5 text-sm">
+          <span className="text-muted">Envío</span>
+          <span className={!shipments.cost ? "font-bold text-green_" : "text-ink"}>
             {shipmentError
               ? "—"
               : !shipments.cost
@@ -213,9 +215,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
         {shipmentError && (
           <p className="text-xs text-red-500">{shipmentError}</p>
         )}
-        <div className="flex justify-between my-6">
-          <span className="font-bold">Total:</span>
-          <span className="font-bold">
+        <div className="mt-4 flex items-baseline justify-between border-t border-line pt-4">
+          <span className="text-base font-semibold text-primary">Total</span>
+          <span className="text-3xl font-bold tracking-tight text-ink">
             {total.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
@@ -223,9 +225,41 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             })}
           </span>
         </div>
+        <p className="mt-1.5 text-right text-[13px] font-semibold text-green_">
+          3 cuotas sin interés de{" "}
+          {Math.round(total / 3).toLocaleString("es-AR", {
+            style: "currency",
+            currency: "ARS",
+            minimumFractionDigits: 0,
+          })}
+        </p>
       </div>
-      <PayCartButton disablePay={disablePay} cart={cart} finalTotal={total} shipments={shipments} method="nv"/>
-      <PayCartButton disablePay={disablePay} cart={cart} finalTotal={total} shipments={shipments} method="mp"/>
+
+      <div className="mt-7 border-t border-line pt-6">
+        <h5 className="mb-1 text-base font-semibold text-primary">
+          Elegí cómo pagar
+        </h5>
+        <p className="mb-4 text-xs text-muted">
+          Cada botón te lleva al checkout de su procesador. No guardamos los
+          datos de tu tarjeta.
+        </p>
+        <div className="flex flex-col gap-3">
+          <PayCartButton
+            disablePay={disablePay}
+            cart={cart}
+            finalTotal={total}
+            shipments={shipments}
+            method="nv"
+          />
+          <PayCartButton
+            disablePay={disablePay}
+            cart={cart}
+            finalTotal={total}
+            shipments={shipments}
+            method="mp"
+          />
+        </div>
+      </div>
     </article>
   );
 };

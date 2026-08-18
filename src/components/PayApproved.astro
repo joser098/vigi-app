@@ -1,5 +1,4 @@
 ---
-import Approved from "./Icons/Approved.astro";
 import { type Payment } from "../services/types";
 
 interface Props {
@@ -7,52 +6,72 @@ interface Props {
 }
 const { payment } = Astro.props;
 const date = payment.date_approved.split("T")[0].split("-").reverse().join("/");
-const hour = payment.date_approved.split("T")[1].split(".")[0];
+const hour = payment.date_approved.split("T")[1].split(".")[0].slice(0, 5);
+
+const method = payment.payment_method.type.includes("debit")
+  ? "Tarjeta de débito"
+  : payment.payment_method.type.includes("credit")
+    ? "Tarjeta de crédito"
+    : "Dinero en cuenta";
+
+const rows = [
+  // El id de la pasarela, no el uuid interno
+  { label: "Nro de pago", value: payment.gateway_payment_id },
+  { label: "Fecha", value: `${date} · ${hour}` },
+  { label: "Medio de pago", value: method },
+  ...(payment.payment_method.type.includes("card")
+    ? [{ label: "Tarjeta", value: `•••• ${payment.card.last_four_digits}` }]
+    : []),
+];
 ---
 
-<section class="flex flex-col gap-6 bg-gray-200 p-3 rounded-lg">
-  <div class="flex gap-2">
-    <h3 class="text-xl font-semibold">¡Pago Aprobado!</h3>
-    <Approved />
+<section class="mx-auto max-w-xl">
+  <div class="flex flex-col items-center text-center">
+    <span
+      class="flex size-16 items-center justify-center rounded-full bg-green-soft"
+    >
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#1f8f45"
+        stroke-width="2.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 6L9 17l-5-5"></path>
+      </svg>
+    </span>
+    <h1 class="mt-5 text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+      ¡Listo, tu pago se aprobó!
+    </h1>
+    <p class="mt-3 text-[15px] leading-relaxed text-muted">
+      Te mandamos el comprobante por mail. Cuando salga de nuestro depósito te
+      avisamos con el seguimiento.
+    </p>
+    <p class="mt-6 text-4xl font-bold tracking-tight text-ink">
+      {
+        payment.transaction_details.total_paid_amount.toLocaleString("es-AR", {
+          style: "currency",
+          currency: "ARS",
+          minimumFractionDigits: 0,
+        })
+      }
+    </p>
   </div>
 
-  <table>
-    <tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold"> Nro de pago:</td>
-      {/* El id de la pasarela, no el uuid interno */}
-      <td class="text-end"> {payment.gateway_payment_id}</td>
-    </tr>
-    <tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold">Fecha:</td>
-      <td class="text-end">{date}</td>
-    </tr>
-    <tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold">Hora:</td>
-      <td class="text-end">{hour}</td>
-    </tr>
-    <tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold">Metodo de pago:</td>
-      <td class="text-end">{payment.payment_method.type.includes("debit") ? "Tarjeta de débito" : payment.payment_method.type.includes("credit") ? "Tarjeta de crédito" : "Dinero en cuenta"}</td>
-    </tr>
-    { payment.payment_method.type.includes("card") && (<tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold">Tarjeta:</td>
-      <td class="text-end">{`**** **** **** ${payment.card.last_four_digits}`}</td>
-    </tr>)
+  <dl
+    class="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line"
+  >
+    {
+      rows.map((row) => (
+        <div class="flex items-center justify-between gap-4 bg-white px-5 py-4">
+          <dt class="text-sm text-muted">{row.label}</dt>
+          <dd class="text-right text-sm font-semibold text-ink">{row.value}</dd>
+        </div>
+      ))
     }
-    <tr class="h-10 border-b border-gray-500">
-      <td class="font-semibold">Monto:</td>
-      <td class="text-end"
-        >{
-          payment.transaction_details.total_paid_amount.toLocaleString(
-            "es-AR",
-            {
-              style: "currency",
-              currency: "ARS",
-              minimumFractionDigits: 0,
-            }
-          )
-        }</td
-      >
-    </tr>
-  </table>
+  </dl>
 </section>
