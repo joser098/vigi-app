@@ -108,7 +108,7 @@ const LoginForm = () => {
             )}
           </span>
         </div>
-        <button className="w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-70 transition-opacity my-3 max-w-96">
+        <button className="flex h-12 w-full items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40 my-3 max-w-96">
           {isLoading ? (
             <span className="flex justify-center">
               <Loader />

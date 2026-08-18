@@ -1,27 +1,31 @@
 ---
-import Approved from "@/components/Icons/Approved.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Email verificado con éxito! | VIGI">
-  <section class="px-4 pb-4 sm:px-8 sm:pb-8 max-w-[1180px] m-auto text-center">
-    <div class="flex flex-col justify-center items-center p-10">
-      <span><Approved /></span>
-      <h5 class="text-xl font-bold">
-        ¡Correo electrónico verificado con éxito!
-      </h5>
-      <span
-        >Inicia sesión para comenzar a disfrutar de la experiencia de compra.</span
-      >
-    </div>
-    <div class="flex flex-col justify-center items-center">
-      Serás redirigido en: <span id="counter" class="font-bold">8</span>
-    </div>
-  </section>
+  <main class="m-auto flex max-w-[1180px] flex-col items-center px-4 py-16 text-center sm:px-8 sm:py-24">
+    <span class="flex size-16 items-center justify-center rounded-full bg-green-soft">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1f8f45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6L9 17l-5-5"></path>
+      </svg>
+    </span>
+    <h1 class="mt-6 text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+      ¡Correo verificado!
+    </h1>
+    <p class="mt-3 max-w-md text-[15px] leading-relaxed text-muted">
+      Ya podés iniciar sesión y empezar a comprar.
+    </p>
+
+    <a href="/login" class="mt-8 inline-flex h-[52px] items-center justify-center rounded-full bg-primary px-8 text-[15px] font-semibold text-white">
+      Iniciar sesión
+    </a>
+    <p class="mt-5 text-[13px] text-gray-400">
+      Te llevamos solos en <span id="counter" class="font-bold text-ink">8</span> segundos
+    </p>
+  </main>
 </Layout>
 
 <script is:inline>
-//   import { navigate } from "astro:transitions/client";
   document.addEventListener("astro:page-load", () => {
     const contadorElemento = document.getElementById("counter");
     let segRestantes = 8;
@@ -37,7 +41,6 @@ import Layout from "@/layouts/Layout.astro";
       if (seg <= 0) {
         clearInterval(intervalo);
         window.location.href = "/login"
-        // navigate("/login");
       }
     };
   });

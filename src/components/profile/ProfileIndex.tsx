@@ -12,94 +12,62 @@ import PurchasesInfo from "./PurchasesInfo";
 
 type Tab = "info" | "purchasesInfo" | "favoritesInfo" | "addressInfo";
 
+const TABS: { id: Tab; label: string; hash: string; Icon: any }[] = [
+  { id: "info", label: "Información personal", hash: "", Icon: InfoIcon },
+  { id: "addressInfo", label: "Dirección", hash: "address", Icon: Location },
+  { id: "purchasesInfo", label: "Compras", hash: "purchases", Icon: Bag },
+  { id: "favoritesInfo", label: "Favoritos", hash: "favorites", Icon: Favorite },
+];
+
 const ProfileIndex = ({ customer }: { customer: Customer }) => {
   const [currentTab, setCurrentTab] = useState<Tab>("info");
 
   const changeTab = (tab: Tab): void => {
-    // Change the URL hash based on the selected tab
-    switch (tab) {
-      case "info":
-        window.location.hash = "";
-        break;
-      case "purchasesInfo":
-        window.location.hash = "purchases";
-        break;
-      case "favoritesInfo":
-        window.location.hash = "favorites";
-        break;
-      case "addressInfo":
-        window.location.hash = "address";
-        break;
-    }
-    // Update the current tab
+    window.location.hash = TABS.find((t) => t.id === tab)?.hash ?? "";
     setCurrentTab(tab);
   };
 
   useEffect(() => {
-    // Change the current tab based on the URL hash
-    if (window.location.hash === "#purchases") {
-      setCurrentTab("purchasesInfo");
-    }
-    if (window.location.hash === "#favorites") {
-      setCurrentTab("favoritesInfo");
-    }
-    if (window.location.hash === "#address") {
-      setCurrentTab("addressInfo");
-    }
-    // If the URL hash is not related to tabs, keep the current tab
-  }, [])
+    // La pestaña sale del hash para que se pueda compartir el link.
+    const match = TABS.find(
+      (t) => t.hash && window.location.hash === `#${t.hash}`,
+    );
+    if (match) setCurrentTab(match.id);
+  }, []);
 
   return (
-    <section className="my-5 flex flex-col sm:flex-row gap-6">
-      <article className="w-full max-w-80 ">
-        <ul className="flex flex-col gap-5 rounded-md border p-4">
-          <li
-            className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("info")}
-          >
-            <div className="flex gap-3 items-center">
-              <InfoIcon currentColor={currentTab == "info" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Información personal</span>
-            </div>
-            <ChevronRight />
-          </li>
-          <li
-            className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("addressInfo")}
-          >
-            <div className="flex gap-3 items-center">
-              <Location currentColor={currentTab == "addressInfo" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Dirección</span>
-            </div>
-            <ChevronRight />
-          </li>
-          <li
-            className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("purchasesInfo")}
-          >
-            <div className="flex gap-3 items-center">
-              <Bag currentColor={currentTab == "purchasesInfo" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Compras </span>
-            </div>
-            <ChevronRight />
-          </li>
-          <li
-            className="flex gap-6 justify-between cursor-pointer"
-            onClick={() => changeTab("favoritesInfo")}
-          >
-            <div className="flex gap-3 items-center">
-              <Favorite currentColor={currentTab == "favoritesInfo" ? "#CDA3FF" : "#1E053F"}/>
-              <span>Favoritos</span>
-            </div>
-            <ChevronRight />
-          </li>
+    <section className="flex flex-col gap-6 sm:flex-row sm:gap-8">
+      <article className="w-full sm:max-w-72">
+        <ul className="flex flex-col gap-1 rounded-2xl border border-line bg-white p-3">
+          {TABS.map(({ id, label, Icon }) => {
+            const active = currentTab === id;
+            return (
+              <li key={id}>
+                <button
+                  type="button"
+                  onClick={() => changeTab(id)}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex h-[52px] w-full items-center gap-3.5 rounded-xl px-4 text-left transition-colors ${
+                    active
+                      ? "bg-panel font-semibold text-primary"
+                      : "text-ink hover:bg-panel/60"
+                  }`}
+                >
+                  <Icon currentColor={active ? "#1E053F" : "#8a8398"} />
+                  <span className="flex-1 text-sm">{label}</span>
+                  <ChevronRight />
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </article>
-      <div className="w-full flex flex-col justify-center">
-        {currentTab === "info" && <CustomerInfo customer={customer}/>}
-        {currentTab === "addressInfo" && <AddressInfo customer={customer}/>}
+
+      <div className="flex w-full flex-col">
+        {currentTab === "info" && <CustomerInfo customer={customer} />}
+        {currentTab === "addressInfo" && <AddressInfo customer={customer} />}
         {currentTab === "purchasesInfo" && <PurchasesInfo />}
-        {currentTab === "favoritesInfo" && <FavoritesInfo/>}
+        {currentTab === "favoritesInfo" && <FavoritesInfo />}
       </div>
     </section>
   );

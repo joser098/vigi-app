@@ -42,13 +42,13 @@ const BuyButton = ({ product }: { product: Product }) => {
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <button
         onClick={onBuyClick}
-        className="block w-full bg-primary border-2 border-primary text-white p-3 rounded-md hover:opacity-75 transition-opacity"
+        className="flex h-14 w-full items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
       >
         Comprar
       </button>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="backdrop-blur-xs inset-0 fixed flex justify-center items-center p-4">
-          <AlertDialog.Content aria-describedby={undefined} className=" bg-white rounded-sm p-4 flex flex-col gap-5 shadow-lg sm:min-w-[500px] max-h-screen overflow-y-scroll">
+          <AlertDialog.Content aria-describedby={undefined} className="flex max-h-screen flex-col gap-5 overflow-y-auto rounded-3xl bg-white p-6 shadow-[0_24px_60px_rgba(30,5,63,0.2)] sm:min-w-[500px]">
             <AlertDialog.Title className="text-primary font-semibold text-xl">
               Verifica tu compra
             </AlertDialog.Title>

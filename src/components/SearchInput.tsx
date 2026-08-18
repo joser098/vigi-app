@@ -48,21 +48,35 @@ const SearchInput = () => {
   };
 
   return (
-    <div className="text-xs relative">
+    <div className="relative w-full text-xs">
+      <svg
+        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+        width="19"
+        height="19"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#6b6478"
+        strokeWidth="2"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-3.5-3.5" />
+      </svg>
       <input
         onKeyDown={onKeyDown}
         onChange={onChangeSearch}
         onBlur={onBlurHandler}
-        className="w-full sm:w-96 border-b-2 py-4 sm:border border-primary rounded-b sm:rounded-sm sm:py-[10px] pl-1 pr-6"
-        type="text"
-        placeholder="Buscar producto, marca ..."
+        className="h-12 w-full rounded-full border-[1.5px] border-line bg-panel pl-11 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white"
+        type="search"
+        placeholder="Buscá por modelo, marca o ambiente"
       />
-      <section className="absolute w-full z-10 bg-white mt-1 rounded-sm max-h-[280px] overflow-y-auto">
+      <section className="absolute z-20 mt-2 max-h-[340px] w-full overflow-y-auto rounded-2xl border border-line bg-white p-2 shadow-[0_16px_40px_rgba(30,5,63,0.12)] empty:hidden">
         {suggestList?.map((item: Item) => {
           return (
             <article
               key={item.id}
-              className="relative hover:bg-gray-100 rounded-sm py-2"
+              className="relative rounded-xl p-2 transition-colors hover:bg-panel"
             >
               {item.has_promotion && (
                 <div className="absolute w-1/3 flex flex-col  justify-center items-center top-6 right-0 rounded-l gradient_violet bg-linear-to-tr">
@@ -76,11 +90,15 @@ const SearchInput = () => {
                   </span>
                 </div>
               )}
-              <a href={`/product/${item.model}`} className="flex rounded-sm">
+              <a href={`/product/${item.model}`} className="flex items-center gap-3">
                 <img
                   src={item.thumbnail}
                   alt={item.model}
-                  className="max-h-16 max-w-16"
+                  className="size-14 shrink-0 rounded-lg bg-panel object-contain p-1"
+                  width="56"
+                  height="56"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="flex flex-col justify-center gap-1">
                   <h6 className="text-sm font-bold text-primary">
@@ -99,7 +117,7 @@ const SearchInput = () => {
                     )}
                   </div>
                   {item.has_promotion && (
-                    <p className="text-xs line-through bg-gray-200 text-gray-400 rounded-full px-2 max-w-fit">
+                    <p className="max-w-fit text-xs text-gray-400 line-through">
                       {item.price_original?.toLocaleString("es-AR", {
                         style: "currency",
                         currency: "ARS",
