@@ -59,7 +59,7 @@ const PayCartButton = ({ cart, finalTotal, shipments, method, disablePay }: {car
       ) : method === "mp" ? (
         "Pagar con Mercado Pago"
       ) : (
-        "Pagar con Promociones"
+        "Pagar con Nave"
       )}
     </button>
   );

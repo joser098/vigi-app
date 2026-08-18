@@ -246,21 +246,33 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           Cada botón te lleva al checkout de su procesador. No guardamos los
           datos de tu tarjeta.
         </p>
-        <div className="flex flex-col gap-3">
-          <PayCartButton
-            disablePay={disablePay}
-            cart={cart}
-            finalTotal={total}
-            shipments={shipments}
-            method="nv"
-          />
-          <PayCartButton
-            disablePay={disablePay}
-            cart={cart}
-            finalTotal={total}
-            shipments={shipments}
-            method="mp"
-          />
+        <div className="flex flex-col gap-5">
+          <div>
+            <PayCartButton
+              disablePay={disablePay}
+              cart={cart}
+              finalTotal={total}
+              shipments={shipments}
+              method="nv"
+            />
+            {/* Las promociones las pone el banco a través de Nave, no nosotros:
+                por eso se atribuyen y no se prometen. */}
+            <p className="mt-2 text-center text-xs text-muted">
+              Promociones bancarias de Nave, según tu tarjeta.
+            </p>
+          </div>
+          <div>
+            <PayCartButton
+              disablePay={disablePay}
+              cart={cart}
+              finalTotal={total}
+              shipments={shipments}
+              method="mp"
+            />
+            <p className="mt-2 text-center text-xs text-muted">
+              Dinero en cuenta, crédito o débito.
+            </p>
+          </div>
         </div>
       </div>
     </article>
