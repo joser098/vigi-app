@@ -214,7 +214,10 @@ export interface CartItem {
   picture_url: string;
   title: string;
   quantity: number;
+  // unit_price ya viene con el descuento aplicado, igual que en el catálogo.
+  // price_original es el precio de lista y llega null cuando no hay promoción.
   unit_price: number;
+  price_original: number | null;
 }
 
 export interface Cart {

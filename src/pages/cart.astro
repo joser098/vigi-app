@@ -30,45 +30,16 @@ const money = (n: number) =>
     minimumFractionDigits: 0,
   });
 
-const steps = [
-  { n: 1, label: "Carrito", current: true },
-  { n: 2, label: "Envío", current: false },
-  { n: 3, label: "Pago", current: false },
-];
+// El porcentaje se recalcula desde los dos precios en vez de traer `discount`
+// de la API: así lo que se muestra no puede contradecir lo que se cobra.
+const descuento = (item: CartItem) =>
+  item.price_original
+    ? Math.round(((item.price_original - item.unit_price) / item.price_original) * 100)
+    : 0;
 ---
 
 <Layout title={`(${cart.products_total}) Carrito de compras | VIGI`}>
   <main class="m-auto max-w-[1180px] p-4 sm:px-8">
-    <!-- PASOS -->
-    <nav class="flex items-center justify-center gap-3 py-4 sm:gap-4">
-      {
-        steps.map((step, i) => (
-          <>
-            {i > 0 && <span class="h-px w-6 bg-gray-300 sm:w-10" />}
-            <span class="flex items-center gap-2">
-              <span
-                class:list={[
-                  "flex size-6 items-center justify-center rounded-full text-[11.5px] font-bold",
-                  step.current
-                    ? "bg-primary text-white"
-                    : "bg-gray-200 text-gray-500",
-                ]}
-              >
-                {step.n}
-              </span>
-              <span
-                class:list={[
-                  "text-[13px]",
-                  step.current ? "font-semibold text-primary" : "text-gray-500",
-                ]}
-              >
-                {step.label}
-              </span>
-            </span>
-          </>
-        ))
-      }
-    </nav>
 
     <div class="mb-6 mt-2 flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -128,6 +99,14 @@ const steps = [
                         <p class="mt-1 text-lg font-bold text-ink">
                           {money(product.unit_price)}
                         </p>
+                        {product.price_original && (
+                          <p class="text-xs text-muted">
+                            <s>{money(product.price_original)}</s>
+                            <span class="ml-1.5 font-semibold text-green_">
+                              {descuento(product)}% OFF
+                            </span>
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -137,6 +116,14 @@ const steps = [
                       </h2>
                       <p class="mt-1 text-[13px] text-muted">
                         {money(product.unit_price)} por unidad
+                        {product.price_original && (
+                          <>
+                            <s class="ml-1.5">{money(product.price_original)}</s>
+                            <span class="ml-1.5 font-semibold text-green_">
+                              {descuento(product)}% OFF
+                            </span>
+                          </>
+                        )}
                       </p>
                     </div>
 
