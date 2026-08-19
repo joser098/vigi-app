@@ -5,24 +5,68 @@ interface Props {
   payment: Payment;
 }
 const { payment } = Astro.props;
-const date = payment.date_approved.split("T")[0].split("-").reverse().join("/");
-const hour = payment.date_approved.split("T")[1].split(".")[0].slice(0, 5);
 
-const method = payment.payment_method.type.includes("debit")
+/**
+ * Nada de esto puede tirar una excepción.
+ *
+ * Esta pantalla la ve alguien que ACABA de pagar, y se renderiza en el
+ * servidor: un campo faltante no degrada la página, la deja en blanco. Ya pasó
+ * —`payment.card` no venía en la respuesta de la API y el acceso directo a
+ * `payment.card.last_four_digits` reventaba el render— y no hay peor momento
+ * para mostrar una página vacía que el segundo después de un pago.
+ *
+ * Por eso todo sale con optional chaining y con fallback, y cada fila del
+ * detalle se muestra solo si tiene qué mostrar. Si falta todo, igual se ve el
+ * "tu pago se aprobó", que es lo único que el cliente necesita leer.
+ */
+const fecha = (iso: string | null | undefined) => {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+
+  return d.toLocaleString("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// El total sale de donde esté: MP manda `total_paid_amount`, y la columna
+// `amount` de payment_orders queda como respaldo.
+const total =
+  payment?.transaction_details?.total_paid_amount ??
+  payment?.amount ??
+  null;
+
+const tipo = payment?.payment_method?.type ?? "";
+
+// `prepaid_card` (tarjetas prepagas, que son cada vez más) no caía en ninguna
+// rama y se etiquetaba como "Dinero en cuenta", que es directamente otra cosa.
+const method = tipo.includes("debit")
   ? "Tarjeta de débito"
-  : payment.payment_method.type.includes("credit")
+  : tipo.includes("credit")
     ? "Tarjeta de crédito"
-    : "Dinero en cuenta";
+    : tipo.includes("prepaid")
+      ? "Tarjeta prepaga"
+      : tipo.includes("account_money")
+        ? "Dinero en cuenta"
+        : null;
+
+// La API la expone desde `raw`; el fallback cubre respuestas viejas cacheadas.
+const ultimos4 =
+  payment?.card?.last_four_digits ?? payment?.raw?.card?.last_four_digits ?? null;
+
+const fechaTexto = fecha(payment?.date_approved);
 
 const rows = [
   // El id de la pasarela, no el uuid interno
-  { label: "Nro de pago", value: payment.gateway_payment_id },
-  { label: "Fecha", value: `${date} · ${hour}` },
+  { label: "Nro de pago", value: payment?.gateway_payment_id },
+  { label: "Fecha", value: fechaTexto },
   { label: "Medio de pago", value: method },
-  ...(payment.payment_method.type.includes("card")
-    ? [{ label: "Tarjeta", value: `•••• ${payment.card.last_four_digits}` }]
-    : []),
-];
+  { label: "Tarjeta", value: ultimos4 ? `•••• ${ultimos4}` : null },
+].filter((row) => row.value);
 ---
 
 <section class="mx-auto max-w-xl">
@@ -51,17 +95,20 @@ const rows = [
       Te mandamos el comprobante por mail. Cuando salga de nuestro depósito te
       avisamos con el seguimiento.
     </p>
-    <p class="mt-6 text-4xl font-bold tracking-tight text-ink">
-      {
-        payment.transaction_details.total_paid_amount.toLocaleString("es-AR", {
-          style: "currency",
-          currency: "ARS",
-          minimumFractionDigits: 0,
-        })
-      }
-    </p>
+    {
+      total != null && (
+        <p class="mt-6 text-4xl font-bold tracking-tight text-ink">
+          {Number(total).toLocaleString("es-AR", {
+            style: "currency",
+            currency: "ARS",
+            minimumFractionDigits: 0,
+          })}
+        </p>
+      )
+    }
   </div>
 
+  {rows.length > 0 && (
   <dl
     class="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line"
   >
@@ -74,4 +121,5 @@ const rows = [
       ))
     }
   </dl>
+  )}
 </section>

@@ -300,9 +300,17 @@ export interface Payment {
   // El id que devuelve la pasarela. Antes era `id` a secas.
   gateway_payment_id: string;
   gateway: "mercadopago" | "nave";
+  // Columnas propias de payment_orders. `amount` es el respaldo del total
+  // cuando transaction_details viene incompleto.
+  amount: number | null;
+  status_detail: string | null;
+  raw?: Record<string, any>;
   additional_info: AdditionalInfo;
   authorization_code: string;
-  card: Card;
+  // Opcionales de verdad: la API la saca de `raw`, y un pago que no es con
+  // tarjeta directamente no la tiene. Declararlas como obligatorias fue lo que
+  // dejó pasar el acceso directo que rompía la pantalla del comprador.
+  card?: Card;
   charges_detail: any;
   cuotas: number;
   date_approved: string;
@@ -320,7 +328,7 @@ export interface Payment {
   refunds: any[];
   status: string;
   status_detail: string;
-  transaction_details: TransactionDetails;
+  transaction_details?: TransactionDetails;
   updatedAt: string;
 }
 
