@@ -135,3 +135,14 @@
   color: var(--color-primary);
   text-decoration: underline;
 }
+
+/* El preflight de Tailwind pone `margin: 0` en todos los elementos, y ahí se
+   perdía el centrado de los <dialog>: un dialog abierto con showModal() se
+   centra porque el user agent le pone `margin: auto`, no porque lo pida el CSS
+   del proyecto. Con el reset encima quedaban pegados arriba a la izquierda.
+
+   Va fuera de `@layer base` a propósito: una regla sin capa le gana a
+   cualquiera que esté dentro de una, sin importar la especificidad. */
+dialog[open] {
+  margin: auto;
+}

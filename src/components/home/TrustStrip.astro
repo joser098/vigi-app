@@ -6,6 +6,7 @@ import ShieldCheck from "../Icons/ShieldCheck.astro";
 import PaymentWays from "../Modals/PaymentWays.astro";
 import ShippingWays from "../Modals/ShippingWays.astro";
 import WhyVigi from "../Modals/WhyVigi.astro";
+import { FREE_SHIPPING_LABEL } from "@/services/const";
 
 // Antes cada InfoCard renderizaba los tres modales, así que en el home había
 // cuatro copias de cada uno con el mismo id. Ahora salen una sola vez, acá.
@@ -14,7 +15,7 @@ const items = [
     icon: "truck",
     modal: "entregas_modal",
     title: "Envío en 24 h",
-    description: "Gratis en CABA, todos los días.",
+    description: `Gratis en CABA y desde ${FREE_SHIPPING_LABEL} a todo el país.`,
   },
   {
     icon: "card",
