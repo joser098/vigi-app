@@ -9,6 +9,7 @@ import OrderResume from "../components/OrderResume";
 import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import AddCartButton from "@/components/Buttons/AddCartButton";
 import Truck from "@/components/Icons/Truck.astro";
+import { FREE_SHIPPING_LABEL } from "@/services/const";
 
 let cart;
 if (Astro.cookies.has("check")) {
@@ -91,8 +92,8 @@ const steps = [
         <div class="mb-6 flex items-center gap-3.5 rounded-2xl border border-[#c6ecd5] bg-green-soft px-5 py-4">
           <Truck height="22" width="22" color="#1f8f45" />
           <span class="text-sm font-semibold text-green-ink">
-            Envío gratis en CABA. Al resto del país el costo se calcula en el
-            resumen, según tu dirección.
+            Envío gratis en CABA y en compras desde {FREE_SHIPPING_LABEL} a todo
+            el país. Abajo vas a ver el costo exacto según tu dirección.
           </span>
         </div>
       )

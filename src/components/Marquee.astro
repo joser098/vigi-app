@@ -1,24 +1,28 @@
+---
+import { FREE_SHIPPING_LABEL } from "@/services/const";
+
+// Los mensajes estaban escritos ocho veces cada uno, entre la tira y su clon.
+// Ahora se declaran una vez y el marquee los repite: cambiar un texto es
+// cambiar una línea.
+const mensajes = [
+  "Pide hoy, ¡y disfruta de envío gratis! (CABA)",
+  `Envío gratis a todo el país en compras desde ${FREE_SHIPPING_LABEL}`,
+  "Descuentos y precios exclusivos",
+  "¡Las mejores marcas del mercado disponibles aquí!",
+];
+
+// El truco del marquee necesita el contenido duplicado para que el loop no
+// muestre un hueco.
+const tira = [...mensajes, ...mensajes];
+---
+
 <div class="bg-primary py-1 font-semibold relative text-[10px]">
   <div class="overflow-hidden min-w-full w-auto whitespace-nowrap relative">
     <div class="marquee-content">
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
-      <span class="text-white uppercase mr-20">¡Las mejores marcas del mercado disponibles aquí!</span>
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
-      <span class="text-white uppercase mr-20">¡Las mejores marcas del mercado disponibles aquí!</span>
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
+      {tira.map((m) => <span class="text-white uppercase mr-20">{m}</span>)}
     </div>
     <div class="marquee-content clone">
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
-      <span class="text-white uppercase mr-20">¡Las mejores marcas del mercado disponibles aquí!</span>
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
-      <span class="text-white uppercase mr-20">¡Las mejores marcas del mercado disponibles aquí!</span>
-      <span class="text-white uppercase mr-20">Pide hoy, ¡y disfruta de envío gratis! (CABA)</span>
-      <span class="text-white uppercase mr-20">Descuentos y precios exclusivos</span>
+      {tira.map((m) => <span class="text-white uppercase mr-20">{m}</span>)}
     </div>
   </div>
 </div>

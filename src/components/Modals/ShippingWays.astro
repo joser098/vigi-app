@@ -1,5 +1,5 @@
 ---
-import { SHIPPING_CUTOFF_HOUR } from "@/services/const";
+import { SHIPPING_CUTOFF_HOUR, FREE_SHIPPING_LABEL } from "@/services/const";
 
 const cutoff = `${SHIPPING_CUTOFF_HOUR}:00`;
 
@@ -10,7 +10,7 @@ const modalities = [
   },
   {
     title: "Todo el país · entrega eficiente",
-    body: `Mismo corte de las ${cutoff} para el despacho. El plazo de entrega al resto del país es de 8 a 12 días hábiles desde la confirmación de la compra.`,
+    body: `Mismo corte de las ${cutoff} para el despacho. El plazo de entrega al resto del país es de 8 a 12 días hábiles desde la confirmación de la compra. El envío es sin cargo en compras desde ${FREE_SHIPPING_LABEL}; por debajo de ese monto se cotiza según el código postal y lo ves en el resumen antes de pagar.`,
   },
   {
     title: "Retiro en oficina",
@@ -45,7 +45,7 @@ const tips = [
         <circle cx="7" cy="18.5" r="1.6"></circle>
         <circle cx="17.5" cy="18.5" r="1.6"></circle>
       </svg>
-      <span class="text-sm font-semibold text-green-ink">Entrega en 24 h sin costo adicional en CABA.</span>
+      <span class="text-sm font-semibold text-green-ink">Entrega en 24 h sin costo adicional en CABA, y envío gratis a todo el país desde {FREE_SHIPPING_LABEL}.</span>
     </div>
 
     <ul class="flex flex-col gap-4">

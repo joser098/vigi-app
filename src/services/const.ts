@@ -433,6 +433,23 @@ export const provinces = [
  */
 export const SHIPPING_CUTOFF_HOUR = 17;
 
+/**
+ * Compra mínima para el envío gratis a todo el país.
+ *
+ * Está duplicado a propósito: el número que manda es
+ * `FREE_SHIPPING_MIN_PURCHASE` en `vigi-api/src/services/shipping.js`, que es
+ * el que decide lo que se cobra. Esta copia solo pinta los carteles del home y
+ * del catálogo, que se arman en el build y no pueden esperar a la API. El
+ * resumen del carrito no la usa: ahí el número viene en la respuesta del
+ * cotizador. Si cambia allá, cambiarlo acá.
+ */
+export const FREE_SHIPPING_MIN_PURCHASE = 450000;
+
+export const FREE_SHIPPING_LABEL = FREE_SHIPPING_MIN_PURCHASE.toLocaleString(
+  "es-AR",
+  { style: "currency", currency: "ARS", minimumFractionDigits: 0 }
+);
+
 export const FEATURED_MODEL = "";
 
 export const brands = [
