@@ -8,8 +8,7 @@ import { assistantSteps } from "@/services/const";
 >
   <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
     <div class="lg:w-[330px] lg:shrink-0">
-      <span
-        class="text-[11px] font-bold uppercase tracking-[0.11em] text-green_"
+      <span class="text-[11px] font-bold uppercase tracking-[0.11em] text-green_"
         >Encontrá la tuya</span
       >
       <h2
@@ -18,15 +17,27 @@ import { assistantSteps } from "@/services/const";
         Encontrá la tuya en 30 segundos
       </h2>
       <p class="mt-4 text-sm leading-relaxed text-violet-200">
-        No hace falta que sepas de cámaras. Contanos qué querés cuidar y del
-        resto nos ocupamos nosotros.
+        No hace falta que sepas de cámaras. Contanos qué necesitás y te
+        mostramos solo lo que te sirve.
+      </p>
+
+      <!-- El contador aparece recién con la primera respuesta: antes de eso
+           decir "704 opciones" no es información, es ruido. -->
+      <p
+        data-assistant-count
+        class="mt-6 hidden text-sm font-semibold text-green_"
+        aria-live="polite"
+      >
       </p>
     </div>
 
     <div class="flex flex-1 flex-col gap-7">
       {
         assistantSteps.map((step) => (
-          <fieldset data-step={step.id}>
+          <fieldset
+            data-step={step.id}
+            data-only-for={"onlyFor" in step ? step.onlyFor : undefined}
+          >
             <legend class="mb-3 text-xs font-semibold text-violet-200">
               {step.question}
             </legend>
@@ -46,70 +57,221 @@ import { assistantSteps } from "@/services/const";
         ))
       }
 
-      <a
-        data-assistant-cta
-        href="/category/promociones"
-        class="mt-1 inline-flex h-[52px] w-full items-center justify-center gap-2.5 self-start rounded-full bg-green_ px-8 text-[15px] font-bold text-[#10331d] transition-transform hover:scale-[1.02] sm:w-auto"
-      >
-        Ver las que coinciden
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
+      <!-- Resultados. Se llenan desde el script; sin respuestas no se ve nada. -->
+      <div data-assistant-results class="hidden">
+        <div
+          data-assistant-grid
+          class="grid grid-cols-2 gap-3 transition-opacity duration-150 sm:grid-cols-3"
         >
-          <path d="M5 12h13M12.5 6l6 6-6 6"></path>
-        </svg>
-      </a>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button
+            data-assistant-more
+            type="button"
+            class="hidden h-11 rounded-full border-[1.5px] border-violet-700 px-6 text-sm font-semibold text-white transition-colors hover:border-violet-400"
+          >
+            Ver más opciones
+          </button>
+          <button
+            data-assistant-reset
+            type="button"
+            class="h-11 rounded-full px-2 text-sm text-violet-300 underline transition-colors hover:text-white"
+          >
+            Empezar de nuevo
+          </button>
+        </div>
+      </div>
+
+      <p
+        data-assistant-empty
+        class="hidden rounded-2xl border border-violet-800 px-5 py-4 text-sm text-violet-200"
+      >
+        No encontramos nada con esa combinación. Probá subir el presupuesto o
+        escribinos por WhatsApp y te ayudamos.
+      </p>
     </div>
   </div>
 </section>
 
 <script>
-  // Sin framework a propósito: el asistente es un puñado de botones y un href.
-  // Metía ~40 KB de React para esto.
-  const ROUTES: Record<string, string> = {
-    bateria: "/category/bateria",
-    local: "/category/kits",
-    afuera: "/category/exterior",
-    adentro: "/category/interior",
-    ambas: "/category/exterior",
-  };
+  // Sin framework a propósito: son unos botones, un fetch y una grilla. Meter
+  // React acá costaba ~40 KB para esto.
+  //
+  // Antes este script no consultaba nada: mapeaba una respuesta a una categoría
+  // y cambiaba el href de un botón. O sea que dos de las tres preguntas no
+  // hacían nada, y el cliente terminaba igual frente a un listado sin filtrar.
+  const API = import.meta.env.PUBLIC_API_URL;
+  const PASO_INICIAL = 6;
+
+  const money = (n: number) =>
+    n.toLocaleString("es-AR", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0,
+    });
 
   const init = () => {
     const root = document.querySelector<HTMLElement>("[data-assistant]");
-    if (!root) return;
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "1";
 
-    const cta = root.querySelector<HTMLAnchorElement>("[data-assistant-cta]");
+    const grid = root.querySelector<HTMLElement>("[data-assistant-grid]");
+    const results = root.querySelector<HTMLElement>("[data-assistant-results]");
+    const count = root.querySelector<HTMLElement>("[data-assistant-count]");
+    const empty = root.querySelector<HTMLElement>("[data-assistant-empty]");
+    const more = root.querySelector<HTMLButtonElement>("[data-assistant-more]");
+    const reset = root.querySelector<HTMLButtonElement>("[data-assistant-reset]");
+
     const picked: Record<string, string> = {};
+    let limit = PASO_INICIAL;
+    // Cada consulta lleva número: si dos respuestas rápidas se pisan, la vieja
+    // no puede sobrescribir a la nueva cuando llega tarde.
+    let pedido = 0;
 
-    const resolve = () => {
-      // La energía manda: si no hay enchufe, no sirve nada cableado.
-      // Después el uso, y por último la ubicación.
-      const order = [picked.energia, picked.cuidar, picked.donde];
-      const hit = order.find((value) => value && ROUTES[value]);
-      return hit ? ROUTES[hit] : "/category/promociones";
+    /** Esconde las preguntas que no vienen al caso para lo que eligió. */
+    const aplicarVisibilidad = () => {
+      root.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => {
+        const soloPara = step.dataset.onlyFor;
+        if (!soloPara) return;
+
+        const visible = !picked.categoria || picked.categoria === soloPara;
+        step.classList.toggle("hidden", !visible);
+
+        // Si se esconde, su respuesta deja de contar: sostenerla filtraría por
+        // algo que el cliente ya no está viendo.
+        if (!visible && step.dataset.step) delete picked[step.dataset.step];
+      });
+    };
+
+    const queryString = () => {
+      const q = new URLSearchParams();
+      if (picked.categoria) q.set("category", picked.categoria);
+      if (picked.donde && picked.donde !== "ambas") q.set("location", picked.donde);
+      if (picked.energia) q.set("power", picked.energia);
+      if (picked.presupuesto) q.set("budget", picked.presupuesto);
+      q.set("limit", String(limit));
+      return q.toString();
+    };
+
+    const tarjeta = (p: any) => {
+      const promo = p.price_original
+        ? `<p class="mt-0.5 text-[11px] text-violet-300"><s>${money(p.price_original)}</s></p>`
+        : "";
+
+      return `
+        <a href="/product/${encodeURIComponent(p.model)}"
+           class="group flex flex-col rounded-2xl bg-white/5 p-3 transition-colors hover:bg-white/10">
+          <img src="${p.thumbnail}" alt="${p.title}" width="120" height="120"
+               loading="lazy" decoding="async"
+               class="mb-2 aspect-square w-full rounded-xl bg-white object-contain p-2" />
+          <span class="line-clamp-2 text-[12px] font-semibold leading-tight text-white">${p.title}</span>
+          <span class="mt-1 text-sm font-bold text-green_">${money(p.price)}</span>
+          ${promo}
+        </a>`;
+    };
+
+    const buscar = async () => {
+      // Sin ninguna respuesta no se muestra nada: el asistente no es un
+      // listado de todo el catálogo.
+      if (Object.keys(picked).length === 0) {
+        results?.classList.add("hidden");
+        empty?.classList.add("hidden");
+        count?.classList.add("hidden");
+        if (grid) grid.innerHTML = "";
+        return;
+      }
+
+      const mio = ++pedido;
+
+      // Mientras llega la respuesta, lo que está en pantalla contesta la
+      // pregunta ANTERIOR. Atenuarlo evita leerlo como si fuera lo nuevo.
+      if (grid) grid.style.opacity = "0.45";
+
+      try {
+        const res = await fetch(`${API}/api/search/recommend?${queryString()}`);
+        const { data } = await res.json();
+        if (mio !== pedido) return;
+
+        const items = data?.items ?? [];
+        const total = data?.total ?? 0;
+
+        if (count) {
+          count.textContent =
+            total === 0
+              ? "Sin coincidencias"
+              : `${total} ${total === 1 ? "opción" : "opciones"} para vos`;
+          count.classList.remove("hidden");
+        }
+
+        if (items.length === 0) {
+          results?.classList.add("hidden");
+          empty?.classList.remove("hidden");
+          if (grid) grid.style.opacity = "1";
+          return;
+        }
+
+        empty?.classList.add("hidden");
+        results?.classList.remove("hidden");
+        if (grid) {
+          grid.innerHTML = items.map(tarjeta).join("");
+          grid.style.opacity = "1";
+        }
+        more?.classList.toggle("hidden", items.length >= total);
+      } catch {
+        if (mio !== pedido) return;
+        if (grid) grid.style.opacity = "1";
+        results?.classList.add("hidden");
+        empty?.classList.add("hidden");
+        count?.classList.add("hidden");
+      }
     };
 
     root.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => {
       const stepId = step.dataset.step ?? "";
+
       step.querySelectorAll<HTMLButtonElement>("[data-option]").forEach((btn) => {
         btn.addEventListener("click", () => {
+          const valor = btn.dataset.option ?? "";
+          const yaEstaba = picked[stepId] === valor;
+
           step
             .querySelectorAll<HTMLButtonElement>("[data-option]")
-            .forEach((sibling) =>
-              sibling.setAttribute("aria-pressed", String(sibling === btn)),
+            .forEach((hermano) =>
+              hermano.setAttribute(
+                "aria-pressed",
+                String(!yaEstaba && hermano === btn)
+              )
             );
-          picked[stepId] = btn.dataset.option ?? "";
-          if (cta) cta.href = resolve();
+
+          // Volver a tocar la misma opción la saca: es la única forma de
+          // deshacer una respuesta sin recargar.
+          if (yaEstaba) delete picked[stepId];
+          else picked[stepId] = valor;
+
+          limit = PASO_INICIAL;
+          aplicarVisibilidad();
+          buscar();
         });
       });
     });
+
+    more?.addEventListener("click", () => {
+      limit += 6;
+      buscar();
+    });
+
+    reset?.addEventListener("click", () => {
+      Object.keys(picked).forEach((k) => delete picked[k]);
+      limit = PASO_INICIAL;
+      root
+        .querySelectorAll<HTMLButtonElement>("[data-option]")
+        .forEach((b) => b.setAttribute("aria-pressed", "false"));
+      aplicarVisibilidad();
+      buscar();
+    });
+
+    aplicarVisibilidad();
   };
 
   init();

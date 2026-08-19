@@ -464,37 +464,59 @@ export const brands = [
 ];
 
 /**
- * Preguntas del asistente, en el idioma del cliente y no en el del catálogo.
- * Cada opción lleva a la categoría que mejor la representa hoy; cuando la API
- * acepte filtros por faceta (location, power_type, tags) esto puede pasar a
- * armar una query real en vez de elegir una categoría.
+ * Preguntas del asistente del home ("Encontrá la tuya").
+ *
+ * Cada respuesta mapea a una faceta real que la API sabe filtrar
+ * (`GET /api/search/recommend`), no a un atajo hacia una categoría. La versión
+ * anterior preguntaba tres cosas, usaba una sola para elegir una categoría y
+ * dejaba al cliente frente a 300 cámaras sin filtrar — y no había forma de
+ * llegar a las alarmas, porteros ni cerraduras.
+ *
+ * `onlyFor` esconde la pregunta cuando no viene al caso: dónde va y cómo se
+ * alimenta son preguntas de cámara, no de cerradura.
+ *
+ * Los tramos de precio salen de la distribución real del catálogo: hay 75
+ * productos con ubicación por debajo de $60.000, 120 entre 60 y 120, 98 entre
+ * 120 y 250. Tramos que dejan todo de un lado no ayudan a nadie a decidir.
  */
 export const assistantSteps = [
   {
-    id: "cuidar",
-    question: "¿Qué querés cuidar?",
+    id: "categoria",
+    question: "¿Qué estás buscando?",
     options: [
-      { value: "casa", label: "Mi casa" },
-      { value: "mascota", label: "A mi mascota" },
-      { value: "mayor", label: "A un adulto mayor" },
-      { value: "local", label: "Mi local" },
+      { value: "camaras", label: "Cámaras" },
+      { value: "alarmas", label: "Una alarma" },
+      { value: "porteros", label: "Portero eléctrico" },
+      { value: "cerraduras", label: "Cerradura inteligente" },
     ],
   },
   {
     id: "donde",
     question: "¿Dónde la vas a poner?",
+    onlyFor: "camaras",
     options: [
-      { value: "adentro", label: "Adentro" },
-      { value: "afuera", label: "Afuera" },
+      { value: "interior", label: "Adentro" },
+      { value: "exterior", label: "Afuera" },
       { value: "ambas", label: "En las dos" },
     ],
   },
   {
     id: "energia",
     question: "¿Tenés un enchufe cerca?",
+    onlyFor: "camaras",
     options: [
       { value: "enchufe", label: "Sí, hay toma" },
       { value: "bateria", label: "No, mejor a batería" },
+    ],
+  },
+  {
+    id: "presupuesto",
+    question: "¿Cuánto querés gastar?",
+    options: [
+      { value: "60000", label: "Hasta $60.000" },
+      { value: "120000", label: "Hasta $120.000" },
+      { value: "250000", label: "Hasta $250.000" },
+      { value: "", label: "Sin límite" },
     ],
   },
 ];
