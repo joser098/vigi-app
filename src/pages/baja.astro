@@ -1,0 +1,143 @@
+---
+export const prerender = false;
+import Layout from "@/layouts/Layout.astro";
+
+/**
+ * Baja de la lista de novedades.
+ *
+ * El link del mail llega acá con un token. La baja NO se hace al abrir la
+ * página: se hace cuando el visitante aprieta el botón. Los antivirus y los
+ * prefetchers de los clientes de correo siguen los links de un mail, y con una
+ * baja automática al cargar terminarías dando de baja a gente que nunca hizo
+ * clic.
+ */
+const token = Astro.url.searchParams.get("token") ?? "";
+const API = import.meta.env.PUBLIC_API_URL;
+---
+
+<Layout title="Baja de novedades | VIGI">
+  <main class="m-auto flex max-w-[1180px] flex-col items-center px-4 py-16 sm:px-8 sm:py-24">
+    <div class="w-full max-w-md text-center">
+      {
+        token ? (
+          <div id="confirmar">
+            <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+              ¿Querés dejar de recibir novedades?
+            </h1>
+            <p class="mt-3 text-[15px] leading-relaxed text-muted">
+              No vas a recibir más correos con promociones. Los mails de tus
+              compras —confirmaciones y seguimiento— te van a seguir llegando.
+            </p>
+
+            <button
+              id="baja_btn"
+              data-token={token}
+              data-api={API}
+              class="mt-7 inline-flex h-[52px] w-full items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              Sí, darme de baja
+            </button>
+
+            <a
+              href="/"
+              class="mt-3 inline-flex h-[52px] w-full items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary"
+            >
+              No, seguir recibiéndolas
+            </a>
+
+            <p id="baja_error" class="mt-4 hidden text-sm text-red-500"></p>
+          </div>
+        ) : (
+          <>
+            <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+              Link incompleto
+            </h1>
+            <p class="mt-3 text-[15px] leading-relaxed text-muted">
+              Este link de baja no es válido. Escribinos al{" "}
+              <a
+                href="https://wa.me/541126039243"
+                target="_blank"
+                rel="noopener"
+                class="font-semibold text-primary underline"
+              >
+                11 2603 9243
+              </a>{" "}
+              y te damos de baja nosotros.
+            </p>
+          </>
+        )
+      }
+
+      <div id="listo" class="hidden">
+        <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-green-soft">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1f8f45"
+            stroke-width="2.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 6L9 17l-5-5"></path>
+          </svg>
+        </span>
+        <h1 class="mt-5 text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+          Listo, te dimos de baja
+        </h1>
+        <p class="mt-3 text-[15px] leading-relaxed text-muted">
+          No vas a recibir más novedades. Si fue un error, escribinos y te
+          volvemos a suscribir.
+        </p>
+        <a
+          href="/"
+          class="mt-7 inline-flex h-[52px] w-full items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
+        >
+          Ir a la tienda
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const init = () => {
+    const btn = document.getElementById("baja_btn");
+    if (!btn || btn.dataset.ready) return;
+    btn.dataset.ready = "1";
+
+    btn.addEventListener("click", async () => {
+      const error = document.getElementById("baja_error");
+      btn.setAttribute("disabled", "true");
+      btn.textContent = "Dando de baja…";
+      error?.classList.add("hidden");
+
+      try {
+        const res = await fetch(`${btn.dataset.api}/api/marketing/unsubscribe`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: btn.dataset.token }),
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.message ?? "No pudimos darte de baja");
+
+        document.getElementById("confirmar")?.classList.add("hidden");
+        document.getElementById("listo")?.classList.remove("hidden");
+      } catch (e) {
+        btn.removeAttribute("disabled");
+        btn.textContent = "Sí, darme de baja";
+        if (error) {
+          error.textContent =
+            e instanceof Error ? e.message : "No pudimos darte de baja. Probá de nuevo.";
+          error.classList.remove("hidden");
+        }
+      }
+    });
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>
