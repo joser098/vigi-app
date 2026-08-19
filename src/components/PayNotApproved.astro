@@ -1,0 +1,125 @@
+---
+/**
+ * Pantalla para un pago que no se aprobó.
+ *
+ * Antes esto no existía: la vuelta de Mercado Pago con un pago rechazado
+ * redirigía a /profile sin decir una palabra, así que el cliente se quedaba sin
+ * saber si había comprado o no. Y el carrito sigue armado —solo se vacía cuando
+ * el pago se aprueba—, así que lo único que hace falta es volver y reintentar.
+ */
+interface Props {
+  status: string;
+  statusDetail?: string | null;
+  paymentId?: string | null;
+}
+
+const { status, statusDetail, paymentId } = Astro.props;
+
+const pendiente = status === "pending" || status === "in_process";
+
+// Los motivos que Mercado Pago devuelve más seguido, en castellano y con la
+// acción que le sirve al cliente. El resto cae en el texto genérico: inventar
+// un motivo es peor que no darlo.
+const motivos: Record<string, string> = {
+  cc_rejected_insufficient_amount: "La tarjeta no tenía fondos suficientes.",
+  cc_rejected_bad_filled_card_number: "El número de la tarjeta quedó mal cargado.",
+  cc_rejected_bad_filled_date: "La fecha de vencimiento quedó mal cargada.",
+  cc_rejected_bad_filled_security_code: "El código de seguridad no coincide.",
+  cc_rejected_bad_filled_other: "Alguno de los datos de la tarjeta quedó mal cargado.",
+  cc_rejected_high_risk: "El banco no autorizó la operación.",
+  cc_rejected_call_for_authorize: "Tu banco necesita que autorices este pago.",
+  cc_rejected_card_disabled: "La tarjeta está inhabilitada para compras online.",
+  cc_rejected_max_attempts: "Se alcanzó el máximo de intentos con esa tarjeta.",
+  cc_rejected_duplicated_payment: "Ya había un pago igual en curso.",
+  cc_rejected_card_error: "Hubo un problema al procesar la tarjeta.",
+};
+
+const motivo = statusDetail ? motivos[statusDetail] : null;
+---
+
+<section class="mx-auto max-w-xl">
+  <div class="flex flex-col items-center text-center">
+    <span
+      class:list={[
+        "flex size-16 items-center justify-center rounded-full",
+        pendiente ? "bg-urgency-soft" : "bg-red-50",
+      ]}
+    >
+      {
+        pendiente ? (
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#b9711a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 2" />
+          </svg>
+        ) : (
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M15 9l-6 6M9 9l6 6" />
+          </svg>
+        )
+      }
+    </span>
+
+    <h1 class="mt-5 text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+      {pendiente ? "Tu pago está en proceso" : "No pudimos procesar tu pago"}
+    </h1>
+
+    <p class="mt-3 text-[15px] leading-relaxed text-muted">
+      {
+        pendiente
+          ? "Mercado Pago todavía no confirmó la operación. En cuanto se acredite te mandamos un mail y vas a ver el pedido en tu cuenta. No hace falta que pagues de nuevo."
+          : motivo
+            ? motivo
+            : "El pago no se completó y no se te cobró nada."
+      }
+    </p>
+
+    {
+      !pendiente && (
+        <p class="mt-2 text-[15px] leading-relaxed text-muted">
+          Tu carrito quedó tal cual: podés volver e intentar con otro medio de pago.
+        </p>
+      )
+    }
+
+    {
+      paymentId && (
+        <p class="mt-5 rounded-xl bg-panel px-4 py-2.5 text-[13px] text-muted">
+          Nro de operación <strong class="text-ink">{paymentId}</strong>
+        </p>
+      )
+    }
+  </div>
+
+  <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+    {
+      pendiente ? (
+        <a
+          href="/profile#purchases"
+          class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
+        >
+          Ver mis compras
+        </a>
+      ) : (
+        <a
+          href="/cart"
+          class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
+        >
+          Volver al carrito
+        </a>
+      )
+    }
+    <a
+      href="/"
+      class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary"
+    >
+      Seguir comprando
+    </a>
+  </div>
+
+  <p class="mx-auto mt-8 max-w-xl text-center text-[13px] leading-relaxed text-muted">
+    ¿Necesitás una mano? Escribinos al
+    <a href="https://wa.me/541126039243" target="_blank" rel="noopener" class="font-semibold text-primary underline">11 2603 9243</a>
+    {paymentId && <> con el número de operación</>}.
+  </p>
+</section>

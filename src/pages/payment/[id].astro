@@ -2,42 +2,74 @@
 export const prerender = false;
 import Layout from "@/layouts/Layout.astro";
 import PayApproved from "@/components/PayApproved.astro";
+import PayNotApproved from "@/components/PayNotApproved.astro";
 import { getPayment } from "@/services/fetchData";
 
 const { id } = Astro.params;
 
+// La API guarda el pago cualquiera sea su estado, así que esta pantalla los
+// muestra todos. Antes solo entendía "approved" y cualquier otra cosa rebotaba
+// a /profile: un pago rechazado dejaba al cliente en su perfil sin una palabra
+// sobre qué había pasado.
 let payment;
 
 if (id) {
   //TODO: Verificar que el pago sea del usuario logeado
   payment = await getPayment(id);
-  if (payment == null || payment.status != "approved") {
-    return Astro.redirect("/profile");
-  }
 }
+
+// Sin fila todavía no se puede decir nada útil. Pasa en la ventana entre que el
+// cliente vuelve y que se registra el pago; el propio feedback lo registra
+// antes de redirigir, así que es raro, pero no imposible.
+if (!payment) {
+  return Astro.redirect("/profile");
+}
+
+const aprobado = payment.status === "approved";
 ---
 
-<Layout title="Tu compra | VIGI">
+<Layout title={aprobado ? "Tu compra | VIGI" : "Estado de tu pago | VIGI"}>
   <main class="m-auto max-w-[1180px] px-4 py-12 sm:px-8 sm:py-16">
-    <PayApproved payment={payment} />
+    {
+      aprobado ? (
+        <>
+          <PayApproved payment={payment} />
 
-    <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
-      <a
-        href="/profile"
-        class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
-        >Ver mis compras</a
-      >
-      <a
-        href="/"
-        class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary"
-        >Seguir comprando</a
-      >
-    </div>
+          <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+            <a
+              href="/profile"
+              class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full bg-primary px-7 text-[15px] font-semibold text-white"
+            >
+              Ver mis compras
+            </a>
+            <a
+              href="/"
+              class="inline-flex h-[52px] flex-1 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-7 text-[15px] font-semibold text-primary"
+            >
+              Seguir comprando
+            </a>
+          </div>
 
-    <p class="mx-auto mt-8 max-w-xl text-center text-[13px] leading-relaxed text-muted">
-      ¿Algo no cierra con tu pedido? Escribinos al
-      <a href="https://wa.me/541126039243" target="_blank" rel="noopener" class="font-semibold text-primary underline">11 2603 9243</a>
-      con el número de pago.
-    </p>
+          <p class="mx-auto mt-8 max-w-xl text-center text-[13px] leading-relaxed text-muted">
+            ¿Algo no cierra con tu pedido? Escribinos al
+            <a
+              href="https://wa.me/541126039243"
+              target="_blank"
+              rel="noopener"
+              class="font-semibold text-primary underline"
+            >
+              11 2603 9243
+            </a>
+            con el número de pago.
+          </p>
+        </>
+      ) : (
+        <PayNotApproved
+          status={payment.status}
+          statusDetail={payment.status_detail}
+          paymentId={payment.gateway_payment_id}
+        />
+      )
+    }
   </main>
 </Layout>
