@@ -1,0 +1,55 @@
+---
+import { META_PIXEL_ID } from "@/services/const";
+---
+
+{/*
+  Píxel de Meta. El conjunto de datos es "Vigi pixeles conjunto" y vive en la
+  cuenta publicitaria Vigi ads.
+
+  Dos cosas que no son el snippet que da Meta:
+
+  1. El sitio usa <ClientRouter />, así que casi toda la navegación es del lado
+     del cliente: este script se ejecuta UNA sola vez, en la primera carga, y
+     Meta nunca se entera del resto de las páginas. Por eso el PageView de las
+     navegaciones siguientes lo dispara el listener de `astro:page-load`.
+
+  2. Ese evento también se dispara en la primera carga, que ya contó el
+     `fbq('track','PageView')` de acá abajo. La bandera `primera` evita contarla
+     dos veces: una vista inflada al doble arruina cualquier lectura de costo
+     por resultado.
+*/}
+
+<script is:inline define:vars={{ META_PIXEL_ID }}>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', META_PIXEL_ID);
+  fbq('track', 'PageView');
+
+  let primera = true;
+
+  document.addEventListener('astro:page-load', function () {
+    if (primera) {
+      primera = false;
+      return;
+    }
+
+    fbq('track', 'PageView');
+  });
+</script>
+
+<noscript>
+  <img
+    height="1"
+    width="1"
+    style="display:none"
+    alt=""
+    src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+  />
+</noscript>

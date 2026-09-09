@@ -73,7 +73,7 @@ export const faq = [
     {
         id: 3,
         question: '¿Tienen servicio de atención al cliente? ¿Cómo puedo contactarlos?',
-        answer: 'Sí, tenemos un equipo de atención al cliente disponible para ayudarte con cualquier pregunta o inquietud. Puedes contactarnos por correo electrónico a contacto@vigi.cam o por WhatsApp al 11 2603 9243.'
+        answer: 'Sí, tenemos un equipo de atención al cliente disponible para ayudarte con cualquier pregunta o inquietud. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar o por WhatsApp al 11 2603 9243.'
     },
     {
         id: 4,
@@ -98,7 +98,7 @@ export const faq = [
     {
         id: 8,
         question: '¿Tienen una tienda física donde pueda ver los productos personalmente?',
-        answer: 'Actualmente operamos exclusivamente como un e-commerce y no tenemos tiendas físicas. Sin embargo, puedes ver fotos detalladas y descripciones de nuestros productos en nuestro sitio web. Puedes contactarnos por correo electrónico a contacto@vigi.cam o por WhatsApp al 11 2603 9243.'
+        answer: 'Actualmente operamos exclusivamente como un e-commerce y no tenemos tiendas físicas. Sin embargo, puedes ver fotos detalladas y descripciones de nuestros productos en nuestro sitio web. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar o por WhatsApp al 11 2603 9243.'
     }
 ];
 
@@ -431,6 +431,10 @@ export const provinces = [
  * valores distintos: el modal de envíos decía 14:00 y el cálculo del badge
  * usaba 17:00. Ahora sale de acá.
  */
+// Conjunto de datos "Vigi pixeles conjunto", en la cuenta publicitaria Vigi ads
+// (1090717675557808). Es público: viaja al navegador en cada carga.
+export const META_PIXEL_ID = "378250695246633";
+
 export const SHIPPING_CUTOFF_HOUR = 17;
 
 /**

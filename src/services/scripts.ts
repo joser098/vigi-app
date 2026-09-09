@@ -81,7 +81,16 @@ export const formatUserRegister = (data: RegisterIForm) => {
   return dataFormated;
 };
 
+// Devuelve 'null' —el string— cuando no hay sesión, que es lo que espera todo
+// el que la llama.
+//
+// El chequeo de `window` no es defensivo de más: esto se importa desde módulos
+// que Astro también evalúa en el servidor, y ahí no hay localStorage. En el
+// servidor no se puede saber si hay sesión (la cookie la lee cada .astro), así
+// que la respuesta correcta es la misma que la de un visitante sin sesión.
 export const getToken = (): string => {
+  if (typeof window === "undefined") return 'null';
+
   const token = window.localStorage.getItem("check");
 
   if(token != null){

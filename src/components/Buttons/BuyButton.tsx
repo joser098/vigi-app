@@ -1,7 +1,7 @@
 import * as AlertDialog from "@radix-ui/react-dialog";
 import { navigate } from "astro:transitions/client";
 import type { Product } from "@/services/types";
-import { getQuantity } from "@/store/cartStore";
+import { addToCart, getQuantity } from "@/store/cartStore";
 import { useState } from "react";
 import OrderResume from "../OrderResume";
 import AddCartButton from "./AddCartButton";
@@ -12,11 +12,23 @@ const BuyButton = ({ product }: { product: Product }) => {
   const [open, setOpen] = useState(false);
 
   // El resumen de compra cotiza el envío contra un endpoint autenticado, así
-  // que abrirlo sin sesión no tiene sentido: se manda a login como hace
-  // "Agregar al carrito".
-  const onBuyClick = () => {
+  // que sin sesión no se puede abrir. Pero mandar a /login era perder la venta:
+  // el invitado suma el producto a su carrito y sigue en /cart, que es donde
+  // ahora arranca el checkout sin cuenta.
+  const onBuyClick = async () => {
     if (getToken() === "null") {
-      navigate("/login");
+      const cantidad = getQuantity(product.id);
+
+      await addToCart({
+        id: product.id,
+        picture_url: product.thumbnail,
+        title: product.model,
+        quantity: cantidad,
+        unit_price: product.price,
+        price_original: product.price_original ?? null,
+      });
+
+      navigate("/cart");
       return;
     }
 

@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import PayApproved from "@/components/PayApproved.astro";
 import PayNotApproved from "@/components/PayNotApproved.astro";
 import { getPayment } from "@/services/fetchData";
+import PurchasePixel from "@/components/PurchasePixel.astro";
 
 const { id } = Astro.params;
 
@@ -26,6 +27,11 @@ if (!payment) {
 }
 
 const aprobado = payment.status === "approved";
+
+// El mismo total que muestra PayApproved, sacado de las mismas dos fuentes: lo
+// que Meta cuente como venta tiene que ser lo que el cliente ve en pantalla.
+const totalPagado =
+  payment?.transaction_details?.total_paid_amount ?? payment?.amount ?? null;
 ---
 
 <Layout title={aprobado ? "Tu compra | VIGI" : "Estado de tu pago | VIGI"}>
@@ -33,6 +39,8 @@ const aprobado = payment.status === "approved";
     {
       aprobado ? (
         <>
+          <PurchasePixel paymentId={id!} total={totalPagado} />
+
           <PayApproved payment={payment} />
 
           <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">

@@ -4,6 +4,9 @@ import { login } from "@/services/fetchData";
 import { useState } from "react";
 import Loader from "../Icons/Loader";
 import { setItemsAfterLog } from "@/store/cartStore";
+import { leerGuestCart, vaciarGuestCart } from "@/store/guestCart";
+import { calulateTotals } from "@/services/scripts";
+import { saveCartData } from "@/services/fetchData";
 import Eye from "../Icons/Eye";
 
 interface IFormInput {
@@ -32,8 +35,32 @@ const LoginForm = () => {
 
       window.localStorage.setItem("check", response.data.token);
       document.cookie = `check=${response.data.token}; expires=${expires.toUTCString()}; path=/`;
-      setItemsAfterLog(false);
-      navigate("/");
+
+      // Lo que había armado sin sesión se sube antes de seguir. Si no, el
+      // carrito del invitado queda huérfano en el navegador y la persona
+      // aterriza con el carrito del servidor, casi siempre vacío.
+      const invitado = leerGuestCart();
+
+      if (invitado.length > 0) {
+        const subido = await saveCartData(
+          { items: invitado, ...calulateTotals(invitado) },
+          response.data.token
+        );
+
+        if (subido?.success) vaciarGuestCart();
+      }
+
+      await setItemsAfterLog(false);
+
+      // Volver al home después de entrar tira a la persona lejos de lo que
+      // estaba por comprar. `redirect` lo pone quien mandó a login.
+      // Solo rutas internas: "//sitio.com" también empieza con "/" y es una
+      // URL a otro dominio.
+      const destino = new URLSearchParams(window.location.search).get("redirect");
+      const interno =
+        destino && destino.startsWith("/") && !destino.startsWith("//");
+
+      navigate(interno ? destino : "/");
     }
     if (!response.success) {
       setMessage(response.message);

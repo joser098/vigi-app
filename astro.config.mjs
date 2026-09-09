@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.vigi.cam',
+  site: 'https://vigi.com.ar',
   integrations: [react(), sitemap()],
   output: "static",
   vite: {

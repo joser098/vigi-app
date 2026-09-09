@@ -303,6 +303,26 @@ const specs: string[] =
   </main>
 </Layout>
 
+{/*
+  ViewContent: la señal con la que Meta aprende qué producto le interesa a cada
+  persona mientras las compras todavía son pocas. Va inline y no en un
+  componente de React porque no hay ningún React montado en esta parte de la
+  página, y el <ClientRouter /> vuelve a ejecutar este script cuando se navega
+  a otro producto sin recargar.
+*/}
+<script is:inline define:vars={{ producto: { id: product.id, model: product.model, price: product.price, category: product.category } }}>
+  if (typeof fbq === "function") {
+    fbq("track", "ViewContent", {
+      content_ids: [producto.id],
+      content_name: producto.model,
+      content_category: producto.category,
+      content_type: "product",
+      value: producto.price,
+      currency: "ARS",
+    });
+  }
+</script>
+
 <script>
   const init = () => {
     const bar = document.getElementById("sticky_buy");

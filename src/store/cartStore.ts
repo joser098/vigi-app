@@ -7,8 +7,23 @@ import {
   getToken,
 } from "@/services/scripts";
 import { emptyCart, getCartData, saveCartData } from "@/services/fetchData";
+import {
+  escribirGuestCart,
+  leerGuestCart,
+  vaciarGuestCart,
+} from "@/store/guestCart";
 
-const initialItems = await getCartData();
+// Con sesión el carrito es el del servidor; sin sesión, el del navegador. Todo
+// lo de abajo trabaja contra el mismo `Cart` en memoria y solo cambia dónde lo
+// persiste, así que la pantalla no tiene que saber cuál de los dos está usando.
+const esInvitado = () => getToken() === "null";
+
+const guestItems = esInvitado() ? leerGuestCart() : [];
+
+const initialItems = esInvitado()
+  ? { items: guestItems, ...calulateTotals(guestItems) }
+  : await getCartData();
+
 let initialItemsFormated;
 if (initialItems?.items) {
   initialItemsFormated = formatStoreItems(initialItems.items);
@@ -32,6 +47,11 @@ export const setItemsAfterLog = async (out: boolean) => {
   if(out){
     totalItems.set(0);
     favoriteIds.set([]);
+    return;
+  }
+
+  if (esInvitado()) {
+    totalItems.set(calulateTotals(leerGuestCart()).products_total);
     return;
   }
 
@@ -81,13 +101,16 @@ export function addToCart(item: CartItem) {
     ...totals,
   };
 
-  const token = getToken();
-  const res = saveCartData(cartModel, token);
   const items = formatStoreItems(cartModel.items);
-
-  Cart.set(items)
+  Cart.set(items);
   totalItems.set(cartModel.products_total);
-  return res;
+
+  if (esInvitado()) {
+    escribirGuestCart(cartModel.items);
+    return Promise.resolve({ success: true });
+  }
+
+  return saveCartData(cartModel, getToken());
 }
 
 export const removeItemCart = async (product_id: string) => {
@@ -100,16 +123,26 @@ export const removeItemCart = async (product_id: string) => {
     ...totals,
   };
 
-  const token = getToken();
-  const res = saveCartData(cartModel, token);
   const items = formatStoreItems(cartModel.items);
-
-  Cart.set(items)
+  Cart.set(items);
   totalItems.set(cartModel.products_total);
-  return res;
+
+  if (esInvitado()) {
+    escribirGuestCart(cartModel.items);
+    return { success: true };
+  }
+
+  return saveCartData(cartModel, getToken());
 };
 
 export const emptyCartFn = async () => {
+  if (esInvitado()) {
+    vaciarGuestCart();
+    Cart.set({});
+    totalItems.set(0);
+    return { success: true };
+  }
+
   const token = getToken();
   const res = await emptyCart(token);
 

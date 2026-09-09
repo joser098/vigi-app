@@ -10,6 +10,7 @@ import "@fontsource/poppins/latin-700.css";
 import "../styles/global.css";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Marquee from "@/components/Marquee.astro";
+import MetaPixel from "@/components/MetaPixel.astro";
 
 interface Props {
   title: string;
@@ -67,6 +68,8 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     <meta name="og:site_name" content="Vigi | Tienda online" />
     <meta name="og:type" content="website" />
     <meta name="og:locale" content="es_AR" />
+
+    <MetaPixel />
 
     <title>{title}</title>
     <ClientRouter />

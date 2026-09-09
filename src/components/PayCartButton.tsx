@@ -4,6 +4,7 @@ import { getToken } from "@/services/scripts";
 import type { CartModel } from "@/services/types";
 import { useEffect, useState } from "react";
 import Loader from "./Icons/Loader";
+import { MONEDA, contenidos, trackPixel } from "@/services/pixel";
 
 interface Shipments {
   local_pickup: boolean,
@@ -22,6 +23,18 @@ const PayCartButton = ({ cart, finalTotal, shipments, method, disablePay }: {car
     if(disablePay) return;
     setIsLoading(true)
     if(cart.items.length > 0){
+      // El único lugar donde se dispara InitiateCheckout. El invitado pasa
+      // antes por /datos y el registrado no, así que medirlo en las dos
+      // pantallas contaría a unos una vez y a otros dos. Este clic lo dan los
+      // dos, y es el último paso antes de irse a la pasarela.
+      trackPixel("InitiateCheckout", {
+        content_type: "product",
+        contents: contenidos(cart.items),
+        num_items: cart.products_total,
+        value: finalTotal,
+        currency: MONEDA,
+      });
+
       const cartModel = {
         items: cart.items,
         products_total:cart.products_total,

@@ -1,0 +1,56 @@
+---
+interface Props {
+  paymentId: string;
+  total: number | null;
+}
+
+const { paymentId, total } = Astro.props;
+---
+
+{/*
+  Purchase. Es el evento que decide si la campaña se puede optimizar por ventas
+  o no: sin `value` y `currency`, Meta cuenta la conversión pero no puede
+  aprender a buscar compras grandes ni permite leer el ROAS.
+
+  Dos cuidados:
+
+  1. **Esta pantalla se recarga.** El cliente vuelve de Mercado Pago, deja la
+     pestaña abierta, refresca, la comparte. Cada recarga volvería a disparar
+     Purchase y a inflar las ventas. El `localStorage` marcado con el id del
+     pago hace que se cuente una sola vez por compra y por navegador.
+
+  2. **`eventID` es el id del pago.** Todavía no hace nada, pero cuando el mismo
+     Purchase salga desde vigi-api por la API de Conversiones —el paso que sigue,
+     porque desde el navegador se pierde entre el 20% y el 40% de las compras—
+     Meta va a unir los dos por este id en vez de contar la venta dos veces.
+
+  Si no hay total no se manda nada: un Purchase sin valor es peor que ninguno,
+  porque ensucia el aprendizaje sin aportar la cifra.
+*/}
+
+{
+  total !== null && (
+    <script is:inline define:vars={{ paymentId, total }}>
+      (function () {
+        if (typeof fbq !== "function") return;
+
+        var clave = "vigi_purchase_" + paymentId;
+
+        try {
+          if (window.localStorage.getItem(clave)) return;
+          window.localStorage.setItem(clave, "1");
+        } catch (e) {
+          // Sin localStorage (modo privado, storage bloqueado) se manda igual:
+          // perder una venta medida es peor que arriesgar un duplicado.
+        }
+
+        fbq(
+          "track",
+          "Purchase",
+          { value: total, currency: "ARS" },
+          { eventID: "purchase_" + paymentId }
+        );
+      })();
+    </script>
+  )
+}

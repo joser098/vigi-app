@@ -106,6 +106,24 @@ export const login = async (data: any) => {
   }
 };
 
+// Compra sin cuenta. Devuelve el mismo `{ success, data: { token } }` que el
+// login, así que de acá en adelante el checkout es el mismo de siempre.
+export const createGuestCustomer = async (data: any) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/customer/guest`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    return await response.json();
+  } catch (error) {
+    return { success: false, message: "No pudimos conectarnos. Probá de nuevo." };
+  }
+};
+
 export const registerCustomer = async (data: any) => {
   try {
     const response = await fetch(`${BASE_URL}/api/customer`, {

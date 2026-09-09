@@ -10,17 +10,20 @@ import QuantitySelect from "@/components/Buttons/QuantitySelect";
 import AddCartButton from "@/components/Buttons/AddCartButton";
 import Truck from "@/components/Icons/Truck.astro";
 import { FREE_SHIPPING_LABEL } from "@/services/const";
+import GuestCart from "@/components/GuestCart";
 
-let cart;
-if (Astro.cookies.has("check")) {
+// Sin cookie no hay carrito en el servidor: el visitante todavía no dejó
+// ningún dato. Antes esto redirigía a /login, o sea que para mirar el propio
+// carrito había que crear una cuenta primero. Ahora se dibuja del lado del
+// cliente con lo que hay en el navegador.
+let cart = null;
+const invitado = !Astro.cookies.has("check");
+
+if (!invitado) {
   const token = Astro.cookies.get("check");
-  if (token?.value) {
-    cart = await getCartData(token.value);
-  } else {
-    cart = { items: [], products_total: 0, amount_to_pay: 0 };
-  }
-} else {
-  return Astro.redirect("/login");
+  cart = token?.value
+    ? await getCartData(token.value)
+    : { items: [], products_total: 0, amount_to_pay: 0 };
 }
 
 const money = (n: number) =>
@@ -38,7 +41,11 @@ const descuento = (item: CartItem) =>
     : 0;
 ---
 
-<Layout title={`(${cart.products_total}) Carrito de compras | VIGI`}>
+<Layout
+  title={invitado
+    ? "Carrito de compras | VIGI"
+    : `(${cart.products_total}) Carrito de compras | VIGI`}
+>
   <main class="m-auto max-w-[1180px] p-4 sm:px-8">
 
     <div class="mb-6 mt-2 flex flex-wrap items-end justify-between gap-4">
@@ -46,11 +53,15 @@ const descuento = (item: CartItem) =>
         <h1 class="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
           Tu carrito
         </h1>
-        <p class="mt-2 text-sm text-muted">
-          {cart.products_total}
-          {cart.products_total === 1 ? " producto" : " productos"} · ya casi es
-          tuyo.
-        </p>
+        {
+          !invitado && (
+            <p class="mt-2 text-sm text-muted">
+              {cart.products_total}
+              {cart.products_total === 1 ? " producto" : " productos"} · ya casi
+              es tuyo.
+            </p>
+          )
+        }
       </div>
       <a
         href="/"
@@ -59,7 +70,7 @@ const descuento = (item: CartItem) =>
     </div>
 
     {
-      cart.items.length > 0 && (
+      !invitado && cart.items.length > 0 && (
         <div class="mb-6 flex items-center gap-3.5 rounded-2xl border border-[#c6ecd5] bg-green-soft px-5 py-4">
           <Truck height="22" width="22" color="#1f8f45" />
           <span class="text-sm font-semibold text-green-ink">
@@ -70,6 +81,9 @@ const descuento = (item: CartItem) =>
       )
     }
 
+    {invitado && <GuestCart client:only="react" />}
+
+    {!invitado && (
     <section class="flex flex-col justify-between gap-8 md:flex-row md:gap-8">
       <article class="w-full">
         <div
@@ -184,6 +198,7 @@ const descuento = (item: CartItem) =>
 
       <OrderResume client:load cart={cart} />
     </section>
+    )}
   </main>
 </Layout>
 
