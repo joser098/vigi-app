@@ -303,32 +303,17 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
 
       <div className="mt-7 border-t border-line pt-6">
         <h5 className="mb-1 text-base font-semibold text-primary">
-          Elegí cómo pagar
+          Pagar
         </h5>
         <p className="mb-4 text-xs text-muted">
-          Cada botón te lleva al checkout de su procesador. No guardamos los
-          datos de tu tarjeta.
+          Te lleva al checkout de Mercado Pago. No guardamos los datos de tu
+          tarjeta.
         </p>
+        {/* Nave está implementado del lado de la API pero sin credenciales,
+            así que el botón no se muestra: ofrecer un medio de pago que va a
+            fallar en la pasarela es peor que no ofrecerlo. Para volver a
+            activarlo alcanza con reponer este bloque con method="nv". */}
         <div className="flex flex-col gap-5">
-          <div>
-            <PayCartButton
-              disablePay={disablePay}
-              cart={cart}
-              finalTotal={total}
-              shipments={{
-                local_pickup: localPickup,
-                cost: shippingCost,
-                free_shipping: Boolean(quote?.free),
-                receiver_address: { street_name: quote?.address ?? "" },
-              }}
-              method="nv"
-            />
-            {/* Las promociones las pone el banco a través de Nave, no nosotros:
-                por eso se atribuyen y no se prometen. */}
-            <p className="mt-2 text-center text-xs text-muted">
-              Promociones bancarias de Nave, según tu tarjeta.
-            </p>
-          </div>
           <div>
             <PayCartButton
               disablePay={disablePay}
