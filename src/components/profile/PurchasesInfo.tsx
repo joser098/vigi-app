@@ -1,4 +1,9 @@
 import { getCustomerOrders } from "@/services/fetchData";
+import {
+  CONTACT_EMAIL_URL,
+  SHOW_WHATSAPP,
+  WHATSAPP_URL,
+} from "@/services/contacto";
 import { getToken } from "@/services/scripts";
 import { useEffect, useState } from "react";
 import Loader from "../Icons/Loader";
@@ -196,10 +201,16 @@ const Compra = ({ orden }: { orden: Order }) => {
 
         <div className="mt-4 flex flex-wrap gap-2.5">
           <a
-            href={`https://wa.me/541126039243?text=${encodeURIComponent(
-              `Hola! Consulto por mi pedido ${orden.payment_id}`
-            )}`}
-            target="_blank"
+            href={
+              SHOW_WHATSAPP
+                ? `${WHATSAPP_URL}?text=${encodeURIComponent(
+                    `Hola! Consulto por mi pedido ${orden.payment_id}`
+                  )}`
+                : `${CONTACT_EMAIL_URL}?subject=${encodeURIComponent(
+                    `Consulta por mi pedido ${orden.payment_id}`
+                  )}`
+            }
+            target={SHOW_WHATSAPP ? "_blank" : undefined}
             rel="noopener"
             className="inline-flex h-10 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-5 text-[13px] font-semibold text-primary transition-colors hover:border-primary"
           >

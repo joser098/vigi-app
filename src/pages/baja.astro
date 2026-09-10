@@ -1,4 +1,5 @@
 ---
+import { CONTACT_LABEL, CONTACT_PREP, CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
 export const prerender = false;
 import Layout from "@/layouts/Layout.astro";
 
@@ -53,14 +54,14 @@ const API = import.meta.env.PUBLIC_API_URL;
               Link incompleto
             </h1>
             <p class="mt-3 text-[15px] leading-relaxed text-muted">
-              Este link de baja no es válido. Escribinos al{" "}
+              Este link de baja no es válido. Escribinos {CONTACT_PREP}{" "}
               <a
-                href="https://wa.me/541126039243"
-                target="_blank"
+                href={CONTACT_URL}
+                target={CONTACT_TARGET}
                 rel="noopener"
                 class="font-semibold text-primary underline"
               >
-                11 2603 9243
+                {CONTACT_LABEL}
               </a>{" "}
               y te damos de baja nosotros.
             </p>

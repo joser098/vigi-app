@@ -1,4 +1,5 @@
 ---
+import { SHOW_WHATSAPP, WHATSAPP_URL } from "@/services/contacto";
 export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import { getProductsByCategory } from "../../services/fetchData";
@@ -105,14 +106,18 @@ const pages = Array.from({ length: to - from + 1 }, (_, i) => from + i);
             >
               Ver el catálogo
             </a>
-            <a
-              href="https://wa.me/541126039243"
-              target="_blank"
-              rel="noopener"
-              class="rounded-full border-[1.5px] border-gray-300 bg-white px-7 py-3 text-sm font-semibold text-primary"
-            >
-              Preguntanos
-            </a>
+            {
+              SHOW_WHATSAPP && (
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener"
+                  class="rounded-full border-[1.5px] border-gray-300 bg-white px-7 py-3 text-sm font-semibold text-primary"
+                >
+                  Preguntanos
+                </a>
+              )
+            }
           </div>
         </div>
       ) : (

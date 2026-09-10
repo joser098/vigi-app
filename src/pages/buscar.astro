@@ -1,4 +1,5 @@
 ---
+import { SHOW_WHATSAPP, WHATSAPP_URL } from "@/services/contacto";
 export const prerender = false;
 import CardsCarrusel from "@/components/CardsCarrusel.astro";
 import ProductsList from "@/components/ProductsList.astro";
@@ -65,14 +66,18 @@ const scarce = products.length > 0 && products.length <= 4;
                 >
                   Encontrá la tuya
                 </a>
-                <a
-                  href="https://wa.me/541126039243"
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
-                >
-                  Preguntanos
-                </a>
+                {
+                  SHOW_WHATSAPP && (
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noopener"
+                      class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
+                    >
+                      Preguntanos
+                    </a>
+                  )
+                }
               </div>
             </section>
           )}
@@ -119,14 +124,18 @@ const scarce = products.length > 0 && products.length <= 4;
               >
                 Encontrá la tuya
               </a>
-              <a
-                href="https://wa.me/541126039243"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
-              >
-                Preguntanos
-              </a>
+              {
+                SHOW_WHATSAPP && (
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex h-[50px] items-center justify-center rounded-full border-[1.5px] border-violet-800 px-7 text-sm font-semibold text-white"
+                  >
+                    Preguntanos
+                  </a>
+                )
+              }
             </div>
           </div>
 

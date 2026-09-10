@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { CONTACT_LABEL, CONTACT_PREP } from "@/services/contacto";
 ---
 
 <Layout title="Términos y Condiciones de Uso | VIGI">
@@ -90,7 +91,7 @@ import Layout from "../../layouts/Layout.astro";
               Proceso para solicitar un retorno:
             </p>
             <ul class="ml-4">
-              <li class="list-disc"><p>Contactanos a través de WhatsApp con el asunto “Producto defectuoso”.</p></li>
+              <li class="list-disc"><p>Contactanos {CONTACT_PREP} {CONTACT_LABEL} con el asunto “Producto defectuoso”.</p></li>
               <li class="list-disc"><p>Adjuntá fotos o videos que muestren claramente el defecto.</p></li>
               <li class="list-disc"><p>Nuestro equipo evaluará el caso en un plazo máximo de 14 días hábiles.</p></li>
             </ul>

@@ -7,6 +7,8 @@
  * saber si había comprado o no. Y el carrito sigue armado —solo se vacía cuando
  * el pago se aprueba—, así que lo único que hace falta es volver y reintentar.
  */
+import { CONTACT_LABEL, CONTACT_PREP, CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
+
 interface Props {
   status: string;
   statusDetail?: string | null;
@@ -118,8 +120,8 @@ const motivo = statusDetail ? motivos[statusDetail] : null;
   </div>
 
   <p class="mx-auto mt-8 max-w-xl text-center text-[13px] leading-relaxed text-muted">
-    ¿Necesitás una mano? Escribinos al
-    <a href="https://wa.me/541126039243" target="_blank" rel="noopener" class="font-semibold text-primary underline">11 2603 9243</a>
+    ¿Necesitás una mano? Escribinos {CONTACT_PREP}
+    <a href={CONTACT_URL} target={CONTACT_TARGET} rel="noopener" class="font-semibold text-primary underline">{CONTACT_LABEL}</a>
     {paymentId && <> con el número de operación</>}.
   </p>
 </section>

@@ -1,4 +1,5 @@
 ---
+import { CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
 export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import { fetchData } from "../../services/fetchData";
@@ -218,8 +219,8 @@ const specs: string[] =
               </svg>
               <span class="text-[13.5px] text-ink"
                 >¿Dudas antes de comprar? <a
-                  href="https://wa.me/541126039243"
-                  target="_blank"
+                  href={CONTACT_URL}
+                  target={CONTACT_TARGET}
                   rel="noopener"
                   class="font-semibold underline">Escribinos</a
                 ></span

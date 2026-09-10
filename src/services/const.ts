@@ -1,3 +1,9 @@
+import {
+  CONTACT_EMAIL_URL,
+  SHOW_WHATSAPP,
+  WHATSAPP_URL,
+} from "./contacto";
+
 export const categories = [
   { name: "Interior",
     path: "interior"
@@ -73,7 +79,7 @@ export const faq = [
     {
         id: 3,
         question: '¿Tienen servicio de atención al cliente? ¿Cómo puedo contactarlos?',
-        answer: 'Sí, tenemos un equipo de atención al cliente disponible para ayudarte con cualquier pregunta o inquietud. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar o por WhatsApp al 11 2603 9243.'
+        answer: `Sí, tenemos un equipo de atención al cliente disponible para ayudarte con cualquier pregunta o inquietud. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
     },
     {
         id: 4,
@@ -98,7 +104,7 @@ export const faq = [
     {
         id: 8,
         question: '¿Tienen una tienda física donde pueda ver los productos personalmente?',
-        answer: 'Actualmente operamos exclusivamente como un e-commerce y no tenemos tiendas físicas. Sin embargo, puedes ver fotos detalladas y descripciones de nuestros productos en nuestro sitio web. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar o por WhatsApp al 11 2603 9243.'
+        answer: `Actualmente operamos exclusivamente como un e-commerce y no tenemos tiendas físicas. Sin embargo, puedes ver fotos detalladas y descripciones de nuestros productos en nuestro sitio web. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
     }
 ];
 
@@ -142,7 +148,7 @@ export const footerData = [
             {
                 id: 2,
                 title: 'Contacto',
-                url: 'https://wa.me/541126039243'
+                url: SHOW_WHATSAPP ? WHATSAPP_URL : CONTACT_EMAIL_URL
             }
         ]
     },
@@ -160,11 +166,15 @@ export const footerData = [
                 title: 'Instagram',
                 url: 'https://www.instagram.com/vigi.cam_'
             },
-            {
-                id: 3,
-                title: 'Whatsapp',
-                url: 'https://wa.me/541126039243'
-            }
+            // Con WhatsApp apagado la fila no aparece: un link muerto en el
+            // footer es peor que una red social menos.
+            ...(SHOW_WHATSAPP
+                ? [{
+                    id: 3,
+                    title: 'Whatsapp',
+                    url: WHATSAPP_URL
+                }]
+                : [])
         ]
     },
     {

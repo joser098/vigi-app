@@ -1,4 +1,5 @@
 ---
+import { CONTACT_LABEL, CONTACT_PREP, CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
 import MP from "@/components/Icons/MP.astro";
 import Mastercard from "../Icons/Mastercard.astro";
 import Visa from "../Icons/Visa.astro";
@@ -59,11 +60,11 @@ import Maestro from "../Icons/Maestro.astro";
 
     <p class="text-[12.5px] leading-relaxed text-muted">
       No guardamos los datos de tu tarjeta: los toma el procesador en su propia
-      pantalla. ¿Dudas? Escribinos por <a
+      pantalla. ¿Dudas? Escribinos {CONTACT_PREP} <a
         class="font-semibold text-primary hover:underline"
-        href="https://wa.me/541126039243"
-        target="_blank"
-        rel="noopener">WhatsApp</a
+        href={CONTACT_URL}
+        target={CONTACT_TARGET}
+        rel="noopener">{CONTACT_LABEL}</a
       >.
     </p>
   </div>
