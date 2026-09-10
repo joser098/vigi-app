@@ -36,6 +36,15 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow" />
     <meta name="google-site-verification" content="kgvRTZHibC8c4TD_HTW9cPCX3xR34UdwQDF5SpnQswU" />
+    {/*
+      Verificación del dominio en Meta Business (portafolio "Vigi cam", dominio
+      vigi.com.ar, id 1589517809344266). Sin esto no se puede configurar la
+      prioridad de eventos para tráfico de iOS, que es donde el píxel más pierde.
+
+      Tiene que quedar en el <head> renderizado en el servidor: Meta no lo
+      encuentra si lo inyecta JavaScript después de cargar la página.
+    */}
+    <meta name="facebook-domain-verification" content="3zgcr3426cbwrbq6zpv6s1bjw14r5u" />
     <!-- Google Tag Manager -->
     <script is:inline>
       (function (w, d, s, l, i) {
