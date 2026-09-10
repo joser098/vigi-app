@@ -36,7 +36,7 @@ const facets = [
 
 ---
 
-<a href={`/product/${product.model}`} class="group block">
+<a href={`/product/${encodeURIComponent(product.model)}`} class="group block">
   <article
     class="flex h-full w-60 flex-col rounded-2xl border border-line bg-white p-4 transition-shadow duration-300 hover:shadow-[0_16px_36px_rgba(30,5,63,0.11)]"
   >

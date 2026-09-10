@@ -35,7 +35,7 @@ const FavoritesInfo = () => {
         favorites.map((favorite: Product) => {
           return (
             <article key={favorite.id} className="flex flex-col sm:flex-row sm:justify-between bg-white gap-3 max-h-80 p-2 border-b-2">
-              <a href={`/product/${favorite.model}`} className="flex">
+              <a href={`/product/${encodeURIComponent(favorite.model)}`} className="flex">
                 <img
                   src={favorite.thumbnail}
                   alt={favorite.model}

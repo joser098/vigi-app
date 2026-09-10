@@ -90,7 +90,7 @@ const SearchInput = () => {
                   </span>
                 </div>
               )}
-              <a href={`/product/${item.model}`} className="flex items-center gap-3">
+              <a href={`/product/${encodeURIComponent(item.model)}`} className="flex items-center gap-3">
                 <img
                   src={item.thumbnail}
                   alt={item.model}

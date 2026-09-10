@@ -153,7 +153,7 @@ const Compra = ({ orden }: { orden: Order }) => {
                   nombre del snapshot es lo único que queda. */}
               {item.model ? (
                 <a
-                  href={`/product/${item.model}`}
+                  href={`/product/${encodeURIComponent(item.model)}`}
                   className="text-sm font-semibold text-primary hover:underline"
                 >
                   {item.name}
@@ -218,7 +218,7 @@ const Compra = ({ orden }: { orden: Order }) => {
           </a>
           {orden.items[0]?.model && (
             <a
-              href={`/product/${orden.items[0].model}`}
+              href={`/product/${encodeURIComponent(orden.items[0].model)}`}
               className="inline-flex h-10 items-center justify-center rounded-full border-[1.5px] border-gray-300 bg-white px-5 text-[13px] font-semibold text-primary transition-colors hover:border-primary"
             >
               Volver a comprar

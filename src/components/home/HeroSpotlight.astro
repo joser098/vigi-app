@@ -130,7 +130,7 @@ const money = (n: number) =>
   {
     product && (
       <a
-        href={`/product/${product.model}`}
+        href={`/product/${encodeURIComponent(product.model)}`}
         class="group rounded-3xl border border-line bg-white p-6 shadow-[0_18px_44px_rgba(30,5,63,0.07)] transition-shadow hover:shadow-[0_22px_54px_rgba(30,5,63,0.12)]"
       >
         <div class="relative flex aspect-square items-center justify-center rounded-2xl bg-panel p-10">

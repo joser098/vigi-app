@@ -19,9 +19,37 @@ import Gallery from "@/components/Gallery.astro";
 import ShipBadge from "@/components/ShipBadge.astro";
 
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
-const { model } = Astro.params;
 
-const product = (await fetchData(`getProduct?model=${model}`)) as Product;
+// Ruta con parámetro "rest" y no `[model]`: siete modelos de la línea solar
+// llevan una barra adentro del nombre —"HB8 2K+ (4MP) P/S"— y con un solo
+// segmento esa barra partía la ruta y devolvía 404 desde cualquier link del
+// sitio. Así entra completa, escapada o no.
+//
+// El precio de aceptar las dos formas es que llegan decodificadas distinto: con
+// la barra cruda Astro entrega "HB8 2K+ (4MP) P/S", y con la barra escapada
+// deja "HB8 2K%2B (4MP) P%2FS". decodeURIComponent las junta en la misma. Va
+// con try porque un `%` suelto en la URL lo hace tirar excepción.
+const crudo = Astro.params.model ?? "";
+let model = crudo;
+try {
+  model = decodeURIComponent(crudo);
+} catch {
+  model = crudo;
+}
+
+// Sin modelo, o con un modelo que la API no conoce, antes esto reventaba con
+// un 500 y cuerpo vacío: `product` venía undefined y la línea de abajo leía
+// `product.provider`. Para tráfico pago un 500 es peor que un 404, porque no
+// muestra ni la página de "no existe" ni las categorías.
+const product = model
+  ? ((await fetchData(`getProduct?model=${encodeURIComponent(model)}`)) as Product)
+  : undefined;
+
+// redirect y no rewrite: `404.astro` es estática y Astro prohíbe reescribir una
+// ruta prerenderizada desde una on-demand.
+if (!product?.model) {
+  return Astro.redirect("/404");
+}
 
 const similarProducts = await fetchData(
   `getSimilarProducts?provider=${product.provider}&category=${product.category}`,
