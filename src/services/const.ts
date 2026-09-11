@@ -445,6 +445,28 @@ export const provinces = [
 // (1090717675557808). Es público: viaja al navegador en cada carga.
 export const META_PIXEL_ID = "378250695246633";
 
+/**
+ * Google Analytics 4. Vacío = apagado, no se dispara nada.
+ *
+ * Está para leer los UTM. El píxel de Meta y Google Ads no sirven para eso:
+ * miden sus propias campañas, no de dónde viene el tráfico en general. Sin
+ * GA4, una visita que entra desde `?utm_source=newsletter` llega con la
+ * etiqueta en la barra de direcciones y la etiqueta se pierde en el siguiente
+ * click, porque no hay nadie que la lea.
+ *
+ * El id sale de Google Analytics → Administrar → Flujos de datos → Web. Tiene
+ * la forma `G-XXXXXXXXXX`. Es público, igual que el del píxel: viaja al
+ * navegador en cada carga.
+ *
+ * **Lo que GA4 no arregla:** se carga desde `googletagmanager.com`, que es el
+ * dominio más bloqueado que existe. La compra de prueba de esta tienda se hizo
+ * en Chrome y en Edge y los dos bloquearon el píxel de fábrica — a GA4 le pasa
+ * lo mismo. Sirve para ver de dónde viene el tráfico y cómo navega, pero va a
+ * contar de menos las compras. El número de ventas que no miente sigue siendo
+ * el de la base.
+ */
+export const GA4_MEASUREMENT_ID = "";
+
 export const SHIPPING_CUTOFF_HOUR = 17;
 
 /**

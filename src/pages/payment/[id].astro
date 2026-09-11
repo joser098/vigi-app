@@ -6,6 +6,7 @@ import PayApproved from "@/components/PayApproved.astro";
 import PayNotApproved from "@/components/PayNotApproved.astro";
 import { getPayment } from "@/services/fetchData";
 import PurchasePixel from "@/components/PurchasePixel.astro";
+import PurchaseGa4 from "@/components/PurchaseGa4.astro";
 
 const { id } = Astro.params;
 
@@ -41,6 +42,7 @@ const totalPagado =
       aprobado ? (
         <>
           <PurchasePixel paymentId={id!} total={totalPagado} />
+          <PurchaseGa4 paymentId={id!} total={totalPagado} />
 
           <PayApproved payment={payment} />
 

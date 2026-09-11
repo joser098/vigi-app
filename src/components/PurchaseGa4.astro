@@ -1,0 +1,68 @@
+---
+import { GA4_MEASUREMENT_ID } from "@/services/const";
+
+interface Props {
+  paymentId: string;
+  total: number | null;
+}
+
+const { paymentId, total } = Astro.props;
+---
+
+{/*
+  La compra, para GA4.
+
+  Es la mitad que convierte "vinieron 40 del mail" en "el mail hizo $187.400".
+  Sin este evento, GA4 cuenta sesiones y nada más: sabrías que la gente llegó
+  desde el newsletter pero no si compró, que es la pregunta.
+
+  GA4 le pega el origen solo. La atribución la hace del lado de Google: la
+  sesión ya venía marcada con el `utm_source` con el que entró, y este evento
+  se le cuelga a esa sesión. Por eso acá no hay que mandar ningún UTM.
+
+  Tres cosas, en el mismo orden que en PurchasePixel:
+
+  1. **Esta pantalla se recarga.** El cliente vuelve de Mercado Pago, refresca,
+     comparte el link. El `localStorage` marcado con el id del pago hace que se
+     cuente una sola vez por compra y por navegador. La clave es distinta a la
+     del píxel a propósito: son dos destinos independientes y si uno falla el
+     otro no tiene por qué quedar bloqueado.
+
+  2. **`transaction_id` es el id del pago.** GA4 descarta las compras con un
+     `transaction_id` repetido, así que es la segunda red contra los duplicados
+     — la que sigue funcionando aunque el navegador no tenga localStorage.
+
+  3. **Sin total no se manda nada.** Una compra sin `value` ensucia el informe
+     de ingresos sin aportar la cifra.
+
+  Y lo que este evento **no** arregla: gtag se carga desde googletagmanager.com,
+  que cualquier bloqueador corta. Las compras que se pierdan acá se pierden.
+  El número que no miente es el de la base — el cupón, o el día que `orders`
+  guarde el origen.
+*/}
+
+{
+  GA4_MEASUREMENT_ID && total !== null && (
+    <script is:inline define:vars={{ paymentId, total }}>
+      (function () {
+        if (typeof gtag !== "function") return;
+
+        var clave = "vigi_ga4_purchase_" + paymentId;
+
+        try {
+          if (window.localStorage.getItem(clave)) return;
+          window.localStorage.setItem(clave, "1");
+        } catch (e) {
+          // Sin localStorage (modo privado, storage bloqueado) se manda igual:
+          // el transaction_id repetido lo descarta GA4 del otro lado.
+        }
+
+        gtag("event", "purchase", {
+          transaction_id: paymentId,
+          value: total,
+          currency: "ARS",
+        });
+      })();
+    </script>
+  )
+}

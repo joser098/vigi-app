@@ -11,6 +11,7 @@ import "../styles/global.css";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Marquee from "@/components/Marquee.astro";
 import MetaPixel from "@/components/MetaPixel.astro";
+import { GA4_MEASUREMENT_ID } from "@/services/const";
 
 interface Props {
   title: string;
@@ -62,12 +63,45 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
      <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17302456620">
     </script>
-    <script is:inline>
+    <script is:inline define:vars={{ GA4_MEASUREMENT_ID }}>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'AW-17302456620');
+
+      /*
+        GA4 comparte el mismo gtag.js que ya carga Google Ads: es un `config`
+        más, no otro script. Si GA4_MEASUREMENT_ID está vacío no se configura
+        nada y la tienda queda como antes.
+
+        `send_page_view: false` y el page_view a mano son por el ClientRouter:
+        con las transiciones de Astro la navegación no recarga la página, así
+        que el page_view automático solo contaría la primera pantalla y todo
+        el resto de la visita se perdería.
+      */
+      if (GA4_MEASUREMENT_ID) {
+        gtag('config', GA4_MEASUREMENT_ID, { send_page_view: false });
+
+        var ultima = '';
+
+        var enviarVista = function () {
+          // Dedupe por URL. `astro:page-load` dispara también en la carga
+          // inicial, así que sin esto la primera pantalla se contaría dos
+          // veces; y llamarla a mano acá cubre el caso de que el evento no
+          // llegue nunca, que es cuando se perderían todas las vistas.
+          if (window.location.href === ultima) return;
+          ultima = window.location.href;
+
+          gtag('event', 'page_view', {
+            page_location: window.location.href,
+            page_title: document.title,
+          });
+        };
+
+        enviarVista();
+        document.addEventListener('astro:page-load', enviarVista);
+      }
     </script>
 
     <meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
