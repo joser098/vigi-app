@@ -17,7 +17,11 @@ import Visa from "@/components/Icons/Visa.astro";
 import ShippingWays from "@/components/Modals/ShippingWays.astro";
 import Gallery from "@/components/Gallery.astro";
 import ShipBadge from "@/components/ShipBadge.astro";
-import { categories, FREE_SHIPPING_MIN_PURCHASE } from "@/services/const";
+import {
+  categories,
+  FREE_SHIPPING_MIN_PURCHASE,
+  PRODUCT_CATEGORY_LABEL,
+} from "@/services/const";
 
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 
@@ -82,7 +86,13 @@ const canonical = new URL(
 // ("DS-2CD1043G0-I | VIGI"), que nadie busca. Con marca y categoría adelante
 // el mismo resultado matchea "camara hikvision exterior" además del modelo.
 const categoryLabel =
-  categories.find((c) => c.path === product.category)?.name ?? product.category;
+  PRODUCT_CATEGORY_LABEL[product.category] ?? product.category;
+
+// Solo las ocho de la navegación tienen página propia listada en el sitemap.
+// `camaras`, `grabadores`, `cerraduras` y `redes` son valores del campo
+// `category` sin entrada en el menú, así que no sirven como escalón de la
+// miga de pan: apuntarían a una URL que no queremos posicionar.
+const navCategory = categories.find((c) => c.path === product.category);
 
 const seoTitle =
   `${product.provider} ${product.model} — ${categoryLabel} | VIGI`.slice(0, 70);
@@ -169,15 +179,19 @@ const breadcrumbSchema = {
       name: "Inicio",
       item: SITE.href,
     },
+    ...(navCategory
+      ? [
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: navCategory.name,
+            item: new URL(`/category/${navCategory.path}`, SITE).href,
+          },
+        ]
+      : []),
     {
       "@type": "ListItem",
-      position: 2,
-      name: categoryLabel,
-      item: new URL(`/category/${product.category}`, SITE).href,
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
+      position: navCategory ? 3 : 2,
       name: `${product.provider} ${product.model}`,
     },
   ],

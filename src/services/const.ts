@@ -42,6 +42,29 @@ export const categories = [
  * El h1 se escribe con las palabras con las que la gente busca, no con el
  * nombre interno de la categoría.
  */
+/**
+ * Etiqueta legible para el campo `category` de un producto.
+ *
+ * Ojo que NO son los mismos slugs que `categories`. Las ocho de la navegación
+ * son facetas sobre las cámaras (interior, exterior, batería, análogas), y el
+ * campo `category` que devuelve la API tiene otros ocho valores: camaras,
+ * alarmas, porteros, almacenamiento, grabadores, cerraduras, kits y redes.
+ *
+ * Sin este mapa, buscar el producto en `CATEGORY_SEO` fallaba para 341 de los
+ * 500 y el título de la ficha salía con el slug crudo: "Ezviz CB2 1080P —
+ * camaras | VIGI", en minúscula y sin acento.
+ */
+export const PRODUCT_CATEGORY_LABEL: Record<string, string> = {
+  camaras: "Cámaras",
+  grabadores: "Grabadores",
+  cerraduras: "Cerraduras",
+  redes: "Redes",
+  alarmas: "Alarmas",
+  porteros: "Porteros",
+  almacenamiento: "Almacenamiento",
+  kits: "Kits",
+};
+
 export const CATEGORY_SEO: Record<
   string,
   { h1: string; title: string; description: string }

@@ -54,14 +54,30 @@ export const GET: APIRoute = async () => {
     entries.push(url(`${SITE}/category/${c.path}`, "daily", "0.8", lastmod));
   }
 
+  /*
+    Para juntar los productos se consultan las ocho de la navegación más
+    `camaras`.
+
+    Las ocho del menú son facetas (interior, exterior, batería, análogas...) y
+    hay 24 cámaras que no tienen ninguna cargada: no salen en ninguna de las
+    cuatro consultas de cámara y quedaban fuera del sitemap, que para una
+    página que no tiene links entrantes es quedar fuera de Google. `camaras`
+    es el valor crudo del campo `category` y las junta a todas.
+
+    Solo se usa para descubrir productos: /category/camaras no se publica como
+    URL de categoría porque no está en el menú y duplicaría casi entera a
+    /category/exterior.
+  */
+  const slugsParaDescubrir = [...categories.map((c) => c.path), "camaras"];
+
   // Un producto puede estar en más de una categoría (una cámara de exterior a
   // batería sale en las dos), así que se deduplica por modelo.
   const vistos = new Set<string>();
 
   const porCategoria = await Promise.all(
-    categories.map(async (c) => {
+    slugsParaDescubrir.map(async (slug) => {
       try {
-        const lista = await getProductsByCategory(c.path, "");
+        const lista = await getProductsByCategory(slug, "");
         return Array.isArray(lista) ? (lista as Product[]) : [];
       } catch {
         return [];
