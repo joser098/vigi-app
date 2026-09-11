@@ -26,7 +26,10 @@ if (products.length > 0) {
 const scarce = products.length > 0 && products.length <= 4;
 ---
 
-<Layout title={`Buscar ${urlParams} | VIGI`}>
+<Layout
+  title={urlParams ? `${urlParams} | Buscar en VIGI` : "Buscar | VIGI"}
+  description="Buscá entre más de 500 cámaras de seguridad, alarmas y accesorios de videovigilancia en VIGI."
+>
   <main class="m-auto max-w-[1180px] p-4 sm:px-8">
     {
       products.length > 0 ? (

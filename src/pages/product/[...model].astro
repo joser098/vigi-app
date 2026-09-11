@@ -17,6 +17,7 @@ import Visa from "@/components/Icons/Visa.astro";
 import ShippingWays from "@/components/Modals/ShippingWays.astro";
 import Gallery from "@/components/Gallery.astro";
 import ShipBadge from "@/components/ShipBadge.astro";
+import { categories, FREE_SHIPPING_MIN_PURCHASE } from "@/services/const";
 
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 
@@ -68,9 +69,128 @@ const specs: string[] =
   (product.details as any)?.specs ??
   product.description?.split("|").map((s) => s.trim()).filter(Boolean) ??
   [];
+
+// --- SEO ---------------------------------------------------------------------
+
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+const canonical = new URL(
+  `/product/${encodeURIComponent(product.model)}`,
+  SITE,
+).href;
+
+// El título de la pestaña era `${model} | VIGI`: solo el código de fábrica
+// ("DS-2CD1043G0-I | VIGI"), que nadie busca. Con marca y categoría adelante
+// el mismo resultado matchea "camara hikvision exterior" además del modelo.
+const categoryLabel =
+  categories.find((c) => c.path === product.category)?.name ?? product.category;
+
+const seoTitle =
+  `${product.provider} ${product.model} — ${categoryLabel} | VIGI`.slice(0, 70);
+
+// Las specs ya están escritas para el cliente, así que la descripción sale de
+// ahí en vez de repetir la genérica de la tienda en 646 fichas iguales.
+const seoDescription = [
+  `${product.provider} ${product.model} a ${money(product.price)}.`,
+  specs.slice(0, 3).join(", ") + ".",
+  "Envío a todo el país y pago en cuotas.",
+]
+  .join(" ")
+  .replace(/\s+/g, " ")
+  .slice(0, 160);
+
+const galleryImages = Array.from(
+  { length: Math.max(1, product.gallery) },
+  (_, i) =>
+    `${BASE_URL}/gallery/${encodeURIComponent(product.model).replace(/%20/g, "+")}/${i}.png`,
+);
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": `${canonical}#product`,
+  name: `${product.provider} ${product.model}`,
+  sku: product.model,
+  mpn: product.model,
+  description: product.description?.replace(/\s*\|\s*/g, ". ") ?? seoDescription,
+  image: galleryImages,
+  brand: { "@type": "Brand", name: product.provider },
+  category: categoryLabel,
+  offers: {
+    "@type": "Offer",
+    url: canonical,
+    priceCurrency: "ARS",
+    price: product.price,
+    /*
+      Sin `priceValidUntil` Google avisa en Search Console, pero poner una
+      fecha corta es peor: cuando pasa, la oferta se marca vencida y el
+      producto deja de mostrar precio en resultados. Un año es lo que
+      recomienda la propia documentación cuando el precio no tiene vencimiento
+      real.
+    */
+    priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10),
+    availability: "https://schema.org/InStock",
+    itemCondition: "https://schema.org/NewCondition",
+    seller: { "@id": new URL("#organization", SITE).href },
+    /*
+      El envío solo se declara cuando es gratis, o sea cuando el producto solo
+      ya pasa el mínimo. Por debajo el costo lo calcula el cotizador según el
+      destino y no hay un número que se pueda afirmar acá: declarar uno
+      inventado es peor que no declarar nada, porque Google lo muestra en la
+      ficha y el cliente ve otro en el carrito.
+    */
+    ...(product.price >= FREE_SHIPPING_MIN_PURCHASE
+      ? {
+          shippingDetails: {
+            "@type": "OfferShippingDetails",
+            shippingDestination: {
+              "@type": "DefinedRegion",
+              addressCountry: "AR",
+            },
+            shippingRate: {
+              "@type": "MonetaryAmount",
+              currency: "ARS",
+              value: 0,
+            },
+          },
+        }
+      : {}),
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: SITE.href,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: categoryLabel,
+      item: new URL(`/category/${product.category}`, SITE).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: `${product.provider} ${product.model}`,
+    },
+  ],
+};
 ---
 
-<Layout title={`${model} | VIGI`}>
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  image={galleryImages[0]}
+  type="product"
+  canonical={canonical}
+>
   <!-- BARRA DE COMPRA FIJA -->
   <div
     id="sticky_buy"
@@ -147,8 +267,14 @@ const specs: string[] =
         />
 
         <div class="mb-4 flex items-start justify-between gap-4">
+          {/*
+            Con la marca adelante, igual que la barra de compra fija. El h1 es
+            la señal más fuerte de de qué trata la página y decía solo el
+            código de fábrica: "DS-2CD1043G0-I" no lo busca nadie,
+            "Hikvision DS-2CD1043G0-I" sí.
+          */}
           <h1 class="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-            {product.model}
+            {product.provider} {product.model}
           </h1>
           <span class="transition-transform hover:scale-110 hover:cursor-pointer">
             <Favorite client:idle product={product} />
@@ -330,6 +456,24 @@ const specs: string[] =
     <PaymentWays />
     <ShippingWays />
   </main>
+  {/*
+    Datos estructurados de la ficha. Van en el cuerpo y no en el <head> porque
+    dependen de datos que se resuelven en la página; Google los lee igual.
+
+    Es lo que habilita el resultado enriquecido: precio, disponibilidad y marca
+    debajo del título en la búsqueda, y la entrada del producto en la pestaña
+    Shopping sin pagar por el click.
+  */}
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(productSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
 </Layout>
 
 {/*

@@ -1,0 +1,22 @@
+# https://www.vigi.com.ar/robots.txt
+# Antes este archivo devolvía 404: Googlebot lo pedía en cada sesión de
+# rastreo y no encontraba nada, ni siquiera el sitemap.
+
+User-agent: *
+Allow: /
+
+# No hay `Disallow` para /cart, /login, /profile, /datos, /buscar ni /payment,
+# y es a propósito.
+#
+# Esas páginas mandan `noindex` desde el <head>, que es la única instrucción
+# que efectivamente las saca del índice. robots.txt no desindexa nada: impide
+# leer la página. Si se bloquearan acá, Google no podría llegar a leer el
+# noindex y las que ya estén indexadas —el sitemap viejo las listaba, así que
+# es probable que alguna lo esté— se quedarían en los resultados para siempre,
+# mostradas sin título ni descripción.
+#
+# La forma correcta es la inversa: dejar que las rastree, que lea el noindex y
+# las descarte. Con 500 productos no hay problema de presupuesto de rastreo
+# que justifique lo otro.
+
+Sitemap: https://www.vigi.com.ar/sitemap.xml

@@ -31,6 +31,71 @@ export const categories = [
    }, 
 ]
 
+/**
+ * Título, h1 y meta description por categoría.
+ *
+ * Antes los tres salían del slug: el título de la pestaña decía "EXTERIOR |
+ * VIGI", el h1 decía "EXTERIOR" y la descripción era la genérica de la tienda,
+ * repetida igual en las ocho. Para Google eran ocho páginas casi idénticas que
+ * no mencionaban ni una vez "cámara de seguridad".
+ *
+ * El h1 se escribe con las palabras con las que la gente busca, no con el
+ * nombre interno de la categoría.
+ */
+export const CATEGORY_SEO: Record<
+  string,
+  { h1: string; title: string; description: string }
+> = {
+  interior: {
+    h1: "Cámaras de seguridad para interior",
+    title: "Cámaras de seguridad para interior | VIGI",
+    description:
+      "Cámaras de seguridad para interior con visión nocturna, audio y app en el celular. Hikvision, Dahua, Ezviz e Imou. Envíos a todo el país y cuotas.",
+  },
+  exterior: {
+    h1: "Cámaras de seguridad para exterior",
+    title: "Cámaras de seguridad para exterior | VIGI",
+    description:
+      "Cámaras de seguridad para exterior resistentes al agua, con visión nocturna y detección de movimiento. Hikvision, Dahua y Ezviz. Envíos a todo el país.",
+  },
+  bateria: {
+    h1: "Cámaras a batería y solares",
+    title: "Cámaras de seguridad a batería y solares | VIGI",
+    description:
+      "Cámaras de seguridad a batería y con panel solar: se instalan sin enchufe ni cables. Wi-Fi y 4G, visión nocturna a color. Envíos a todo el país.",
+  },
+  kits: {
+    h1: "Kits de videovigilancia",
+    title: "Kits de cámaras de seguridad y DVR | VIGI",
+    description:
+      "Kits completos de videovigilancia con DVR, cámaras, disco y accesorios. Listos para instalar en casa o en el negocio. Envíos a todo el país y cuotas.",
+  },
+  analogas: {
+    h1: "Cámaras analógicas",
+    title: "Cámaras de seguridad analógicas | VIGI",
+    description:
+      "Cámaras analógicas HD para sistemas con DVR: bala, domo y varifocales. La opción más económica para cubrir varios puntos. Envíos a todo el país.",
+  },
+  porteros: {
+    h1: "Porteros eléctricos y videoporteros",
+    title: "Porteros eléctricos y videoporteros | VIGI",
+    description:
+      "Videoporteros y porteros eléctricos para casa, departamento y edificio. Commax, Hikvision y Dahua, con visor en el celular. Envíos a todo el país.",
+  },
+  almacenamiento: {
+    h1: "Discos y almacenamiento para videovigilancia",
+    title: "Discos rígidos y memorias para CCTV | VIGI",
+    description:
+      "Discos rígidos de videovigilancia y memorias microSD preparadas para grabar 24/7 sin fallas. WD Purple y Seagate SkyHawk. Envíos a todo el país.",
+  },
+  alarmas: {
+    h1: "Alarmas para casa y negocio",
+    title: "Alarmas para casa y negocio | VIGI",
+    description:
+      "Kits de alarma inalámbrica con sensores de movimiento, apertura y sirena, controlados desde el celular. Sin obra ni cables. Envíos a todo el país.",
+  },
+};
+
 export const quantity = [
     {
         id: 1,

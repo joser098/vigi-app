@@ -11,31 +11,98 @@ import "../styles/global.css";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Marquee from "@/components/Marquee.astro";
 import MetaPixel from "@/components/MetaPixel.astro";
+import SchemaOrg from "@/components/SchemaOrg.astro";
 import { GA4_MEASUREMENT_ID } from "@/services/const";
 
 interface Props {
   title: string;
+  description?: string;
+  /** Absoluta. Por defecto la imagen genérica de la tienda. */
+  image?: string;
+  type?: "website" | "product" | "article";
+  /** Fuerza noindex. Si no se pasa, se deduce de NOINDEX_PATHS. */
+  noindex?: boolean;
+  /** Canónica explícita. Por defecto la ruta actual sin query ni barra final. */
+  canonical?: string | URL;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  type = "website",
+  noindex,
+  canonical,
+} = Astro.props;
 const { url } = Astro;
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
+
+// El dominio productivo es www: vigi.com.ar redirige 308 a www.vigi.com.ar.
+// Sale de `site` en astro.config para no tener el host escrito en dos lados.
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+
+const DEFAULT_DESCRIPTION =
+  "Cámaras de seguridad, alarmas y kits de videovigilancia para tu casa o negocio, al mejor precio de Argentina. Envíos a todo el país y pago en cuotas.";
+
+/*
+  Rutas que no tienen por qué estar en Google. Son de tres tipos: privadas
+  (perfil, carrito, datos de envío), transaccionales de un solo uso (pagos,
+  recuperar contraseña, baja de novedades) y resultados de búsqueda, que
+  generan infinitas URLs con el mismo contenido.
+
+  `noindex, follow` y no `noindex, nofollow`: queremos que el robot no las
+  indexe pero que siga los links que salen de ellas hacia el catálogo.
+*/
+const NOINDEX_PATHS = [
+  "/login",
+  "/register",
+  "/profile",
+  "/cart",
+  "/datos",
+  "/buscar",
+  "/baja",
+  "/forgot-password",
+  "/new-password",
+  "/email-success",
+  "/payment",
+  "/404",
+];
+
+const path = url.pathname.replace(/\/+$/, "") || "/";
+const isPrivate = NOINDEX_PATHS.some(
+  (p) => path === p || path.startsWith(`${p}/`),
+);
+const robots = (noindex ?? isPrivate) ? "noindex, follow" : "index, follow";
+
+// Sin query string: /category/exterior?page=2&order=price y
+// /category/exterior son la misma página para Google salvo que la página lo
+// diga. Las que sí necesitan distinguirse pasan `canonical` a mano.
+const canonicalUrl = canonical
+  ? new URL(canonical, SITE)
+  : new URL(path, SITE);
+
+const metaDescription = description ?? DEFAULT_DESCRIPTION;
+const ogImage = image ?? `${BASE_URL}/assets/og.png`;
 ---
 
 <!doctype html>
 <html lang="es-AR">
   <head>
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" type="image/svg" href={`${BASE_URL}/assets/vigi_white.svg`} />
     <meta charset="UTF-8" />
-    <meta name="theme-color" content="#1E053F" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
-    <meta name="keywords" content="seguridad, camaras,cámaras, alarmas, vigilancia, argentina, vision"/>
-    <meta name="author" content="Jose Jaramillo" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonicalUrl.href} />
 
-    <meta name="robots" content="index, follow"/>
-    <meta name="googlebot" content="index, follow" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="icon" type="image/svg+xml" href={`${BASE_URL}/assets/vigi_white.svg`} />
+    <meta name="theme-color" content="#1E053F" />
+
+    {/*
+      La etiqueta `keywords` se fue: Google la ignora desde 2009 y lo único que
+      hacía era publicar la lista de términos a los que le apuntamos.
+    */}
+    <meta name="robots" content={robots} />
     <meta name="google-site-verification" content="kgvRTZHibC8c4TD_HTW9cPCX3xR34UdwQDF5SpnQswU" />
     {/*
       Verificación del dominio en Meta Business (portafolio "Vigi cam", dominio
@@ -104,17 +171,30 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
       }
     </script>
 
-    <meta name="og:image" content={new URL(`${BASE_URL}/assets/og.png`, Astro.url)} />
-    <meta name="og:title" content={title} />
-    <meta name="og:description" content="​La tienda online con los precios mas bajos del mercado​ de productos de seguridad (cámaras, alarmas) en Argentina. Envíos a todo el pais" />
-    <meta name="og:url" content={Astro.url} />
-    <meta name="og:site_name" content="Vigi | Tienda online" />
-    <meta name="og:type" content="website" />
-    <meta name="og:locale" content="es_AR" />
+    {/*
+      `property` y no `name`. Open Graph está definido sobre RDFa, que usa
+      `property`; Facebook, WhatsApp e Instagram no leen `name="og:*"` y caían
+      al fallback (título del <title> y primera imagen que encontraran en el
+      HTML, que acá es el logo del header). Por eso los links compartidos de la
+      tienda salían sin foto del producto.
+    */}
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content="VIGI" />
+    <meta property="og:locale" content="es_AR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
 
     <MetaPixel />
+    <SchemaOrg />
 
-    <title>{title}</title>
     <ClientRouter />
     <SpeedInsights />
   </head>

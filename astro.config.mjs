@@ -3,12 +3,28 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 
-import sitemap from "@astrojs/sitemap";
-
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://vigi.com.ar',
-  integrations: [react(), sitemap()],
+  // Con www. El dominio sin www redirige 308 a www.vigi.com.ar, así que
+  // `https://vigi.com.ar` acá hacía que todas las canónicas y todas las URLs
+  // del sitemap apuntaran a una redirección. Google las sigue, pero pierde
+  // tiempo de rastreo en cada una y, cuando el sitemap y la canónica no
+  // coinciden con lo que el servidor entrega, elige la canónica él.
+  site: 'https://www.vigi.com.ar',
+
+  // /nosotros y /nosotros/ devolvían las dos un 200 con el mismo HTML: dos
+  // URLs para una página. Ahora la de la barra final redirige.
+  trailingSlash: 'never',
+
+  // El sitemap viejo lo generaba @astrojs/sitemap y quedó registrado en Search
+  // Console. Sin esto pasaría a dar 404 y la consola marcaría el sitemap como
+  // "no se pudo leer" hasta que alguien lo borre a mano.
+  redirects: {
+    '/sitemap-index.xml': '/sitemap.xml',
+    '/sitemap-0.xml': '/sitemap.xml',
+  },
+
+  integrations: [react()],
   output: "static",
   vite: {
     plugins: [tailwindcss()]

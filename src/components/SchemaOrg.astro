@@ -1,0 +1,48 @@
+---
+/**
+ * Datos estructurados de la tienda, en todas las páginas.
+ *
+ * `@id` fijos y absolutos a propósito: son los que dejan que las fichas de
+ * producto digan `"seller": { "@id": ".../#organization" }` en vez de repetir
+ * los datos del vendedor 646 veces. Google arma un solo nodo y entiende que
+ * todas las ofertas son del mismo comercio.
+ */
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "OnlineStore",
+      "@id": new URL("#organization", SITE).href,
+      name: "VIGI",
+      alternateName: "Vigi Cam",
+      url: SITE.href,
+      logo: `${BASE_URL}/assets/vigi_white.svg`,
+      image: `${BASE_URL}/assets/og.png`,
+      description:
+        "Tienda online argentina de cámaras de seguridad, alarmas, porteros eléctricos y kits de videovigilancia.",
+      email: "contacto@vigi.com.ar",
+      areaServed: { "@type": "Country", name: "Argentina" },
+      currenciesAccepted: "ARS",
+      paymentAccepted: "Visa, Mastercard, American Express, Mercado Pago",
+      sameAs: ["https://www.instagram.com/vigi.cam_"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": new URL("#website", SITE).href,
+      url: SITE.href,
+      name: "VIGI",
+      inLanguage: "es-AR",
+      publisher: { "@id": new URL("#organization", SITE).href },
+    },
+  ],
+};
+---
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(schema)}
+/>

@@ -5,6 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getProductsByCategory } from "../../services/fetchData";
 import ProductsList from "../../components/ProductsList.astro";
 import type { Product } from "src/services/types";
+import { CATEGORY_SEO } from "@/services/const";
 
 const path = Astro.url;
 const queries = Object.fromEntries(path.searchParams.entries());
@@ -47,26 +48,92 @@ const pageHref = (n: number) => {
 const from = Math.max(1, Math.min(page - 2, totalPages - 4));
 const to = Math.min(totalPages, from + 4);
 const pages = Array.from({ length: to - from + 1 }, (_, i) => from + i);
+
+// --- SEO ---------------------------------------------------------------------
+
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+const slug = category ?? "";
+const meta = CATEGORY_SEO[slug] ?? {
+  h1: slug.charAt(0).toUpperCase() + slug.slice(1),
+  title: `${slug.charAt(0).toUpperCase() + slug.slice(1)} | VIGI`,
+  description: `Comprá ${slug} en VIGI. Envíos a todo el país y pago en cuotas.`,
+};
+
+/*
+  La canónica lleva ?page= y no apunta siempre a la página 1.
+
+  Exterior son 301 productos en 13 páginas. Si las trece dijeran que la
+  canónica es /category/exterior, Google trataría las doce restantes como
+  copias y dejaría de rastrear los productos que solo aparecen ahí — que son
+  277 de los 301. Cada página es su propia canónica; lo que se saca del índice
+  es el ordenamiento (?order=), que sí devuelve los mismos productos movidos
+  de lugar.
+*/
+const canonical = new URL(
+  page > 1 ? `/category/${slug}?page=${page}` : `/category/${slug}`,
+  SITE,
+).href;
+
+const ordenada = Boolean(queries.order);
+
+// "… — Página 3 | VIGI" y no "… | VIGI — Página 3": la marca va al final,
+// que es lo que Google recorta primero cuando el título no entra.
+const titulo = page > 1 ? `${meta.h1} — Página ${page} | VIGI` : meta.title;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: SITE.href },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: meta.h1,
+      item: new URL(`/category/${slug}`, SITE).href,
+    },
+  ],
+};
+
+// ItemList con los productos visibles: le dice a Google que esto es un
+// listado de catálogo y en qué orden está, no una página cualquiera con
+// veinticuatro links.
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: meta.h1,
+  numberOfItems: productsList.length,
+  itemListElement: visible.map((p, i) => ({
+    "@type": "ListItem",
+    position: (page - 1) * PER_PAGE + i + 1,
+    url: new URL(`/product/${encodeURIComponent(p.model)}`, SITE).href,
+    name: `${p.provider} ${p.model}`,
+  })),
+};
 ---
 
-<Layout title={`${category?.toLocaleUpperCase()} | VIGI`}>
+<Layout
+  title={titulo}
+  description={meta.description}
+  canonical={canonical}
+  noindex={ordenada}
+>
   <main class="m-auto max-w-[1180px] px-4 pb-8 sm:px-8">
     <nav class="flex items-center gap-2 py-3 text-xs text-gray-400">
       <a href="/" class="hover:underline">Inicio</a>
       <span>/</span>
-      <span class="capitalize text-ink">{category}</span>
+      <span class="text-ink">{meta.h1}</span>
     </nav>
 
     <div class="relative flex items-center overflow-hidden rounded-2xl">
       <h1
         class="absolute pl-8 text-2xl font-bold tracking-tight text-white sm:pl-14 sm:text-4xl lg:text-5xl"
       >
-        {category?.toLocaleUpperCase()}
+        {meta.h1}
       </h1>
       <img
         class="w-full object-cover"
         src={`${BASE_URL}/categories/${bannerName}_banner.png`}
-        alt={`Banner ${bannerName}`}
+        alt={meta.h1}
         fetchpriority="high"
         decoding="async"
       />
@@ -185,6 +252,16 @@ const pages = Array.from({ length: to - from + 1 }, (_, i) => from + i);
       >
     </section>
   </main>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(itemListSchema)}
+  />
 </Layout>
 
 <script>
