@@ -553,7 +553,7 @@ export const META_PIXEL_ID = "378250695246633";
  * contar de menos las compras. El número de ventas que no miente sigue siendo
  * el de la base.
  */
-export const GA4_MEASUREMENT_ID = "";
+export const GA4_MEASUREMENT_ID = "G-C5FXMNDNS9";
 
 export const SHIPPING_CUTOFF_HOUR = 17;
 
