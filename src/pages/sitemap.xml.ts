@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
-import { getProductsByCategory } from "@/services/fetchData";
 import { categories } from "@/services/const";
-import type { Product } from "@/services/types";
+import { traerCatalogo } from "@/services/catalogo";
 
 /*
   Sitemap armado a mano y on-demand, en vez de @astrojs/sitemap.
@@ -54,49 +53,18 @@ export const GET: APIRoute = async () => {
     entries.push(url(`${SITE}/category/${c.path}`, "daily", "0.8", lastmod));
   }
 
-  /*
-    Para juntar los productos se consultan las ocho de la navegación más
-    `camaras`.
-
-    Las ocho del menú son facetas (interior, exterior, batería, análogas...) y
-    hay 24 cámaras que no tienen ninguna cargada: no salen en ninguna de las
-    cuatro consultas de cámara y quedaban fuera del sitemap, que para una
-    página que no tiene links entrantes es quedar fuera de Google. `camaras`
-    es el valor crudo del campo `category` y las junta a todas.
-
-    Solo se usa para descubrir productos: /category/camaras no se publica como
-    URL de categoría porque no está en el menú y duplicaría casi entera a
-    /category/exterior.
-  */
-  const slugsParaDescubrir = [...categories.map((c) => c.path), "camaras"];
-
-  // Un producto puede estar en más de una categoría (una cámara de exterior a
-  // batería sale en las dos), así que se deduplica por modelo.
-  const vistos = new Set<string>();
-
-  const porCategoria = await Promise.all(
-    slugsParaDescubrir.map(async (slug) => {
-      try {
-        const lista = await getProductsByCategory(slug, "");
-        return Array.isArray(lista) ? (lista as Product[]) : [];
-      } catch {
-        return [];
-      }
-    }),
-  );
-
-  for (const lista of porCategoria) {
-    for (const p of lista) {
-      if (!p?.model || vistos.has(p.model)) continue;
-      vistos.add(p.model);
-
-      // encodeURIComponent y no encodeURI: siete modelos de la línea solar
-      // llevan una barra adentro del nombre ("HB8 2K+ (4MP) P/S") y sin
-      // escaparla el sitemap publicaría una URL que parte la ruta en dos.
-      entries.push(
-        url(`${SITE}/product/${encodeURIComponent(p.model)}`, "weekly", "0.7", lastmod),
-      );
-    }
+  // Las mismas que lista el feed de Merchant Center: ver `traerCatalogo`.
+  //
+  // /category/camaras no se publica como URL de categoría aunque se consulte
+  // para descubrir productos: no está en el menú y duplicaría casi entera a
+  // /category/exterior.
+  for (const p of await traerCatalogo()) {
+    // encodeURIComponent y no encodeURI: siete modelos de la línea solar
+    // llevan una barra adentro del nombre ("HB8 2K+ (4MP) P/S") y sin
+    // escaparla el sitemap publicaría una URL que parte la ruta en dos.
+    entries.push(
+      url(`${SITE}/product/${encodeURIComponent(p.model)}`, "weekly", "0.7", lastmod),
+    );
   }
 
   const xml =
