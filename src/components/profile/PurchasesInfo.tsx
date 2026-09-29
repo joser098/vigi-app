@@ -56,15 +56,22 @@ const fechaLarga = (iso: string) => {
   });
 };
 
-// Los cuatro estados de order_statuses, en orden. El seguimiento se dibuja
-// contra `status_order`, así que si mañana se agrega un estado en la base hay
-// que sumarlo acá también.
+// Los cuatro estados del camino normal de order_statuses, en orden. El
+// seguimiento se dibuja contra `status_order`, así que si mañana se agrega un
+// estado en la base hay que sumarlo acá también.
 const PASOS = [
   { orden: 1, label: "Recibido" },
   { orden: 2, label: "En preparación" },
   { orden: 3, label: "Enviado" },
   { orden: 4, label: "Entregado" },
 ];
+
+// Salen del camino: su `status_order` (5 y 6) pintaría todos los pasos como
+// alcanzados, así que en vez del seguimiento se muestra un aviso.
+const ANULADOS: Record<string, string> = {
+  cancelado: "Este pedido fue cancelado.",
+  reembolsado: "Este pedido fue reembolsado. Te devolvimos el dinero por el mismo medio de pago.",
+};
 
 const Seguimiento = ({ actual }: { actual: number }) => (
   <ol className="flex items-center gap-1" aria-label="Estado del pedido">
@@ -101,6 +108,7 @@ const Compra = ({ orden }: { orden: Order }) => {
   const unidades = orden.items.reduce((t, i) => t + i.quantity, 0);
   const subtotal = orden.items.reduce((t, i) => t + i.unit_price * i.quantity, 0);
   const entregado = orden.status === "entregado";
+  const anulado = ANULADOS[orden.status];
 
   return (
     <li className="overflow-hidden rounded-2xl border border-line bg-white">
@@ -117,7 +125,9 @@ const Compra = ({ orden }: { orden: Order }) => {
           className={`rounded-full px-3 py-1 text-xs font-bold ${
             entregado
               ? "bg-green-soft text-green-ink"
-              : "bg-urgency-soft text-urgency"
+              : anulado
+                ? "bg-gray-100 text-gray-600"
+                : "bg-urgency-soft text-urgency"
           }`}
         >
           {orden.status_label}
@@ -125,7 +135,11 @@ const Compra = ({ orden }: { orden: Order }) => {
       </header>
 
       <div className="px-5 py-4">
-        <Seguimiento actual={orden.status_order} />
+        {anulado ? (
+          <p className="text-sm text-muted">{anulado}</p>
+        ) : (
+          <Seguimiento actual={orden.status_order} />
+        )}
       </div>
 
       <ul className="border-t border-line">
