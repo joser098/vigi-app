@@ -1,0 +1,104 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { CONTACT_EMAIL } from "@/services/contacto";
+
+/*
+  Devoluciones y garantía.
+
+  Es la misma política que está en los términos y condiciones ("Política de
+  Retorno por Productos Defectuosos"), en una página propia que se encuentra
+  desde el pie. Google Merchant Center compara lo cargado allá con lo que dice
+  esta página: si cambia una, cambia la otra.
+*/
+---
+
+<Layout
+  title="Devoluciones y garantía | VIGI"
+  description="Cómo cambiar o devolver un producto defectuoso comprado en VIGI y cómo funciona la garantía del fabricante de 6 a 24 meses."
+>
+  <main class="prose-vigi m-auto max-w-[760px] px-4 py-12 sm:px-8 sm:py-16">
+    <article>
+      <div class="my-3 py-2">
+        <h1 class="font-bold my-2 text-2xl">Devoluciones y garantía</h1>
+        <p>
+          Todos los productos que vendemos son nuevos y tienen garantía. Acá te
+          contamos qué hacer si un producto llega fallado o deja de funcionar.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Producto defectuoso o dañado en el envío</h2>
+        <p>
+          Si el producto tiene un defecto de fabricación o llegó dañado por el
+          transporte, te lo cambiamos o te devolvemos el dinero, a tu elección.
+        </p>
+        <ul class="ml-4">
+          <li class="list-disc">
+            Avisanos dentro de los <strong>5 días corridos</strong> desde que lo
+            recibiste.
+          </li>
+          <li class="list-disc">
+            Tené a mano el comprobante de compra (factura, ticket o número de
+            pedido).
+          </li>
+          <li class="list-disc">
+            El producto tiene que conservar sus accesorios originales y no mostrar
+            signos de uso indebido.
+          </li>
+        </ul>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Cómo pedir el cambio o la devolución</h2>
+        <ol class="ml-4 list-decimal">
+          <li>
+            Escribinos a <strong>{CONTACT_EMAIL}</strong> con el asunto “Producto
+            defectuoso”.
+          </li>
+          <li>Adjuntá fotos o videos donde se vea claramente el defecto.</li>
+          <li>
+            Evaluamos el caso en un plazo máximo de 14 días hábiles y te
+            respondemos por mail con los pasos a seguir.
+          </li>
+        </ol>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Garantía del fabricante</h2>
+        <p>
+          Pasados los 5 días, los productos siguen cubiertos por la garantía del
+          fabricante contra defectos de fabricación, de <strong>6 meses a 2 años
+          según la marca</strong>. Si un producto falla dentro de ese período,
+          escribinos a <strong>{CONTACT_EMAIL}</strong> y te ayudamos a gestionar
+          la garantía.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Qué no cubre</h2>
+        <ul class="ml-4">
+          <li class="list-disc">Mal uso del producto o desgaste normal.</li>
+          <li class="list-disc">
+            Daños posteriores a la entrega: golpes, caídas, exposición a líquidos
+            o modificaciones.
+          </li>
+        </ul>
+      </div>
+
+      <p>
+        Esta política forma parte de nuestros <a class="underline" href="/legales/terminos"
+          >términos y condiciones</a
+        >.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  p,
+  li {
+    font-size: small;
+    color: gray;
+    padding: 5px 0;
+  }
+</style>

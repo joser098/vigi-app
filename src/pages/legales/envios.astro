@@ -1,0 +1,126 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { FREE_SHIPPING_LABEL, SHIPPING_CUTOFF_HOUR } from "@/services/const";
+import { CONTACT_EMAIL } from "@/services/contacto";
+
+/*
+  Política de envíos.
+
+  Los plazos y montos son los mismos que la ventana "Formas de entrega"
+  (components/Modals/ShippingWays.astro), la respuesta de las preguntas
+  frecuentes y la política de envío cargada en Google Merchant Center. Si
+  cambian, cambian en todos lados: Google marca como engañosa una tienda que
+  promete en un lugar plazos o costos distintos de los que cumple en otro.
+*/
+const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
+---
+
+<Layout
+  title="Política de envíos | VIGI"
+  description={`Plazos y costos de envío de VIGI: 24 h en CABA, envío gratis a todo el país desde ${FREE_SHIPPING_LABEL} y retiro en oficina en Caballito.`}
+>
+  <main class="prose-vigi m-auto max-w-[760px] px-4 py-12 sm:px-8 sm:py-16">
+    <article>
+      <div class="my-3 py-2">
+        <h1 class="font-bold my-2 text-2xl">Política de envíos</h1>
+        <p>
+          Enviamos a todo el país. Estos son los plazos, costos y formas de
+          entrega de las compras hechas en <strong>vigi.com.ar</strong>.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Horario de despacho</h2>
+        <p>
+          Si la compra se confirma y el pago se aprueba antes de las {corte} de
+          un día hábil, el pedido se despacha ese mismo día. Después de esa
+          hora, o en fin de semana o feriado, sale el siguiente día hábil.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Plazos de entrega</h2>
+        <ul class="ml-4">
+          <li class="list-disc">
+            <strong>CABA:</strong> en 24 h hábiles desde el despacho.
+          </li>
+          <li class="list-disc">
+            <strong>Resto del AMBA:</strong> en un máximo de 4 días hábiles.
+          </li>
+          <li class="list-disc">
+            <strong>Resto del país:</strong> de 8 a 12 días hábiles desde la
+            confirmación de la compra.
+          </li>
+        </ul>
+        <p>
+          Los envíos fuera de CABA se hacen por Andreani. Cuando el pedido sale,
+          te avisamos por mail y podés seguir su estado desde tu cuenta, en la
+          sección de pedidos.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Costo de envío</h2>
+        <ul class="ml-4">
+          <li class="list-disc">
+            <strong>CABA:</strong> sin cargo, en cualquier compra.
+          </li>
+          <li class="list-disc">
+            <strong>Resto del país:</strong> sin cargo en compras desde {
+              FREE_SHIPPING_LABEL
+            }.
+          </li>
+          <li class="list-disc">
+            Por debajo de ese monto, el envío se cotiza con Andreani según el
+            código postal de entrega. El costo aparece en el resumen de compra
+            antes de pagar, y es el que se cobra.
+          </li>
+        </ul>
+        <p>No ofrecemos envío express.</p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Retiro en oficina</h2>
+        <p>
+          Podés retirar tu compra sin cargo en nuestra oficina de Caballito
+          (CABA) a partir de las 24 h hábiles de aprobado el pago. La retira
+          únicamente el titular de la compra, presentando su DNI. Te avisamos
+          por mail cuando esté lista.
+        </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Al recibir el pedido</h2>
+        <ul class="ml-4">
+          <li class="list-disc">Tené el DNI a mano al momento de la entrega o el retiro.</li>
+          <li class="list-disc">
+            Revisá que el paquete esté en buen estado y que el pedido coincida
+            antes de firmar el remito.
+          </li>
+          <li class="list-disc">
+            Si llegó dañado o incompleto, avisanos dentro de los 5 días corridos:
+            lo resolvemos según nuestra <a class="underline" href="/legales/devoluciones"
+              >política de devoluciones y garantía</a
+            >.
+          </li>
+        </ul>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Contacto</h2>
+        <p>
+          Si tenés dudas sobre un envío, escribinos a <strong>{CONTACT_EMAIL}</strong>.
+        </p>
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  p,
+  li {
+    font-size: small;
+    color: gray;
+    padding: 5px 0;
+  }
+</style>

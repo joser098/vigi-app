@@ -162,7 +162,10 @@ export const faq = [
     {
         id: 2,
         question: '¿Cuánto tiempo tarda en llegar mi pedido?',
-        answer: 'El tiempo de entrega varía según tu ubicación y el método de envío seleccionado. Por lo general, los pedidos tardan entre algunas horas y 2 o 3 días hábiles en llegar después de haber sido despachados.'
+        // Los mismos plazos que la ventana "Formas de entrega" y la página
+        // /legales/envios. Si cambian, cambian en los tres lados: Google Merchant
+        // Center marca como engañosa una tienda que promete plazos distintos.
+        answer: 'Depende de dónde estés. En CABA te llega en 24 h hábiles. En el resto del AMBA, en un máximo de 4 días hábiles. Al resto del país, de 8 a 12 días hábiles desde la confirmación de la compra. También podés retirarlo en nuestra oficina de Caballito a partir de las 24 h hábiles de aprobado el pago.'
     },
     {
         id: 3,
@@ -181,18 +184,20 @@ export const faq = [
     },
     {
         id: 6,
-        question: '¿Tienen alguna opción de envío express? ¿Cuál es su costo?',
-        answer: 'Sí, ofrecemos opciones de envío express con tarifas y tiempos de entrega variables según la ubicación. Puedes ver las opciones disponibles durante el proceso de compra antes de finalizar tu pedido.'
+        // $450.000 escrito a mano: FREE_SHIPPING_LABEL se declara más abajo en
+        // este archivo y usarlo acá tira "cannot access before initialization".
+        question: '¿Cuánto cuesta el envío?',
+        answer: 'En CABA es sin cargo. Al resto del país, el envío es gratis en compras desde $450.000; por debajo de ese monto se cotiza con Andreani según tu código postal y ves el costo en el resumen antes de pagar. No tenemos envío express.'
     },
     {
         id: 7,
         question: '¿Ofrecen garantía en sus productos?',
-        answer: 'Ofrecemos garantía en todos nuestros productos contra defectos de fabricación en un período entre 6 meses y 2 años dependiendo de la marca. Si experimentas algún problema con tu producto dentro de este período, por favor contáctanos para obtener asistencia.'
+        answer: 'Sí. Todos los productos tienen la garantía del fabricante contra defectos de fabricación, de 6 meses a 2 años según la marca. Si el producto llega fallado o dañado por el envío, avisanos dentro de los 5 días corridos de recibirlo y lo cambiamos o te devolvemos el dinero. El detalle está en la página de Devoluciones y garantía.'
     },
     {
         id: 8,
         question: '¿Tienen una tienda física donde pueda ver los productos personalmente?',
-        answer: `Actualmente operamos exclusivamente como un e-commerce y no tenemos tiendas físicas. Sin embargo, puedes ver fotos detalladas y descripciones de nuestros productos en nuestro sitio web. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
+        answer: `No tenemos local a la calle: vendemos solo por la web. Sí tenemos una oficina en Caballito (CABA) donde podés retirar tu compra a partir de las 24 h hábiles de aprobado el pago, presentando el DNI del titular. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
     }
 ];
 
@@ -208,22 +213,34 @@ export const footerData = [
             }
         ]
     },
-    // {
-    //     id: 2,
-    //     title: 'Envíos y Devoluciones',
-    //     redirects: [
-    //         {
-    //             id: 1,
-    //             title: 'Política de Envíos',
-    //             url: '/legales/envios'
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Política de Devoluciones',
-    //             url: '/legales/devoluciones'
-    //         }
-    //     ]
-    // },
+    // Google Merchant Center revisa que las políticas se encuentren desde
+    // cualquier página: sin estos links la tienda cuenta como poco transparente.
+    {
+        id: 2,
+        title: 'Políticas',
+        redirects: [
+            {
+                id: 1,
+                title: 'Envíos',
+                url: '/legales/envios'
+            },
+            {
+                id: 2,
+                title: 'Devoluciones y garantía',
+                url: '/legales/devoluciones'
+            },
+            {
+                id: 3,
+                title: 'Términos y condiciones',
+                url: '/legales/terminos'
+            },
+            {
+                id: 4,
+                title: 'Privacidad',
+                url: '/legales/privacidad'
+            }
+        ]
+    },
     {
         id: 3,
         title: 'Soporte',

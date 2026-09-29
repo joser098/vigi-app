@@ -25,6 +25,8 @@ const SITE = "https://www.vigi.com.ar";
 const staticPages: Array<{ path: string; priority: string; changefreq: string }> = [
   { path: "/", priority: "1.0", changefreq: "daily" },
   { path: "/nosotros", priority: "0.5", changefreq: "yearly" },
+  { path: "/legales/envios", priority: "0.3", changefreq: "yearly" },
+  { path: "/legales/devoluciones", priority: "0.3", changefreq: "yearly" },
   { path: "/legales/terminos", priority: "0.3", changefreq: "yearly" },
   { path: "/legales/privacidad", priority: "0.3", changefreq: "yearly" },
 ];

@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { CONTACT_EMAIL, CONTACT_EMAIL_URL, PHONE_LABEL, PHONE_URL } from "@/services/contacto";
 ---
 
 <Layout
@@ -82,6 +83,21 @@ import Layout from "@/layouts/Layout.astro";
           </p>
         </li>
       </ol>
+    </article>
+    <article class="my-3 py-2">
+      <h2 class="font-bold my-2 text-2xl">Contacto</h2>
+      <ul>
+        <li>
+          Mail: <a class="underline" href={CONTACT_EMAIL_URL}>{CONTACT_EMAIL}</a>
+        </li>
+        <li>
+          Teléfono: <a class="underline" href={PHONE_URL}>{PHONE_LABEL}</a>
+        </li>
+        <li>
+          Oficina: Caballito, Ciudad Autónoma de Buenos Aires. Vendemos solo por
+          la web; la oficina es para retirar compras.
+        </li>
+      </ul>
     </article>
   </main>
 </Layout>

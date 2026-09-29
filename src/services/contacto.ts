@@ -14,6 +14,14 @@ export const SHOW_WHATSAPP: boolean = false;
 export const WHATSAPP_PHONE = "11 2603 9243";
 export const WHATSAPP_URL = "https://wa.me/541126039243";
 
+/**
+ * El teléfono, como línea de llamada y no como WhatsApp. Se muestra solo en
+ * /nosotros, junto con los datos de la empresa: es el mismo número que figura
+ * en Google Merchant Center, y los dos tienen que coincidir.
+ */
+export const PHONE_LABEL = WHATSAPP_PHONE;
+export const PHONE_URL = "tel:+541126039243";
+
 export const CONTACT_EMAIL = "contacto@vigi.com.ar";
 export const CONTACT_EMAIL_URL = `mailto:${CONTACT_EMAIL}`;
 
