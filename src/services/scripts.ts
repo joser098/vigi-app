@@ -119,7 +119,10 @@ export const getTime = () => {
   
   //Get Day
   const weekDays = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
-  const day = date.getDay();
+  // En horario de Buenos Aires, igual que la hora: getDay() usa la zona del
+  // servidor (UTC), y de 21 a 24 h de acá ya daría el día siguiente.
+  const weekdayBA = date.toLocaleDateString("en-US", { timeZone: "America/Argentina/Buenos_Aires", weekday: "short" });
+  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(weekdayBA);
 
   //Get Time
   const time_arg = date.toLocaleTimeString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", hour12: false});
@@ -144,7 +147,14 @@ export const getTime = () => {
 export const calculateShipmentArrives = (date: any): string => {
   if(date.hour < 0) return "";
 
-  return date.hour < SHIPPING_CUTOFF_HOUR
-    ? "Llega hoy (CABA)"
-    : "Llega mañana (CABA)";
+  // El envío más rápido es al día siguiente: lo que entra antes del corte sale
+  // hoy y llega mañana; lo que entra después, sale mañana. Los domingos no se
+  // entrega: lo que caería en domingo llega el lunes.
+  let dias = date.hour < SHIPPING_CUTOFF_HOUR ? 1 : 2;
+  if ((date.day + dias) % 7 === 0) dias++;
+
+  if (dias === 1) return "Llega mañana (CABA)";
+  // Si en el medio hay un domingo, "pasado mañana" confunde: se nombra el día.
+  if ((date.day + dias) % 7 === 1) return "Llega el lunes (CABA)";
+  return "Llega pasado mañana (CABA)";
 };
