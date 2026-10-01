@@ -132,7 +132,12 @@ const ogImage = image ?? `${BASE_URL}/assets/og.png`;
     </script>
     <script is:inline define:vars={{ GA4_MEASUREMENT_ID }}>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      // En `window` y no como `function gtag` suelta: `define:vars` hace que
+      // Astro envuelva este script en una función, y una declaración suelta
+      // quedaba local. Los demás scripts (la compra de PurchaseGa4) preguntan
+      // `typeof gtag` y, sin esto, no lo encontraban y no mandaban nada.
+      window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+      var gtag = window.gtag;
       gtag('js', new Date());
 
       gtag('config', 'AW-17302456620');
