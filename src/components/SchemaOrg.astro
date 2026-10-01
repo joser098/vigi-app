@@ -36,6 +36,17 @@ const schema = {
       name: "VIGI",
       inLanguage: "es-AR",
       publisher: { "@id": new URL("#organization", SITE).href },
+      // Le dice a Google cómo se busca en la tienda. /buscar es noindex, pero
+      // eso no importa acá: el robot no indexa la acción, la usa.
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: new URL("/buscar?search={search_term_string}", SITE)
+            .href.replace("%7B", "{").replace("%7D", "}"),
+        },
+        "query-input": "required name=search_term_string",
+      },
     },
   ],
 };

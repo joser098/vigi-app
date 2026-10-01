@@ -6,6 +6,8 @@ import { getProductsByCategory } from "../../services/fetchData";
 import ProductsList from "../../components/ProductsList.astro";
 import type { Product } from "src/services/types";
 import { CATEGORY_SEO } from "@/services/const";
+import { CATEGORY_CONTENT } from "@/services/seoContent";
+import SeoContent from "@/components/SeoContent.astro";
 
 const path = Astro.url;
 const queries = Object.fromEntries(path.searchParams.entries());
@@ -17,13 +19,26 @@ let { category } = Astro.params;
 // acento y sin sufijo. La ruta viene en minúscula, así que se deriva el nombre.
 const bannerName = category ? category.toLowerCase() : "";
 
-const productsList: Product[] = await getProductsByCategory(
+const productsList: Product[] | Error | undefined = await getProductsByCategory(
   category!,
   queries.order,
 );
 
-if (!productsList) {
-  return Astro.redirect("/");
+// La API contesta 400 sin `data` cuando la categoría no existe. Antes eso
+// redirigía al home con un 302, que Google toma como "soft 404".
+//
+// Distinto es que la API no conteste: `getProductsByCategory` devuelve el
+// Error en vez de tirarlo. Un 404 ahí le diría a Google que la categoría dejó
+// de existir y la sacaría del índice por una caída de Railway; un 503 le dice
+// que vuelva más tarde.
+if (productsList instanceof Error) {
+  return new Response("Servicio no disponible, probá en unos minutos.", {
+    status: 503,
+    headers: { "Retry-After": "120" },
+  });
+}
+if (!Array.isArray(productsList)) {
+  return Astro.rewrite("/404");
 }
 
 // La API devuelve la categoría entera: exterior son 301 productos en un solo
@@ -75,6 +90,10 @@ const canonical = new URL(
 ).href;
 
 const ordenada = Boolean(queries.order);
+
+// Texto propio solo en la página 1: en las demás sería el mismo bloque
+// repetido en trece URLs.
+const content = page === 1 ? CATEGORY_CONTENT[slug] : undefined;
 
 // "… — Página 3 | VIGI" y no "… | VIGI — Página 3": la marca va al final,
 // que es lo que Google recorta primero cuando el título no entra.
@@ -138,6 +157,14 @@ const itemListSchema = {
         decoding="async"
       />
     </div>
+
+    {
+      content && (
+        <p class="mt-6 max-w-[75ch] text-[15px] leading-relaxed text-muted">
+          {content.intro}
+        </p>
+      )
+    }
 
     <div class="my-6 flex flex-wrap items-center justify-between gap-4">
       <p class="text-sm text-muted">
@@ -233,6 +260,8 @@ const itemListSchema = {
       )
     }
 
+    {content && <SeoContent content={content} />}
+
     <!-- RESCATE -->
     <section
       class="mt-14 flex flex-col items-start justify-between gap-6 rounded-3xl bg-primary px-7 py-8 sm:flex-row sm:items-center sm:px-12"
@@ -268,6 +297,9 @@ const itemListSchema = {
   import { navigate } from "astro:transitions/client";
 
   document.addEventListener("astro:page-load", () => {
+    // El listener queda vivo entre navegaciones del ClientRouter: sin esto
+    // también corría en /marca, que tiene su propio select de orden.
+    if (!location.pathname.startsWith("/category/")) return;
     const orderSelect = document.getElementById("order") as HTMLSelectElement;
     const params = new URL(document.location.href);
     const search = params.searchParams;

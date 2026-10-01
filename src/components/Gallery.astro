@@ -1,12 +1,19 @@
 ---
 interface Props {
   model: string;
+  /** "Hikvision DS-2CD1043G0-I": marca y modelo, para el alt. */
+  name?: string;
   gallery_images_total: number;
   /** "$ 5.928" ya formateado; null si el producto no tiene descuento. */
   savings?: string | null;
 }
 
-const { model, gallery_images_total, savings = null } = Astro.props;
+const { model, name = model, gallery_images_total, savings = null } = Astro.props;
+
+// El alt es lo que Google Imágenes usa para entender la foto. "Imagen de la
+// galería de fotos de DS-2CD1043G0-I" repetido igual en todas no decía la
+// marca ni diferenciaba una foto de otra.
+const alt = (i: number) => `${name} – foto ${i + 1}`;
 const model_trim = encodeURIComponent(model).replace(/%20/g, "+");
 // const model_trim = model.replace("+","%2B").replace(" ","+");
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
@@ -44,7 +51,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
             loading="lazy"
             decoding="async"
             class="h-full w-full object-contain object-center cursor-zoom-in"
-            alt={`Imagen de la galería de fotos de ${model}`}
+            alt={alt(0)}
             src={`${BASE_URL}/gallery/${model_trim}/0.png`}
           />
         </picture>
@@ -70,7 +77,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
               loading="lazy"
               decoding="async"
               class="thumbnails h-full w-full cursor-pointer rounded-md border border-gray-200 bg-white object-contain p-1 transition-colors hover:border-primary"
-              alt={`Imagen de la galería de fotos de ${model}`}
+              alt={alt(index)}
               src={`${BASE_URL}/gallery/${model_trim}/${index}.png`}
               data-url={`${BASE_URL}/gallery/${model_trim}/${index}.png`}
             />
@@ -114,7 +121,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
       loading="lazy"
       decoding="async"
       class="product-gallery-img z-10 h-full rounded-sm object-contain object-center bg-white"
-      alt={`Imagen de la galería de fotos de ${model}`}
+      alt={alt(0)}
       data-total-items={gallery_images_total}
       src={`${BASE_URL}/gallery/${model_trim}/0.png`}
     />

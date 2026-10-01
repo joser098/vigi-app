@@ -2,9 +2,23 @@
 import { SHOW_WHATSAPP, WHATSAPP_URL } from "@/services/contacto";
 import Layout from "../layouts/Layout.astro";
 import { categories } from "@/services/const";
+
+/*
+  On-demand para que las fichas, las categorías y las marcas puedan hacer
+  `Astro.rewrite("/404")`: Astro no deja reescribir hacia una ruta
+  prerenderizada desde una on-demand.
+
+  Antes un producto o una categoría que no existían respondían con un 302: el
+  producto a /404 y la categoría al home. Google trata la redirección al home
+  como un "soft 404", y las dos dejaban la URL vieja dando vueltas en Search
+  Console. Ahora la misma URL responde 404 con esta página como cuerpo.
+*/
+export const prerender = false;
+
+Astro.response.status = 404;
 ---
 
-<Layout title="Ups! | VIGI">
+<Layout title="Página no encontrada | VIGI" noindex>
   <main class="m-auto flex max-w-[1180px] flex-col gap-12 px-4 py-16 sm:px-8 lg:flex-row lg:items-center lg:gap-20">
     <div class="flex-1">
       <span class="text-[13px] font-bold tracking-[0.14em] text-urgency"

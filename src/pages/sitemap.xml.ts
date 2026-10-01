@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { categories } from "@/services/const";
 import { traerCatalogo } from "@/services/catalogo";
+import { BRANDS } from "@/services/seoContent";
+import { GUIAS } from "@/services/guias";
 
 /*
   Sitemap armado a mano y on-demand, en vez de @astrojs/sitemap.
@@ -24,6 +26,7 @@ const SITE = "https://www.vigi.com.ar";
 // además mandan `noindex` desde el Layout.
 const staticPages: Array<{ path: string; priority: string; changefreq: string }> = [
   { path: "/", priority: "1.0", changefreq: "daily" },
+  { path: "/guias", priority: "0.5", changefreq: "monthly" },
   { path: "/nosotros", priority: "0.5", changefreq: "yearly" },
   { path: "/legales/envios", priority: "0.3", changefreq: "yearly" },
   { path: "/legales/devoluciones", priority: "0.3", changefreq: "yearly" },
@@ -39,20 +42,49 @@ const escape = (s: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 
-const url = (loc: string, changefreq: string, priority: string, lastmod: string) =>
-  `<url><loc>${escape(loc)}</loc><lastmod>${lastmod}</lastmod>` +
+/*
+  `lastmod` solo cuando hay una fecha real detrás.
+
+  Antes todas las URLs decían la fecha del día. Google lo detecta y pasa a
+  ignorar el campo en todo el sitemap, que es justo lo que no queremos: es la
+  señal con la que se entera de que un precio cambió y vuelve a rastrear la
+  ficha. Los productos usan `updated_at` (lo actualiza un trigger en cada
+  cambio) y las guías su fecha de edición. Las categorías, las marcas y las
+  estáticas no tienen una fecha honesta, así que van sin.
+*/
+const url = (
+  loc: string,
+  changefreq: string,
+  priority: string,
+  lastmod?: string | null,
+) =>
+  `<url><loc>${escape(loc)}</loc>` +
+  (lastmod ? `<lastmod>${lastmod}</lastmod>` : "") +
   `<changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
 
+const fecha = (iso?: string | null) => {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+};
+
 export const GET: APIRoute = async () => {
-  const lastmod = new Date().toISOString().slice(0, 10);
   const entries: string[] = [];
 
   for (const page of staticPages) {
-    entries.push(url(`${SITE}${page.path}`, page.changefreq, page.priority, lastmod));
+    entries.push(url(`${SITE}${page.path}`, page.changefreq, page.priority));
   }
 
   for (const c of categories) {
-    entries.push(url(`${SITE}/category/${c.path}`, "daily", "0.8", lastmod));
+    entries.push(url(`${SITE}/category/${c.path}`, "daily", "0.8"));
+  }
+
+  for (const b of BRANDS) {
+    entries.push(url(`${SITE}/marca/${b.slug}`, "daily", "0.7"));
+  }
+
+  for (const g of GUIAS) {
+    entries.push(url(`${SITE}/guias/${g.slug}`, "monthly", "0.6", g.updated));
   }
 
   // Las mismas que lista el feed de Merchant Center: ver `traerCatalogo`.
@@ -65,7 +97,12 @@ export const GET: APIRoute = async () => {
     // llevan una barra adentro del nombre ("HB8 2K+ (4MP) P/S") y sin
     // escaparla el sitemap publicaría una URL que parte la ruta en dos.
     entries.push(
-      url(`${SITE}/product/${encodeURIComponent(p.model)}`, "weekly", "0.7", lastmod),
+      url(
+        `${SITE}/product/${encodeURIComponent(p.model)}`,
+        "weekly",
+        "0.7",
+        fecha(p.updated_at),
+      ),
     );
   }
 

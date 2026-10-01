@@ -103,19 +103,19 @@ export const CATEGORY_SEO: Record<
     h1: "Porteros eléctricos y videoporteros",
     title: "Porteros eléctricos y videoporteros | VIGI",
     description:
-      "Videoporteros y porteros eléctricos para casa, departamento y edificio. Commax, Hikvision y Dahua, con visor en el celular. Envíos a todo el país.",
+      "Videoporteros y porteros eléctricos para casa, departamento y edificio. Commax, Dahua y Ezviz, con atención desde el celular. Envíos a todo el país.",
   },
   almacenamiento: {
     h1: "Discos y almacenamiento para videovigilancia",
     title: "Discos rígidos y memorias para CCTV | VIGI",
     description:
-      "Discos rígidos de videovigilancia y memorias microSD preparadas para grabar 24/7 sin fallas. WD Purple y Seagate SkyHawk. Envíos a todo el país.",
+      "Discos rígidos de videovigilancia WD Purple, Seagate SkyHawk y Toshiba, SSD y memorias microSD para grabar 24/7. Envíos a todo el país.",
   },
   alarmas: {
     h1: "Alarmas para casa y negocio",
     title: "Alarmas para casa y negocio | VIGI",
     description:
-      "Kits de alarma inalámbrica con sensores de movimiento, apertura y sirena, controlados desde el celular. Sin obra ni cables. Envíos a todo el país.",
+      "Centrales de alarma Intelbras, sensores de movimiento y apertura, sirenas y barreras infrarrojas. Cableadas, inalámbricas y Wi-Fi. Envíos a todo el país.",
   },
 };
 
@@ -249,6 +249,11 @@ export const footerData = [
                 id: 1,
                 title: 'Preguntas Frecuentes',
                 url: '/#faq'
+            },
+            {
+                id: 3,
+                title: 'Guías de compra',
+                url: '/guias'
             },
             {
                 id: 2,

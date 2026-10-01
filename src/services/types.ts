@@ -28,6 +28,8 @@ export interface Product {
   others: string;
   gallery: number;
   tags: string[];
+  /** Lo pone un trigger en cada cambio. Puede faltar si la API es vieja. */
+  updated_at?: string;
 }
 
 export interface KitDetails {

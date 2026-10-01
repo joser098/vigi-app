@@ -1,0 +1,253 @@
+---
+export const prerender = false;
+import Layout from "@/layouts/Layout.astro";
+import ProductsList from "@/components/ProductsList.astro";
+import { searchProducts } from "@/services/fetchData";
+import { BRANDS } from "@/services/seoContent";
+import { categories } from "@/services/const";
+import type { Product } from "@/services/types";
+
+/*
+  Página por marca. Apunta a búsquedas como "cámaras hikvision" o "alarmas
+  intelbras", que antes no tenían adónde caer: la grilla de marcas del home
+  llevaba a /buscar, que es noindex.
+
+  La API no tiene un filtro por marca, así que se usa el buscador y se filtra
+  por `provider` acá. El filtro hace falta: el buscador matchea también contra
+  la descripción, y "Dahua" aparece en la de productos de otras marcas
+  ("compatible con Dahua").
+*/
+
+const brand = BRANDS.find((b) => b.slug === Astro.params.marca?.toLowerCase());
+if (!brand) {
+  return Astro.rewrite("/404");
+}
+
+// /marca/Hikvision y /marca/hikvision serían dos URLs para la misma página.
+if (Astro.params.marca !== brand.slug) {
+  return Astro.redirect(`/marca/${brand.slug}${Astro.url.search}`, 301);
+}
+
+const result = await searchProducts(brand.provider, 1000);
+
+// `searchProducts` devuelve el Error en vez de tirarlo. Con la API caída, un
+// 503 y no una página vacía: Google la guardaría así.
+if (!Array.isArray(result)) {
+  return new Response("Servicio no disponible, probá en unos minutos.", {
+    status: 503,
+    headers: { "Retry-After": "120" },
+  });
+}
+
+const queries = Object.fromEntries(Astro.url.searchParams.entries());
+
+const all = (result as Product[]).filter(
+  (p) => p.provider?.toLowerCase() === brand.provider.toLowerCase(),
+);
+if (queries.order === "asc") all.sort((a, b) => a.price - b.price);
+if (queries.order === "desc") all.sort((a, b) => b.price - a.price);
+
+const PER_PAGE = 24;
+const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+const page = Math.min(
+  Math.max(1, Number.parseInt(queries.page ?? "1", 10) || 1),
+  totalPages,
+);
+const visible = all.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+const pageHref = (n: number) => {
+  const params = new URLSearchParams(Astro.url.searchParams);
+  if (n === 1) params.delete("page");
+  else params.set("page", String(n));
+  const qs = params.toString();
+  return qs ? `${Astro.url.pathname}?${qs}` : Astro.url.pathname;
+};
+
+const from = Math.max(1, Math.min(page - 2, totalPages - 4));
+const to = Math.min(totalPages, from + 4);
+const pages = Array.from({ length: to - from + 1 }, (_, i) => from + i);
+
+// Atajos a las categorías del menú en las que la marca tiene productos. Mismo
+// criterio que la miga de pan de la ficha.
+const facet = (p: Product) =>
+  categories.some((c) => c.path === p.category)
+    ? p.category
+    : p.category === "camaras"
+      ? p.power_type === "bateria"
+        ? "bateria"
+        : (p.location ?? (p.is_analogue ? "analogas" : null))
+      : null;
+const presentes = new Set(all.map(facet));
+const brandCategories = categories.filter((c) => presentes.has(c.path));
+
+// --- SEO ---------------------------------------------------------------------
+
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+const canonical = new URL(
+  page > 1 ? `/marca/${brand.slug}?page=${page}` : `/marca/${brand.slug}`,
+  SITE,
+).href;
+const titulo =
+  page > 1 ? `${brand.name} — Página ${page} | VIGI` : brand.title;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: SITE.href },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: brand.name,
+      item: new URL(`/marca/${brand.slug}`, SITE).href,
+    },
+  ],
+};
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Productos ${brand.name}`,
+  numberOfItems: all.length,
+  itemListElement: visible.map((p, i) => ({
+    "@type": "ListItem",
+    position: (page - 1) * PER_PAGE + i + 1,
+    url: new URL(`/product/${encodeURIComponent(p.model)}`, SITE).href,
+    name: `${p.provider} ${p.model}`,
+  })),
+};
+---
+
+<Layout
+  title={titulo}
+  description={brand.description}
+  canonical={canonical}
+  noindex={Boolean(queries.order) || all.length === 0}
+>
+  <main class="m-auto max-w-[1180px] px-4 pb-8 sm:px-8">
+    <nav class="flex items-center gap-2 py-3 text-xs text-gray-400">
+      <a href="/" class="hover:underline">Inicio</a>
+      <span>/</span>
+      <span class="text-ink">{brand.name}</span>
+    </nav>
+
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+      Productos {brand.name}
+    </h1>
+    {
+      page === 1 && (
+        <p class="mt-4 max-w-[75ch] text-[15px] leading-relaxed text-muted">
+          {brand.intro}
+        </p>
+      )
+    }
+
+    {
+      brandCategories.length > 1 && (
+        <div class="mt-6 flex flex-wrap gap-2.5">
+          {brandCategories.map((c) => (
+            <a
+              href={`/category/${c.path}`}
+              class="inline-flex h-10 items-center rounded-full border-[1.5px] border-line bg-white px-4 text-[13px] text-ink transition-colors hover:border-primary"
+            >
+              {c.name}
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="my-6 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-sm text-muted">
+        <strong class="font-semibold text-ink">{all.length}</strong>
+        {all.length === 1 ? " producto" : " productos"}
+        {totalPages > 1 && ` · página ${page} de ${totalPages}`}
+      </p>
+      <div class="flex items-center gap-2.5">
+        <label for="order" class="text-sm text-muted">Ordenar por</label>
+        <select
+          class="h-11 rounded-full border-[1.5px] border-line bg-white px-4 text-sm font-semibold text-ink"
+          name="order"
+          id="order"
+        >
+          <option value="rel">Más relevante</option>
+          <option value="asc">Menor precio</option>
+          <option value="desc">Mayor precio</option>
+        </select>
+      </div>
+    </div>
+
+    <ProductsList productsList={visible} />
+
+    {
+      totalPages > 1 && (
+        <nav class="mt-10 flex items-center justify-center gap-2">
+          {page > 1 && (
+            <a
+              href={pageHref(page - 1)}
+              rel="prev"
+              aria-label="Página anterior"
+              class="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line bg-white text-primary"
+            >
+              ‹
+            </a>
+          )}
+          {pages.map((n) => (
+            <a
+              href={pageHref(n)}
+              aria-current={n === page ? "page" : undefined}
+              class:list={[
+                "flex size-11 items-center justify-center rounded-full text-sm",
+                n === page
+                  ? "bg-primary font-bold text-white"
+                  : "border-[1.5px] border-line bg-white text-ink",
+              ]}
+            >
+              {n}
+            </a>
+          ))}
+          {page < totalPages && (
+            <a
+              href={pageHref(page + 1)}
+              rel="next"
+              aria-label="Página siguiente"
+              class="flex size-11 items-center justify-center rounded-full border-[1.5px] border-line bg-white text-primary"
+            >
+              ›
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </main>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(itemListSchema)}
+  />
+</Layout>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  document.addEventListener("astro:page-load", () => {
+    const orderSelect = document.getElementById("order");
+    if (!(orderSelect instanceof HTMLSelectElement)) return;
+    if (!location.pathname.startsWith("/marca/")) return;
+
+    const url = new URL(document.location.href);
+    const order = url.searchParams.get("order");
+    if (order) orderSelect.value = order;
+
+    orderSelect.addEventListener("change", () => {
+      url.searchParams.set("order", orderSelect.value);
+      url.searchParams.delete("page");
+      navigate(url.href);
+    });
+  });
+</script>

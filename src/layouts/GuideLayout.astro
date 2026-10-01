@@ -1,0 +1,165 @@
+---
+import Layout from "./Layout.astro";
+import { GUIAS } from "@/services/guias";
+
+/**
+ * Envoltorio de cada guía: título, fecha, miga, schema de artículo y links a
+ * las otras guías. El texto va en el slot con <h2>, <p>, <ul> sueltos; los
+ * estilos de esos elementos salen de acá para que cada guía sea solo texto.
+ */
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const guia = GUIAS.find((g) => g.slug === slug);
+if (!guia) throw new Error(`Falta la guía "${slug}" en src/services/guias.ts`);
+
+const SITE = Astro.site ?? new URL("https://www.vigi.com.ar");
+const url = new URL(`/guias/${guia.slug}`, SITE).href;
+const otras = GUIAS.filter((g) => g.slug !== slug);
+
+const fecha = new Date(`${guia.updated}T12:00:00`).toLocaleDateString(
+  "es-AR",
+  { day: "numeric", month: "long", year: "numeric" },
+);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": `${url}#article`,
+      headline: guia.title,
+      description: guia.description,
+      datePublished: guia.published,
+      dateModified: guia.updated,
+      inLanguage: "es-AR",
+      mainEntityOfPage: url,
+      author: { "@id": new URL("#organization", SITE).href },
+      publisher: { "@id": new URL("#organization", SITE).href },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE.href },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Guías",
+          item: new URL("/guias", SITE).href,
+        },
+        { "@type": "ListItem", position: 3, name: guia.title },
+      ],
+    },
+  ],
+};
+---
+
+<Layout
+  title={`${guia.title} | VIGI`}
+  description={guia.description}
+  type="article"
+>
+  <main class="m-auto max-w-[760px] px-4 pb-8 sm:px-8">
+    <nav class="flex items-center gap-2 py-3 text-xs text-gray-400">
+      <a href="/" class="hover:underline">Inicio</a>
+      <span>/</span>
+      <a href="/guias" class="hover:underline">Guías</a>
+    </nav>
+
+    <article class="guia">
+      <h1
+        class="mt-2 text-pretty text-3xl font-bold leading-tight tracking-tight text-primary sm:text-4xl"
+      >
+        {guia.title}
+      </h1>
+      <p class="mt-3 text-xs text-gray-400">
+        Actualizada el <time datetime={guia.updated}>{fecha}</time>
+      </p>
+      <p class="mt-6 text-lg leading-relaxed text-ink">{guia.description}</p>
+
+      <slot />
+    </article>
+
+    <section class="mt-16 border-t border-line pt-10">
+      <h2 class="text-xl font-bold tracking-tight text-primary">
+        Otras guías
+      </h2>
+      <ul class="mt-4 flex flex-col gap-3">
+        {
+          otras.map((g) => (
+            <li>
+              <a
+                href={`/guias/${g.slug}`}
+                class="text-[15px] font-semibold text-primary hover:underline"
+              >
+                {g.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+</Layout>
+
+<style is:global>
+  .guia h2 {
+    margin-top: 2.5rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-primary, #1e053f);
+  }
+  .guia h3 {
+    margin-top: 1.75rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-ink, #1a1a1a);
+  }
+  .guia p,
+  .guia li {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--color-muted, #555);
+  }
+  .guia > p,
+  .guia h2 + p,
+  .guia h3 + p,
+  .guia ul + p,
+  .guia p + p {
+    margin-top: 0.875rem;
+  }
+  .guia ul {
+    margin-top: 0.875rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .guia li + li {
+    margin-top: 0.375rem;
+  }
+  .guia strong {
+    color: var(--color-ink, #1a1a1a);
+    font-weight: 600;
+  }
+  .guia a {
+    font-weight: 600;
+    color: var(--color-primary, #1e053f);
+    text-decoration: underline;
+  }
+  .guia .cta {
+    margin-top: 2.5rem;
+    border-radius: 1rem;
+    background: var(--color-primary, #1e053f);
+    padding: 1.5rem 1.75rem;
+  }
+  .guia .cta p {
+    margin: 0;
+    color: #ddd6fe;
+  }
+  .guia .cta a {
+    color: #fff;
+  }
+</style>
