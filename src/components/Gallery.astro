@@ -15,7 +15,9 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
   MercadoLibre). Van siempre en un recuadro cuadrado con fondo blanco y
   object-contain: se ven completas, sin recortes, y todas del mismo tamaño.
 -->
-<section class="flex w-full max-w-[560px] flex-col gap-3 sm:flex-row">
+<!-- self-start: el padre es una grilla que estiraría la galería al alto de la
+     columna de compra, y las miniaturas tomarían ese alto en vez del de la foto. -->
+<section class="flex w-full max-w-[560px] flex-col gap-3 self-start sm:flex-row">
   <div class="w-full min-w-0">
     <a
       id="current_a"
@@ -37,7 +39,17 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
       </figure>
     </a>
   </div>
-  <div class="flex gap-2 overflow-x-auto sm:order-first sm:max-h-[560px] sm:flex-col sm:overflow-y-auto sm:overflow-x-visible">
+  <!--
+    Miniaturas. En escritorio la columna mide exactamente lo mismo que la foto
+    principal: el contenedor de afuera se estira con la fila y el de adentro se
+    pega a él con absolute, así que muchas fotos scrollean dentro de ese alto
+    en vez de alargar la galería. La barra queda oculta (se sigue pudiendo
+    scrollear con la rueda o el dedo), y overflow-x-hidden es a propósito:
+    overflow-x-visible junto a overflow-y-auto se vuelve auto, y la barra
+    vertical le comía ancho a las miniaturas y aparecía otra horizontal.
+  -->
+  <div class="relative shrink-0 sm:order-first sm:w-20">
+  <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:absolute sm:inset-0 sm:flex-col sm:overflow-y-auto sm:overflow-x-hidden">
     {
       Array.from({ length: gallery_images_total }).map((_, index) => (
         <figure class="size-16 shrink-0 sm:size-20">
@@ -54,6 +66,7 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
         </figure>
       ))
     }
+  </div>
   </div>
   <dialog
   id="lightbox"
