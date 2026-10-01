@@ -2,7 +2,7 @@ import { getCustomerOrders } from "@/services/fetchData";
 import {
   CONTACT_EMAIL_URL,
   SHOW_WHATSAPP,
-  WHATSAPP_URL,
+  whatsappPedido,
 } from "@/services/contacto";
 import { getToken } from "@/services/scripts";
 import { useEffect, useState } from "react";
@@ -217,9 +217,7 @@ const Compra = ({ orden }: { orden: Order }) => {
           <a
             href={
               SHOW_WHATSAPP
-                ? `${WHATSAPP_URL}?text=${encodeURIComponent(
-                    `Hola! Consulto por mi pedido ${orden.payment_id}`
-                  )}`
+                ? whatsappPedido(orden.payment_id)
                 : `${CONTACT_EMAIL_URL}?subject=${encodeURIComponent(
                     `Consulta por mi pedido ${orden.payment_id}`
                   )}`

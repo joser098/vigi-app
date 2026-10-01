@@ -212,25 +212,6 @@ export const removeCoupon = async (token: string) => {
   }
 };
 
-// Retiro en oficina vs envío. Igual que el cupón: el checkout no le cree al
-// request, así que la elección se guarda en el carrito.
-export const setDelivery = async (token: string, local_pickup: boolean) => {
-  try {
-    const response = await fetch(`${BASE_URL}/api/cart/delivery`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ local_pickup }),
-    });
-
-    return await response.json();
-  } catch (error) {
-    return { success: false, message: "No pudimos guardar la forma de entrega." };
-  }
-};
-
 export const getCustomerData = async (token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/customer`, {

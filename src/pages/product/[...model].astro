@@ -1,5 +1,5 @@
 ---
-import { CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
+import { CONTACT_TARGET, CONTACT_URL, SHOW_WHATSAPP, whatsappProducto } from "@/services/contacto";
 export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import { fetchData } from "../../services/fetchData";
@@ -387,7 +387,7 @@ const breadcrumbSchema = {
               </svg>
               <span class="text-[13.5px] text-ink"
                 >¿Dudas antes de comprar? <a
-                  href={CONTACT_URL}
+                  href={SHOW_WHATSAPP ? whatsappProducto(product.model) : CONTACT_URL}
                   target={CONTACT_TARGET}
                   rel="noopener"
                   class="font-semibold underline">Escribinos</a

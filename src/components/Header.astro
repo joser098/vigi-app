@@ -1,5 +1,5 @@
 ---
-import { SHOW_WHATSAPP, WHATSAPP_URL } from "@/services/contacto";
+import { SHOW_WHATSAPP, WHATSAPP_ASESORAMIENTO_URL } from "@/services/contacto";
 import Logo from "./Logo.astro";
 import SearchInput from "../components/SearchInput";
 import { categories } from "@/services/const";
@@ -24,10 +24,11 @@ const path = Astro.url.pathname;
       {
         SHOW_WHATSAPP && (
           <a
-            href={WHATSAPP_URL}
+            href={WHATSAPP_ASESORAMIENTO_URL}
             target="_blank"
             rel="noopener"
-            class="hidden items-center gap-2 text-[13px] font-medium text-ink hover:text-primary lg:flex"
+            aria-label="Asesorate por WhatsApp"
+            class="flex items-center gap-2 text-[13px] font-medium text-ink hover:text-primary"
           >
             <svg
               width="19"
@@ -43,7 +44,7 @@ const path = Astro.url.pathname;
               <path d="M21 11.5a8.4 8.4 0 01-12.6 7.3L3 20.5l1.8-5.2A8.4 8.4 0 1121 11.5z"
               ></path>
             </svg>
-            Asesorate
+            <span class="hidden sm:inline">Asesorate</span>
           </a>
         )
       }

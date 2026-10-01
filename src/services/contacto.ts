@@ -1,18 +1,33 @@
 /**
  * El canal de contacto de la tienda, en un solo lugar.
  *
- * WhatsApp esta apagado a proposito: la atencion por ese canal se esta
- * rehaciendo, y mientras tanto un boton verde al lado del de comprar se lleva
- * clics que tendrian que terminar en el checkout. Con SHOW_WHATSAPP en false el
- * sitio entero cae al mail -boton flotante, header, footer, FAQ y los CTA de
- * cada pagina-. Poniendolo en true vuelve todo tal como estaba.
+ * WhatsApp lo atiende un bot de opciones en Kapso (vigi-api/kapso): da
+ * confianza y responde dudas, pero la compra se hace siempre en la web. Con
+ * SHOW_WHATSAPP en false el sitio entero cae al mail -boton flotante, header,
+ * footer, FAQ y los CTA de cada pagina-.
  */
 // Tipado como boolean a proposito: si lo dejas como literal false, TypeScript
 // da por muerta la rama de WhatsApp y deja de chequearla.
-export const SHOW_WHATSAPP: boolean = false;
+export const SHOW_WHATSAPP: boolean = true;
 
 export const WHATSAPP_PHONE = "11 2603 9243";
 export const WHATSAPP_URL = "https://wa.me/541126039243";
+
+/**
+ * WhatsApp con el mensaje ya escrito. Los dos textos los reconoce el bot
+ * (functions/vigi-entrada en vigi-api/kapso): si se cambian acá, el bot deja
+ * de entender de qué producto o pedido le hablan y cae al menú general.
+ */
+export const whatsappProducto = (model: string) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola! Tengo una consulta sobre el producto ${model}`)}`;
+
+export const whatsappPedido = (paymentId: string | number) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola! Consulto por mi pedido ${paymentId}`)}`;
+
+/** "Asesorate" del header: el bot arranca directo en "Ayuda para elegir". */
+export const WHATSAPP_ASESORAMIENTO_URL = `${WHATSAPP_URL}?text=${encodeURIComponent(
+  "Hola! Quiero asesoramiento para elegir"
+)}`;
 
 /**
  * El teléfono, como línea de llamada y no como WhatsApp. Se muestra solo en

@@ -165,7 +165,7 @@ export const faq = [
         // Los mismos plazos que la ventana "Formas de entrega" y la página
         // /legales/envios. Si cambian, cambian en los tres lados: Google Merchant
         // Center marca como engañosa una tienda que promete plazos distintos.
-        answer: 'Depende de dónde estés. En CABA te llega en 24 h hábiles. En el resto del AMBA, en un máximo de 4 días hábiles. Al resto del país, de 8 a 12 días hábiles desde la confirmación de la compra. También podés retirarlo en nuestra oficina de Caballito a partir de las 24 h hábiles de aprobado el pago.'
+        answer: 'Depende de dónde estés. En CABA te llega en 24 h hábiles. En el resto del AMBA, en un máximo de 4 días hábiles. Al resto del país, de 8 a 12 días hábiles desde la confirmación de la compra.'
     },
     {
         id: 3,
@@ -197,7 +197,7 @@ export const faq = [
     {
         id: 8,
         question: '¿Tienen una tienda física donde pueda ver los productos personalmente?',
-        answer: `No tenemos local a la calle: vendemos solo por la web. Sí tenemos una oficina en Caballito (CABA) donde podés retirar tu compra a partir de las 24 h hábiles de aprobado el pago, presentando el DNI del titular. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
+        answer: `No tenemos local a la calle: vendemos solo por la web, con envío a todo el país. Puedes contactarnos por correo electrónico a contacto@vigi.com.ar${SHOW_WHATSAPP ? ' o por WhatsApp al 11 2603 9243' : ''}.`
     }
 ];
 

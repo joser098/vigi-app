@@ -1,11 +1,10 @@
 import type { CartModel } from "@/services/types";
 import PayCartButton from "./PayCartButton";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import {
   applyCoupon,
   getShippingCost,
   removeCoupon,
-  setDelivery,
 } from "@/services/fetchData";
 import { getToken } from "@/services/scripts";
 
@@ -19,8 +18,7 @@ interface ShippingQuote {
   address: string;
   shippingCost: number;
   free: boolean;
-  reason: "caba" | "min_purchase" | "local_pickup" | null;
-  local_pickup: boolean;
+  reason: "caba" | "min_purchase" | null;
   subtotal: number;
   discount: number;
   coupon: {
@@ -45,7 +43,6 @@ const money = (n: number) =>
 
 const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [quote, setQuote] = useState<ShippingQuote | null>(null);
-  const [localPickup, setLocalPickup] = useState(false);
 
   const [discountCode, setDiscountCode] = useState("");
   const [codeResult, setCodeResult] = useState("");
@@ -55,8 +52,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [disablePay, setDisablePay] = useState(true);
   const [shipmentError, setShipmentError] = useState("");
 
-  // Todo el resumen sale del servidor, incluido el retiro en oficina: es él
-  // quien decide el total que se cobra, así que la pantalla no puede tener su
+  // Todo el resumen sale del servidor: es él quien decide el total que se cobra, así que la pantalla no puede tener su
   // propia versión de la cuenta.
   const subtotal = quote?.subtotal ?? cart.amount_to_pay;
   const discount = quote?.discount ?? 0;
@@ -78,19 +74,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
     }
 
     setQuote(data as ShippingQuote);
-    // El carrito recuerda la forma de entrega entre visitas: el select tiene
-    // que reflejarla, no volver siempre a "envío a domicilio".
-    setLocalPickup(Boolean(data.local_pickup));
     setDisablePay(false);
-  };
-
-  const onShipTypeChange = async (e: ChangeEvent<HTMLSelectElement>) => {
-    const pickup = e.target.value === "local_pickup";
-
-    setLocalPickup(pickup);
-    setDisablePay(true);
-    await setDelivery(getToken(), pickup);
-    await refreshQuote();
   };
 
   const onApplyCoupon = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -134,41 +118,19 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
     <article className="h-fit w-full rounded-2xl border border-line bg-white p-6 shadow-[0_14px_34px_rgba(30,5,63,0.06)] md:max-w-sm md:sticky md:top-4">
       <div className="w-full mb-8">
         <h5 className="mb-3 text-lg font-bold text-primary">Entrega</h5>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <span className="text-xs">
-            Conoce las opciones de envío, incluyendo plazos y costos
-          </span>
-          <select
-            value={localPickup ? "local_pickup" : "shipping"}
-            onChange={onShipTypeChange}
-            className="h-11 rounded-xl border-[1.5px] border-line bg-white px-3 text-sm text-ink"
-          >
-            <option className="text-xs" value="shipping">
-              Envío a domicilio
-            </option>
-            <option className="text-xs" value="local_pickup">
-              Retiro en oficina
-            </option>
-          </select>
-        </div>
+        <span className="text-xs">Envío a domicilio a todo el país.</span>
         <div className="my-2">
-          {localPickup ? (
+          {cart.amount_to_pay > 0 && (
             <span className="text-xs">
-              Retiro en <strong>Figueroa 973, CABA</strong>
+              Envío a:{" "}
+              {quote?.address ? (
+                <strong>{quote.address}</strong>
+              ) : (
+                <strong className="text-orange-500">
+                  cargando dirección. . .
+                </strong>
+              )}
             </span>
-          ) : (
-            cart.amount_to_pay > 0 && (
-              <span className="text-xs">
-                Envío a:{" "}
-                {quote?.address ? (
-                  <strong>{quote.address}</strong>
-                ) : (
-                  <strong className="text-orange-500">
-                    cargando dirección. . .
-                  </strong>
-                )}
-              </span>
-            )
           )}
         </div>
 
@@ -285,9 +247,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
             error de la página tanto como un beneficio. */}
         {!shipmentError && quote?.free && (
           <p className="text-xs text-muted">
-            {quote.reason === "local_pickup"
-              ? "Retirás en nuestra oficina."
-              : quote.reason === "caba"
+            {quote.reason === "caba"
               ? "Envío bonificado en CABA."
               : `Tu compra supera ${money(quote.free_shipping_min)}.`}
           </p>
@@ -320,7 +280,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
               cart={cart}
               finalTotal={total}
               shipments={{
-                local_pickup: localPickup,
+                local_pickup: false,
                 cost: shippingCost,
                 free_shipping: Boolean(quote?.free),
                 receiver_address: { street_name: quote?.address ?? "" },
