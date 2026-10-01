@@ -255,18 +255,12 @@ const breadcrumbSchema = {
 
     <section class="flex flex-col gap-8 sm:flex-row-reverse sm:gap-12">
       <!-- GALERIA -->
-      <article class="relative mb-3 flex w-full justify-center sm:mb-0">
-        {
-          product.price_diferred && (
-            <div class="gradient_violet absolute left-0 top-0 z-10 flex flex-col items-center rounded-xl px-3.5 py-2">
-              <span class="text-[10px] leading-tight text-white">Ahorrás</span>
-              <span class="text-[15px] font-bold leading-tight text-white">
-                {money(product.price_diferred)}
-              </span>
-            </div>
-          )
-        }
-        <Gallery model={product.model} gallery_images_total={product.gallery} />
+      <article class="mb-3 flex w-full justify-center sm:mb-0">
+        <Gallery
+          model={product.model}
+          gallery_images_total={product.gallery}
+          savings={product.price_diferred ? money(product.price_diferred) : null}
+        />
       </article>
 
       <!-- CAJA DE COMPRA -->

@@ -2,9 +2,11 @@
 interface Props {
   model: string;
   gallery_images_total: number;
+  /** "$ 5.928" ya formateado; null si el producto no tiene descuento. */
+  savings?: string | null;
 }
 
-const { model, gallery_images_total } = Astro.props;
+const { model, gallery_images_total, savings = null } = Astro.props;
 const model_trim = encodeURIComponent(model).replace(/%20/g, "+");
 // const model_trim = model.replace("+","%2B").replace(" ","+");
 const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
@@ -18,7 +20,17 @@ const BASE_URL = import.meta.env.PUBLIC_ASSETS_URL;
 <!-- self-start: el padre es una grilla que estiraría la galería al alto de la
      columna de compra, y las miniaturas tomarían ese alto en vez del de la foto. -->
 <section class="flex w-full max-w-[560px] flex-col gap-3 self-start sm:flex-row">
-  <div class="w-full min-w-0">
+  <div class="relative w-full min-w-0">
+    {
+      /* Sobre la foto principal y no sobre la galería entera: con las
+         miniaturas a la izquierda, el globo tapaba la primera. */
+      savings && (
+        <div class="gradient_violet pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-center rounded-xl px-3.5 py-2">
+          <span class="text-[10px] leading-tight text-white">Ahorrás</span>
+          <span class="text-[15px] font-bold leading-tight text-white">{savings}</span>
+        </div>
+      )
+    }
     <a
       id="current_a"
       href={`${BASE_URL}/gallery/${model_trim}/0.png`}
