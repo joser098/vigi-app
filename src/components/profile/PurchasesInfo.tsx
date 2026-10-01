@@ -34,6 +34,10 @@ interface Order {
   status_label: string;
   status_order: number;
   status_is_final: boolean;
+  // Seguimiento del envío. Puede faltar en una API vieja: todo opcional.
+  carrier?: string | null;
+  tracking_number?: string | null;
+  tracking_url?: string | null;
   date: string;
   items: OrderItem[];
 }
@@ -62,7 +66,7 @@ const fechaLarga = (iso: string) => {
 const PASOS = [
   { orden: 1, label: "Recibido" },
   { orden: 2, label: "En preparación" },
-  { orden: 3, label: "Enviado" },
+  { orden: 3, label: "En camino" },
   { orden: 4, label: "Entregado" },
 ];
 
@@ -139,6 +143,27 @@ const Compra = ({ orden }: { orden: Order }) => {
           <p className="text-sm text-muted">{anulado}</p>
         ) : (
           <Seguimiento actual={orden.status_order} />
+        )}
+
+        {/* Datos del envío, desde que se despacha. */}
+        {!anulado && orden.tracking_number && (
+          <p className="mt-4 text-[13px] text-muted">
+            {orden.carrier ? `${orden.carrier} · ` : ""}Seguimiento{" "}
+            <span className="font-semibold text-ink">{orden.tracking_number}</span>
+            {orden.tracking_url && (
+              <>
+                {" · "}
+                <a
+                  href={orden.tracking_url}
+                  target="_blank"
+                  rel="noopener"
+                  className="font-semibold text-primary underline"
+                >
+                  Seguir mi envío
+                </a>
+              </>
+            )}
+          </p>
         )}
       </div>
 
