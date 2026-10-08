@@ -1,10 +1,16 @@
 ---
-import { CONTACT_LABEL, CONTACT_PREP, CONTACT_TARGET, CONTACT_URL } from "@/services/contacto";
+import {
+  CONTACT_LABEL,
+  CONTACT_PREP,
+  CONTACT_TARGET,
+  CONTACT_URL,
+  whatsappAcordar,
+} from "@/services/contacto";
 export const prerender = false;
 import Layout from "@/layouts/Layout.astro";
 import PayApproved from "@/components/PayApproved.astro";
 import PayNotApproved from "@/components/PayNotApproved.astro";
-import { getPayment } from "@/services/fetchData";
+import { getAcordarStatus, getPayment } from "@/services/fetchData";
 import PurchasePixel from "@/components/PurchasePixel.astro";
 import PurchaseGa4 from "@/components/PurchaseGa4.astro";
 
@@ -30,6 +36,10 @@ if (!payment) {
 
 const aprobado = payment.status === "approved";
 
+// Si eligió "acordar el envío", tiene que escribirnos por WhatsApp con el
+// número de pedido: se le da el botón con el mensaje ya armado.
+const acordar = aprobado ? (await getAcordarStatus(id!))?.acordar === true : false;
+
 // El mismo total que muestra PayApproved, sacado de las mismas dos fuentes: lo
 // que Meta cuente como venta tiene que ser lo que el cliente ve en pantalla.
 const totalPagado =
@@ -45,6 +55,25 @@ const totalPagado =
           <PurchaseGa4 paymentId={id!} total={totalPagado} />
 
           <PayApproved payment={payment} />
+
+          {acordar && (
+            <div class="mx-auto mt-8 max-w-xl rounded-2xl border-2 border-primary bg-white p-6 text-center">
+              <h2 class="text-lg font-bold text-primary">Falta coordinar la entrega</h2>
+              <p class="mt-2 text-[14px] leading-relaxed text-muted">
+                Elegiste acordar el envío. Escribinos por WhatsApp con tu número
+                de pedido, <strong class="text-ink">{id}</strong>, y coordinamos
+                el punto, el día y el horario de entrega en CABA.
+              </p>
+              <a
+                href={whatsappAcordar(id!)}
+                target="_blank"
+                rel="noopener"
+                class="mt-4 inline-flex h-[52px] items-center justify-center rounded-full bg-[#25D366] px-7 text-[15px] font-semibold text-white"
+              >
+                Coordinar por WhatsApp
+              </a>
+            </div>
+          )}
 
           <div class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
             <a

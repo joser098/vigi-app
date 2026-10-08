@@ -1,6 +1,7 @@
 import type { CartModel } from "@/services/types";
 import PayCartButton from "./PayCartButton";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   applyCoupon,
   getAgencies,
@@ -96,6 +97,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const [savingDelivery, setSavingDelivery] = useState(false);
   const [deliveryError, setDeliveryError] = useState("");
   const acordarModal = useRef<HTMLDialogElement>(null);
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
 
   // Todo el resumen sale del servidor: es él quien decide el total que se cobra, así que la pantalla no puede tener su
   // propia versión de la cuenta.
@@ -193,6 +195,7 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
 
   useEffect(() => {
     if (cart.amount_to_pay > 0) refreshQuote();
+    setSlot(document.getElementById("entrega-slot"));
   }, []);
 
   // Al marcar sucursal (o si el carrito ya la tenía elegida) se carga la lista.
@@ -212,229 +215,246 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
   const cuponPuesto = quote?.coupon ?? null;
   const faltaParaGratis = quote?.missing_for_free ?? 0;
 
-  return (
-    <article className="h-fit w-full rounded-2xl border border-line bg-white p-6 shadow-[0_14px_34px_rgba(30,5,63,0.06)] md:max-w-sm md:sticky md:top-4">
-      <div className="w-full mb-8">
-        <h5 className="mb-3 text-lg font-bold text-primary">Entrega</h5>
-        <span className="text-xs">Enviamos por Correo Argentino a todo el país.</span>
-        <div className="my-2">
-          {cart.amount_to_pay > 0 && (
-            <span className="text-xs">
-              Tu dirección:{" "}
-              {quote?.address ? (
-                <strong>{quote.address}</strong>
-              ) : (
-                <strong className="text-orange-500">
-                  cargando dirección. . .
-                </strong>
-              )}
-            </span>
-          )}
-        </div>
-
-        {/* Solo con la API que cotiza con Correo: la anterior no entiende
-            de formas de entrega. */}
-        {quote?.delivery_type && (
-          <fieldset className="mt-3 flex flex-col gap-2" disabled={savingDelivery}>
-            <legend className="sr-only">Forma de entrega</legend>
-
-            {/* Sucursal primero: es la más barata y la que conviene empujar. */}
-            {opciones?.S && (
-              <label
-                className={`flex cursor-pointer items-start gap-3 rounded-xl border-[1.5px] px-4 py-3 ${
-                  wantsSucursal ? "border-primary bg-panel" : "border-line"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="delivery_type"
-                  className="mt-1"
-                  checked={wantsSucursal}
-                  onChange={() => choose("S")}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-baseline justify-between gap-2">
-                    <span className="text-sm font-semibold text-ink">
-                      Retiro en sucursal
-                    </span>
-                    <span className="text-sm font-bold text-green_">
-                      {opciones.S.price === 0 ? (
-                        <>
-                          {opciones.S.list_price ? (
-                            <s className="mr-1 font-normal text-muted">
-                              {money(opciones.S.list_price)}
-                            </s>
-                          ) : null}
-                          GRATIS
-                        </>
-                      ) : (
-                        money(opciones.S.price)
-                      )}
-                    </span>
-                  </span>
-                  <span className="block text-xs text-muted">
-                    {ahorroSucursal > 0 && (
-                      <strong className="text-green-ink">
-                        Ahorrás {money(ahorroSucursal)}.{" "}
-                      </strong>
-                    )}
-                    {plazo(opciones.S)}
-                  </span>
-                </span>
-              </label>
+  // La entrega va debajo de los productos cuando la página tiene dónde
+  // ponerla (cart.astro deja #entrega-slot): en la columna del resumen hacía
+  // una tira larguísima. Es un portal y no otro componente porque comparte
+  // todo el estado con el resumen: la opción elegida cambia el total.
+  const entrega = (
+    <>
+      <h5 className="mb-3 text-lg font-bold text-primary">Entrega</h5>
+      <span className="text-xs">Enviamos por Correo Argentino a todo el país.</span>
+      <div className="my-2">
+        {cart.amount_to_pay > 0 && (
+          <span className="text-xs">
+            Tu dirección:{" "}
+            {quote?.address ? (
+              <strong>{quote.address}</strong>
+            ) : (
+              <strong className="text-orange-500">
+                cargando dirección. . .
+              </strong>
             )}
+          </span>
+        )}
+      </div>
 
-            {opciones?.D && (
-              <label
-                className={`flex cursor-pointer items-start gap-3 rounded-xl border-[1.5px] px-4 py-3 ${
-                  elegida === "D" ? "border-primary bg-panel" : "border-line"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="delivery_type"
-                  className="mt-1"
-                  checked={elegida === "D"}
-                  onChange={() => choose("D")}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-baseline justify-between gap-2">
-                    <span className="text-sm font-semibold text-ink">
-                      Envío a domicilio
-                    </span>
-                    <span
-                      className={`text-sm ${
-                        opciones.D.price === 0 ? "font-bold text-green_" : "font-semibold text-ink"
-                      }`}
-                    >
-                      {opciones.D.price === 0 ? (
-                        <>
-                          <s className="mr-1 font-normal text-muted">
-                            {money(opciones.D.list_price ?? 0)}
-                          </s>
-                          GRATIS
-                        </>
-                      ) : (
-                        money(opciones.D.price)
-                      )}
-                    </span>
-                  </span>
-                  <span className="block text-xs text-muted">{plazo(opciones.D)}</span>
-                </span>
-              </label>
-            )}
+      {/* Solo con la API que cotiza con Correo: la anterior no entiende
+          de formas de entrega. */}
+      {quote?.delivery_type && (
+        <fieldset className="mt-3 flex flex-col gap-2" disabled={savingDelivery}>
+          <legend className="sr-only">Forma de entrega</legend>
 
-            {/* Siempre disponible: si el cliente tiene otra forma de recibirlo,
-                o si Correo no cotizó, igual puede pagar y coordinamos después. */}
+          {/* Sucursal primero: es la más barata y la que conviene empujar. */}
+          {opciones?.S && (
             <label
               className={`flex cursor-pointer items-start gap-3 rounded-xl border-[1.5px] px-4 py-3 ${
-                elegida === "A" ? "border-primary bg-panel" : "border-line"
+                wantsSucursal ? "border-primary bg-panel" : "border-line"
               }`}
             >
               <input
                 type="radio"
                 name="delivery_type"
                 className="mt-1"
-                checked={elegida === "A"}
-                onChange={() => choose("A")}
+                checked={wantsSucursal}
+                onChange={() => choose("S")}
               />
               <span className="min-w-0 flex-1">
                 <span className="flex items-baseline justify-between gap-2">
                   <span className="text-sm font-semibold text-ink">
-                    Acordar el envío
+                    Retiro en sucursal
                   </span>
-                  <span className="text-sm text-muted">A coordinar</span>
+                  <span className="text-sm font-bold text-green_">
+                    {opciones.S.price === 0 ? (
+                      <>
+                        {opciones.S.list_price ? (
+                          <s className="mr-1 font-normal text-muted">
+                            {money(opciones.S.list_price)}
+                          </s>
+                        ) : null}
+                        GRATIS
+                      </>
+                    ) : (
+                      money(opciones.S.price)
+                    )}
+                  </span>
                 </span>
                 <span className="block text-xs text-muted">
-                  Pagás ahora solo los productos y te contactamos para coordinar
-                  la entrega.
+                  {ahorroSucursal > 0 && (
+                    <strong className="text-green-ink">
+                      Ahorrás {money(ahorroSucursal)}.{" "}
+                    </strong>
+                  )}
+                  {plazo(opciones.S)}
                 </span>
-                {elegida === "A" && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      // Está dentro del label: sin esto el click también marca
-                      // el radio, que ya está marcado, y vuelve a guardar.
-                      e.preventDefault();
-                      acordarModal.current?.showModal();
-                    }}
-                    className="mt-1 text-xs font-semibold text-primary underline"
-                  >
-                    ¿Cómo funciona?
-                  </button>
-                )}
               </span>
             </label>
-          </fieldset>
-        )}
+          )}
 
-        <AcordarEnvioModal dialogRef={acordarModal} />
-
-        {quote?.quote_error && (
-          <p className="mt-2 text-xs text-orange-500">
-            {quote.quote_error} Podés elegir acordar el envío y pagar igual.
-          </p>
-        )}
-
-        {wantsSucursal && (
-          <div className="mt-3">
-            <label className="text-xs" htmlFor="agency">
-              Sucursal donde lo retirás
+          {opciones?.D && (
+            <label
+              className={`flex cursor-pointer items-start gap-3 rounded-xl border-[1.5px] px-4 py-3 ${
+                elegida === "D" ? "border-primary bg-panel" : "border-line"
+              }`}
+            >
+              <input
+                type="radio"
+                name="delivery_type"
+                className="mt-1"
+                checked={elegida === "D"}
+                onChange={() => choose("D")}
+              />
+              <span className="min-w-0 flex-1">
+                <span className="flex items-baseline justify-between gap-2">
+                  <span className="text-sm font-semibold text-ink">
+                    Envío a domicilio
+                  </span>
+                  <span
+                    className={`text-sm ${
+                      opciones.D.price === 0 ? "font-bold text-green_" : "font-semibold text-ink"
+                    }`}
+                  >
+                    {opciones.D.price === 0 ? (
+                      <>
+                        <s className="mr-1 font-normal text-muted">
+                          {money(opciones.D.list_price ?? 0)}
+                        </s>
+                        GRATIS
+                      </>
+                    ) : (
+                      money(opciones.D.price)
+                    )}
+                  </span>
+                </span>
+                <span className="block text-xs text-muted">{plazo(opciones.D)}</span>
+              </span>
             </label>
-            {agencies ? (
-              <select
-                id="agency"
-                value={sucursalElegida?.code ?? ""}
-                disabled={savingDelivery}
-                onChange={(e) => e.target.value && saveDelivery("S", e.target.value)}
-                className="mt-1 h-11 w-full rounded-xl border-[1.5px] border-line bg-panel px-3 text-sm text-ink"
-              >
-                <option value="">Elegí una sucursal…</option>
-                {agencies.some((a) => a.near) && (
-                  <optgroup label="Cerca de tu código postal">
-                    {agencies
-                      .filter((a) => a.near)
-                      .map((a) => (
-                        <option key={a.code} value={a.code}>
-                          {etiquetaSucursal(a)}
-                        </option>
-                      ))}
-                  </optgroup>
-                )}
-                <optgroup label="Resto de la provincia">
+          )}
+
+          {/* Siempre disponible: si el cliente tiene otra forma de recibirlo,
+              o si Correo no cotizó, igual puede pagar y coordinamos después. */}
+          <label
+            className={`flex cursor-pointer items-start gap-3 rounded-xl border-[1.5px] px-4 py-3 ${
+              elegida === "A" ? "border-primary bg-panel" : "border-line"
+            }`}
+          >
+            <input
+              type="radio"
+              name="delivery_type"
+              className="mt-1"
+              checked={elegida === "A"}
+              onChange={() => choose("A")}
+            />
+            <span className="min-w-0 flex-1">
+              <span className="flex items-baseline justify-between gap-2">
+                <span className="text-sm font-semibold text-ink">
+                  Acordar el envío
+                </span>
+                <span className="text-sm text-muted">A coordinar</span>
+              </span>
+              <span className="block text-xs text-muted">
+                Pagás ahora solo los productos y después nos escribís por
+                WhatsApp para coordinar la entrega.
+              </span>
+              {elegida === "A" && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    // Está dentro del label: sin esto el click también marca
+                    // el radio, que ya está marcado, y vuelve a guardar.
+                    e.preventDefault();
+                    acordarModal.current?.showModal();
+                  }}
+                  className="mt-1 text-xs font-semibold text-primary underline"
+                >
+                  ¿Cómo funciona?
+                </button>
+              )}
+            </span>
+          </label>
+        </fieldset>
+      )}
+
+      <AcordarEnvioModal dialogRef={acordarModal} />
+
+      {quote?.quote_error && (
+        <p className="mt-2 text-xs text-orange-500">
+          {quote.quote_error} Podés elegir acordar el envío y pagar igual.
+        </p>
+      )}
+
+      {wantsSucursal && (
+        <div className="mt-3">
+          <label className="text-xs" htmlFor="agency">
+            Sucursal donde lo retirás
+          </label>
+          {agencies ? (
+            <select
+              id="agency"
+              value={sucursalElegida?.code ?? ""}
+              disabled={savingDelivery}
+              onChange={(e) => e.target.value && saveDelivery("S", e.target.value)}
+              className="mt-1 h-11 w-full rounded-xl border-[1.5px] border-line bg-panel px-3 text-sm text-ink"
+            >
+              <option value="">Elegí una sucursal…</option>
+              {agencies.some((a) => a.near) && (
+                <optgroup label="Cerca de tu código postal">
                   {agencies
-                    .filter((a) => !a.near)
+                    .filter((a) => a.near)
                     .map((a) => (
                       <option key={a.code} value={a.code}>
                         {etiquetaSucursal(a)}
                       </option>
                     ))}
                 </optgroup>
-              </select>
-            ) : (
-              !deliveryError && (
-                <p className="mt-1 text-xs text-orange-500">cargando sucursales. . .</p>
-              )
-            )}
-          </div>
-        )}
+              )}
+              <optgroup label="Resto de la provincia">
+                {agencies
+                  .filter((a) => !a.near)
+                  .map((a) => (
+                    <option key={a.code} value={a.code}>
+                      {etiquetaSucursal(a)}
+                    </option>
+                  ))}
+              </optgroup>
+            </select>
+          ) : (
+            !deliveryError && (
+              <p className="mt-1 text-xs text-orange-500">cargando sucursales. . .</p>
+            )
+          )}
+        </div>
+      )}
 
-        {deliveryError && (
-          <p className="mt-2 text-xs text-red-500">{deliveryError}</p>
-        )}
+      {deliveryError && (
+        <p className="mt-2 text-xs text-red-500">{deliveryError}</p>
+      )}
 
-        {/* Lo que falta para retirar gratis. Solo aparece cuando falta algo:
-            si ya está gratis, la opción de sucursal lo dice sola. */}
-        {faltaParaGratis > 0 && (
-          <div className="mt-3 rounded-xl border border-[#c6ecd5] bg-green-soft px-4 py-3">
-            <p className="text-xs font-semibold text-green-ink">
-              Te faltan {money(faltaParaGratis)} para retirar gratis en sucursal.
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Lo que falta para retirar gratis. Solo aparece cuando falta algo:
+          si ya está gratis, la opción de sucursal lo dice sola. */}
+      {faltaParaGratis > 0 && (
+        <div className="mt-3 rounded-xl border border-[#c6ecd5] bg-green-soft px-4 py-3">
+          <p className="text-xs font-semibold text-green-ink">
+            Te faltan {money(faltaParaGratis)} para retirar gratis en sucursal.
+          </p>
+        </div>
+      )}
+    </>
+  );
 
-      <div className="mt-7 border-t border-line pt-6">
+  return (
+    <article className="h-fit w-full rounded-2xl border border-line bg-white p-6 shadow-[0_14px_34px_rgba(30,5,63,0.06)] md:max-w-sm md:sticky md:top-4">
+      {slot ? (
+        createPortal(
+          <section className="mt-6 rounded-2xl border border-line bg-white p-6">
+            {entrega}
+          </section>,
+          slot
+        )
+      ) : (
+        <div className="w-full mb-8">{entrega}</div>
+      )}
+
+      <div className={slot ? "" : "mt-7 border-t border-line pt-6"}>
         <h5 className="mb-3 text-base font-semibold text-primary">
           ¿Tenés un cupón?
         </h5>
@@ -605,7 +625,8 @@ const AcordarEnvioModal = ({
 
   const pasos = [
     "Pagás ahora solo los productos. El envío no se cobra en el checkout.",
-    "Dentro del siguiente día hábil te escribimos por WhatsApp o mail, a los datos de tu cuenta, para coordinar.",
+    "Después de pagar, escribinos por WhatsApp, elegí “Acordar envío de compra” y mandanos tu número de pedido (está en la pantalla de compra y en el mail, que trae un botón que lo hace por vos).",
+    "Una persona del equipo coordina con vos el punto, el día y el horario.",
     "Llevamos el paquete sin cargo a un punto de CABA que te sirva: por ejemplo, la terminal de un expreso o transporte de encomiendas, un comisionista, o la dirección de alguien de confianza.",
     "Lo entregamos a la persona o empresa que nos indiques por escrito y te mandamos la constancia (remito firmado, comprobante del transporte o foto).",
   ];
@@ -665,9 +686,9 @@ const AcordarEnvioModal = ({
               decimos antes y solo se cobra si lo aceptás.
             </li>
             <li>
-              Si no llegamos a coordinar, podés pasarte a envío por Correo
-              Argentino pagando su costo, o cancelar la compra con reintegro
-              total.
+              Si no nos escribís dentro de los 10 días, o no llegamos a
+              coordinar, podés pasarte a envío por Correo Argentino pagando su
+              costo, o cancelar la compra con reintegro total.
             </li>
             <li>La garantía y tu derecho de arrepentimiento no cambian.</li>
           </ul>

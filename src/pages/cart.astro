@@ -76,7 +76,8 @@ const descuento = (item: CartItem) =>
           <span class="text-sm font-semibold text-green-ink">
             Envío gratis en CABA, y retiro gratis en sucursal de Correo
             Argentino a todo el país en compras desde {FREE_SHIPPING_LABEL}.
-            Abajo vas a ver las opciones y el costo exacto según tu dirección.
+            Debajo de los productos vas a ver las opciones y el costo exacto
+            según tu dirección.
           </span>
         </div>
       )
@@ -195,6 +196,11 @@ const descuento = (item: CartItem) =>
             )
           }
         </div>
+
+        {/* Acá OrderResume dibuja la entrega (domicilio, sucursal o
+            acordar), con un portal: en la columna del resumen quedaba
+            larguísima. */}
+        {cart.items.length > 0 && <div id="entrega-slot"></div>}
       </article>
 
       <OrderResume client:load cart={cart} />

@@ -161,6 +161,18 @@ export const updateCustomerData = async (data: any, token: string) => {
   }
 };
 
+// ¿El pedido es de "acordar envío"? Público y sin datos del cliente: lo usa la
+// página de pago aprobado para mostrar el botón de WhatsApp.
+export const getAcordarStatus = async (paymentId: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/order/acordar/${encodeURIComponent(paymentId)}`);
+    const res = await response.json();
+    return res?.data ?? null;
+  } catch (error) {
+    return null;
+  }
+};
+
 export const getShippingCost = async (token: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/logistic/cost`, {

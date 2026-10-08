@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { FREE_SHIPPING_LABEL, SHIPPING_CUTOFF_HOUR } from "@/services/const";
-import { CONTACT_EMAIL, SHOW_WHATSAPP, WHATSAPP_PHONE } from "@/services/contacto";
+import { CONTACT_EMAIL, SHOW_WHATSAPP, WHATSAPP_PHONE, WHATSAPP_URL } from "@/services/contacto";
 
 /*
   Política de envíos.
@@ -116,10 +116,13 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
         </p>
         <ol class="ml-4">
           <li class="list-decimal">
-            <strong>Contacto.</strong> Dentro del siguiente día hábil a la
-            aprobación del pago te escribimos {SHOW_WHATSAPP ? "por WhatsApp o mail" : "por mail"},
-            al teléfono y al correo de tu cuenta, para coordinar el punto, el día
-            y la franja horaria de entrega.
+            <strong>Coordinación.</strong> Después de pagar, escribinos por
+            WhatsApp al <a class="underline" href={WHATSAPP_URL} target="_blank" rel="noopener"
+              >{WHATSAPP_PHONE}</a
+            >, elegí <em>“Acordar envío de compra”</em> y mandanos tu número de
+            pedido, que figura en la pantalla de compra aprobada y en el mail de
+            confirmación. Una persona del equipo te responde en días hábiles y
+            coordina con vos el punto, el día y la franja horaria de entrega.
           </li>
           <li class="list-decimal">
             <strong>Punto de entrega.</strong> Llevamos el paquete sin cargo a un
@@ -157,11 +160,13 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
             puede tener costo; te lo informamos antes.
           </li>
           <li class="list-decimal">
-            <strong>Si no llegamos a coordinar.</strong> Si no tenemos respuesta
-            dentro de los 10 días corridos desde la compra, o no encontramos una
-            opción que te sirva, podés pasar a envío por Correo Argentino pagando
-            su costo, o cancelar la compra y te reintegramos el total pagado por
-            el mismo medio de pago.
+            <strong>Si no llegamos a coordinar.</strong> Si no nos escribís
+            dentro de los 10 días corridos desde la compra, te contactamos por
+            mail. Si aun así no tenemos respuesta, o no encontramos una opción que
+            te sirva, podés pasar a envío por Correo Argentino pagando su costo,
+            o cancelar la compra y te reintegramos el total pagado por el mismo
+            medio de pago. Mientras tanto, el pedido queda reservado y no se
+            despacha.
           </li>
           <li class="list-decimal">
             <strong>Tus derechos no cambian.</strong> La garantía y el derecho de

@@ -21,6 +21,12 @@ export const WHATSAPP_URL = "https://wa.me/541126039243";
 export const whatsappProducto = (model: string) =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola! Tengo una consulta sobre el producto ${model}`)}`;
 
+// "Acordar el envío": el texto es el que reconoce Kapso (vigi-entrada) para
+// llevarlo directo a la validación del pedido. No cambiarlo sin cambiar aquel
+// ni vigi-api/src/utils/whatsapp.js, que arma el mismo link para el mail.
+export const whatsappAcordar = (paymentId: string | number) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola! Quiero acordar el envío de mi pedido ${paymentId}`)}`;
+
 export const whatsappPedido = (paymentId: string | number) =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola! Consulto por mi pedido ${paymentId}`)}`;
 
