@@ -187,7 +187,7 @@ export const faq = [
         // $450.000 escrito a mano: FREE_SHIPPING_LABEL se declara más abajo en
         // este archivo y usarlo acá tira "cannot access before initialization".
         question: '¿Cuánto cuesta el envío?',
-        answer: 'En CABA es sin cargo. Al resto del país, el envío es gratis en compras desde $450.000; por debajo de ese monto se cotiza con Andreani según tu código postal y ves el costo en el resumen antes de pagar. No tenemos envío express.'
+        answer: 'En CABA es sin cargo. Al resto del país enviamos por Correo Argentino, a domicilio o para retirar en una sucursal; el retiro en sucursal es gratis en compras desde $450.000. El costo se cotiza según tu código postal y lo ves en el resumen antes de pagar. También podés elegir acordar el envío: pagás solo los productos y te lo llevamos sin cargo a un punto de CABA que te sirva, como la terminal de un expreso. No tenemos envío express.'
     },
     {
         id: 7,

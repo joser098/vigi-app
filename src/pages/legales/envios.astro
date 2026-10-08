@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { FREE_SHIPPING_LABEL, SHIPPING_CUTOFF_HOUR } from "@/services/const";
-import { CONTACT_EMAIL } from "@/services/contacto";
+import { CONTACT_EMAIL, SHOW_WHATSAPP, WHATSAPP_PHONE } from "@/services/contacto";
 
 /*
   Política de envíos.
@@ -17,7 +17,7 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
 
 <Layout
   title="Política de envíos | VIGI"
-  description={`Plazos y costos de envío de VIGI: 24 h en CABA, envío gratis a todo el país desde ${FREE_SHIPPING_LABEL}.`}
+  description={`Plazos y costos de envío de VIGI: 24 h y gratis en CABA, retiro gratis en sucursal a todo el país desde ${FREE_SHIPPING_LABEL}.`}
 >
   <main class="prose-vigi m-auto max-w-[760px] px-4 py-12 sm:px-8 sm:py-16">
     <article>
@@ -27,6 +27,27 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
           Enviamos a todo el país. Estos son los plazos, costos y formas de
           entrega de las compras hechas en <strong>vigi.com.ar</strong>.
         </p>
+      </div>
+
+      <div class="my-3 py-2">
+        <h2 class="font-bold my-2">Formas de entrega</h2>
+        <p>Al pagar elegís una de estas tres:</p>
+        <ul class="ml-4">
+          <li class="list-disc">
+            <strong>Envío a domicilio</strong> por Correo Argentino, a la
+            dirección de tu cuenta.
+          </li>
+          <li class="list-disc">
+            <strong>Retiro en sucursal</strong> de Correo Argentino, en la
+            sucursal que elijas de tu provincia. Suele ser más barato. Para
+            retirar vas a necesitar tu DNI.
+          </li>
+          <li class="list-disc">
+            <strong>Acordar el envío:</strong> pagás solo los productos y te lo
+            llevamos sin cargo a un punto de CABA que te sirva. Ver
+            <a class="underline" href="#acordar">las condiciones</a> más abajo.
+          </li>
+        </ul>
       </div>
 
       <div class="my-3 py-2">
@@ -53,9 +74,11 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
           </li>
         </ul>
         <p>
-          Los envíos fuera de CABA se hacen por Andreani. Cuando el pedido sale,
-          te avisamos por mail y podés seguir su estado desde tu cuenta, en la
-          sección de pedidos.
+          Los envíos fuera de CABA se hacen por Correo Argentino. Cuando el
+          pedido sale, te avisamos por mail y podés seguir su estado desde tu
+          cuenta, en la sección de pedidos. En el retiro en sucursal, Correo
+          guarda el paquete un tiempo limitado: si no se retira, vuelve a
+          nosotros y un nuevo envío puede tener costo.
         </p>
       </div>
 
@@ -63,20 +86,91 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
         <h2 class="font-bold my-2">Costo de envío</h2>
         <ul class="ml-4">
           <li class="list-disc">
-            <strong>CABA:</strong> sin cargo, en cualquier compra.
+            <strong>CABA:</strong> sin cargo, a domicilio o a sucursal, en
+            cualquier compra.
           </li>
           <li class="list-disc">
-            <strong>Resto del país:</strong> sin cargo en compras desde {
-              FREE_SHIPPING_LABEL
-            }.
+            <strong>Resto del país, retiro en sucursal:</strong> sin cargo en
+            compras desde {FREE_SHIPPING_LABEL}.
           </li>
           <li class="list-disc">
-            Por debajo de ese monto, el envío se cotiza con Andreani según el
-            código postal de entrega. El costo aparece en el resumen de compra
-            antes de pagar, y es el que se cobra.
+            En los demás casos, el envío se cotiza con Correo Argentino según el
+            código postal de entrega y el tamaño del pedido. El costo aparece en
+            el resumen de compra antes de pagar, y es el que se cobra.
+          </li>
+          <li class="list-disc">
+            <strong>Acordar el envío:</strong> la entrega en un punto de CABA no
+            tiene cargo. Ver las condiciones abajo.
           </li>
         </ul>
         <p>No ofrecemos envío express.</p>
+      </div>
+
+      <div class="my-3 py-2" id="acordar">
+        <h2 class="font-bold my-2">Acordar el envío</h2>
+        <p>
+          Es una opción para cuando te conviene recibir el pedido de otra
+          forma: por ejemplo, porque tenés un transporte de confianza, un expreso
+          que llega a tu ciudad o alguien que lo puede retirar por vos en CABA.
+          Al elegirla pagás solo los productos, y aceptás estas condiciones:
+        </p>
+        <ol class="ml-4">
+          <li class="list-decimal">
+            <strong>Contacto.</strong> Dentro del siguiente día hábil a la
+            aprobación del pago te escribimos {SHOW_WHATSAPP ? "por WhatsApp o mail" : "por mail"},
+            al teléfono y al correo de tu cuenta, para coordinar el punto, el día
+            y la franja horaria de entrega.
+          </li>
+          <li class="list-decimal">
+            <strong>Punto de entrega.</strong> Llevamos el paquete sin cargo a un
+            punto dentro de la Ciudad Autónoma de Buenos Aires, en día hábil y
+            en el horario que acordemos. Puede ser la terminal o el depósito de
+            un transporte o expreso de encomiendas, un comisionista, o un
+            domicilio que nos indiques. Si el punto está fuera de CABA, la
+            entrega puede tener un costo: te lo informamos antes y solo se cobra
+            si lo aceptás.
+          </li>
+          <li class="list-decimal">
+            <strong>Quién recibe.</strong> Entregamos a vos, o a la persona o
+            empresa que nos indiques por escrito ({SHOW_WHATSAPP ? "WhatsApp o mail" : "mail"}),
+            con nombre y DNI o razón social. Quien recibe tiene que identificarse.
+          </li>
+          <li class="list-decimal">
+            <strong>Constancia y entrega.</strong> Al entregar dejamos constancia:
+            remito firmado, comprobante del transporte o foto del paquete
+            entregado, que te mandamos. Con esa constancia el pedido se considera
+            entregado.
+          </li>
+          <li class="list-decimal">
+            <strong>Después de la entrega.</strong> Desde ese momento, el
+            traslado posterior corre por tu cuenta: su costo, sus plazos y el
+            cuidado del paquete dependen del transporte o la persona que
+            elegiste, y se rigen por sus propias condiciones. No respondemos por
+            pérdidas, demoras o daños ocurridos después de la entrega. Te
+            recomendamos declararle al transporte el valor del pedido para que
+            viaje asegurado.
+          </li>
+          <li class="list-decimal">
+            <strong>Si no se puede entregar.</strong> Si en el punto acordado no
+            reciben el paquete por causas ajenas a nosotros (cerrado, sin
+            autorización, datos incorrectos), coordinamos un nuevo intento, que
+            puede tener costo; te lo informamos antes.
+          </li>
+          <li class="list-decimal">
+            <strong>Si no llegamos a coordinar.</strong> Si no tenemos respuesta
+            dentro de los 10 días corridos desde la compra, o no encontramos una
+            opción que te sirva, podés pasar a envío por Correo Argentino pagando
+            su costo, o cancelar la compra y te reintegramos el total pagado por
+            el mismo medio de pago.
+          </li>
+          <li class="list-decimal">
+            <strong>Tus derechos no cambian.</strong> La garantía y el derecho de
+            arrepentimiento se aplican igual que en cualquier compra, según
+            nuestra <a class="underline" href="/legales/devoluciones"
+              >política de devoluciones y garantía</a
+            >.
+          </li>
+        </ol>
       </div>
 
       <div class="my-3 py-2">
@@ -99,7 +193,9 @@ const corte = `${SHIPPING_CUTOFF_HOUR}:00`;
       <div class="my-3 py-2">
         <h2 class="font-bold my-2">Contacto</h2>
         <p>
-          Si tenés dudas sobre un envío, escribinos a <strong>{CONTACT_EMAIL}</strong>.
+          Si tenés dudas sobre un envío, escribinos a <strong>{CONTACT_EMAIL}</strong>{
+            SHOW_WHATSAPP && <> o por WhatsApp al <strong>{WHATSAPP_PHONE}</strong></>
+          }.
         </p>
       </div>
     </article>

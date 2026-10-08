@@ -177,6 +177,45 @@ export const getShippingCost = async (token: string) => {
   }
 };
 
+// Forma de entrega: Correo a domicilio ("D"), retiro en sucursal ("S" + código)
+// o acordar el envío ("A"). Se guarda en el carrito del servidor, que es el que
+// cotiza y cobra; después hay que volver a pedir /logistic/cost.
+export const setDelivery = async (
+  token: string,
+  delivery_type: "D" | "S" | "A",
+  agency_code?: string
+) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/cart/delivery`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ delivery_type, agency_code }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    return { success: false, message: "No pudimos guardar la forma de entrega." };
+  }
+};
+
+// Sucursales de Correo de la provincia del cliente, las cercanas a su CP primero.
+export const getAgencies = async (token: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/logistic/agencies`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const res = await response.json();
+
+    return res?.success ? res.data : null;
+  } catch (error) {
+    return null;
+  }
+};
+
 // El cupón se guarda en el carrito del servidor, no en el navegador: el
 // checkout lo vuelve a validar y a calcular por su cuenta. Lo que devuelve acá
 // es para mostrar.
