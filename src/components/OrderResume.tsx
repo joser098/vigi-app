@@ -114,17 +114,19 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
 
     const data = await getShippingCost(getToken());
 
-    // Sin `delivery_type` no es una respuesta del cotizador (sesión vencida,
-    // API caída). Un `shippingCost` null sí lo es: Correo no cotizó, y se
-    // ofrece acordar el envío.
-    if (!data?.delivery_type) {
+    // Sin `delivery_type` ni `shippingCost` no es una respuesta del cotizador
+    // (sesión vencida, API caída). Un `shippingCost` null con `delivery_type`
+    // sí lo es: Correo no cotizó, y se ofrece acordar el envío. Con
+    // `shippingCost` y sin `delivery_type` es la API anterior a Correo: se
+    // muestra el costo como siempre, sin opciones.
+    if (!data?.delivery_type && typeof data?.shippingCost !== "number") {
       setQuote(null);
       setShipmentError("No pudimos calcular el costo de envío. Intentá de nuevo.");
       return;
     }
 
     setQuote(data as ShippingQuote);
-    setElegida(data.delivery_type);
+    setElegida(data.delivery_type ?? "D");
     setDisablePay(data.shippingCost === null);
   };
 
@@ -230,7 +232,9 @@ const OrderResume = ({ cart }: { cart: CartModel }) => {
           )}
         </div>
 
-        {quote && (
+        {/* Solo con la API que cotiza con Correo: la anterior no entiende
+            de formas de entrega. */}
+        {quote?.delivery_type && (
           <fieldset className="mt-3 flex flex-col gap-2" disabled={savingDelivery}>
             <legend className="sr-only">Forma de entrega</legend>
 
